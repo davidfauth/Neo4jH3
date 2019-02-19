@@ -1,4 +1,4 @@
-package com.dfauth.imports;
+package com.dfauth.uber;
 
 import com.dfauth.results.NodeResult;
 import com.dfauth.results.NodeListResult;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 import java.util.*;
 import java.util.Map.Entry;
 
-public class Imports {
+public class Uberh3 {
     @Context
     public GraphDatabaseService db;
 

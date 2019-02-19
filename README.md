@@ -19,6 +19,6 @@ that can be copied to the `plugin` directory of your Neo4j instance.
 Restart your Neo4j Server. Several new stored procedures are available:
 
 
-    CALL com.dfauth.h3.returnHexAddress("38.439779", "-77.410522","9");
+    CALL com.dfauth.h3.returnHexAddress(38.439779, -77.410522,"9");
 	CALL com.dfauth.h3.polygonSearch
-	CALL call com.dfauth.h3.lineBetweenLocations(37.131,-71.234,38.13,-71.3)
+	CALL com.dfauth.h3.lineBetweenLocations(38.418582, -77.385268,38.500603, -77.444288);
