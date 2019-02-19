@@ -22,3 +22,5 @@ Restart your Neo4j Server. Several new stored procedures are available:
     CALL com.dfauth.h3.returnHexAddress(38.439779, -77.410522,"9");
 	CALL com.dfauth.h3.polygonSearch
 	CALL com.dfauth.h3.lineBetweenLocations(38.418582, -77.385268,38.500603, -77.444288);
+	
+More examples can be found at: http://www.intelliwareness.org/2019/02/neo4j-uber-h3-geospatial/
