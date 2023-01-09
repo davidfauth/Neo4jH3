@@ -1,7 +1,7 @@
-# Neo4jH3
-
-Usage of Uber H3 with Neo4j
-This project requires Neo4j 3.5.x or higher
+# Neo4j H3 Library 
+This library provides a set of H3 functions and procedures for Neo4j 5
+H3 is a hexagonal hierarchical geospatial indexing system (https://h3geo.org)
+This library uses the H3 api which can be found at https://h3geo.org/docs/api/indexing
 
 Instructions
 ------------ 
@@ -11,16 +11,31 @@ project, simply package the project with maven:
 
     mvn clean package
 
-This will produce a jar-file, `target/uberh3-0.1-SNAPSHOT.jar`,
+This will produce a jar-file, `neo4jh3-0.5.0-SNAPSHOT.jar `,
 that can be copied to the `plugin` directory of your Neo4j instance.
 
-    cp target/uberh3-0.1-SNAPSHOT.jar neo4j-enterprise-3.5.2/plugins/.
+    cp target/neo4jh3-0.5.0-SNAPSHOT.jar  neo4j-enterprise-5.1.0/plugins/.
+
+
+Edit your Neo4j/conf/neo4j.conf file by adding this line:
+
+    dbms.security.procedures.unrestricted=apoc.*,gds.*,com.neo4jh3.*
+	dbms.security.procedures.allowlist=apoc.*,gds.*,com.neo4jh3.*
+   
     
-Restart your Neo4j Server. Several new stored procedures are available:
+(Re)start Neo4j
 
-
-    CALL com.dfauth.h3.returnHexAddress(38.439779, -77.410522,"9");
-	CALL com.dfauth.h3.polygonSearch
-	CALL com.dfauth.h3.lineBetweenLocations(38.418582, -77.385268,38.500603, -77.444288);
-	
-More examples can be found at: http://www.intelliwareness.org/2019/02/neo4j-uber-h3-geospatial/
+# Functions
+com.neo4jh3.uber.h3HexAddressString(Double Lat, Double Long, Long Resolution) returns hexAddress;
+com.neo4jh3.uber.h3HexAddressNumber(Double Lat, Double Long, Long Resolution) returns Long;
+com.neo4jh3.uber.h3RingsForDistance(Double Resolution, Double Distance in KM) returns Long;
+    
+# Procedures
+com.neo4jh3.gridDisk(String hexAddress, Long ringSize) returns String; 
+com.neo4jh3.returnHexAddress(Double Lat, Double Long, Long Resolution) returns String hexAddress;
+com.neo4jh3.returnLongAddress(Double Lat, Double Long, Long Resolution) returns Long hexAddress;
+com.neo4jh3.cellToChildren(String hexAddress, Long resolution) returns String; 
+com.neo4jh3.cellToParent(String hexAddress, Long resolution) returns String; 
+com.neo4jh3.polygonToCells(List String(lat,lon), List String(lat,lon), Long resolution) returns String;
+com.neo4jh3.gridPathCells(Double latitude, Double longitude, Double latitude, Double longitude, Long resolution) return string;
+com.neo4jh3.gridPathCellsHex(String hexAddress, String hexAddress, Long resolution) returns String;
