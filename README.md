@@ -39,11 +39,11 @@ com.neo4jh3.distanceBetweenHexesNumber(String hexAddress, String HexAddress) ret
 
     
 # Procedures
-com.neo4jh3.gridDisk(String hexAddress, Long ringSize) returns String; 
-com.neo4jh3.cellToChildren(String hexAddress, Long resolution) returns String; 
-com.neo4jh3.returnHexAddress(Double Lat, Double Long, Long Resolution) returns String hexAddress;
-com.neo4jh3.returnLongAddress(Double Lat, Double Long, Long Resolution) returns Long hexAddress;
-com.neo4jh3.polygonToCells(List String(lat,lon), List String(lat,lon), Long resolution) returns String;
-com.neo4jh3.gridPathCells(Double latitude, Double longitude, Double latitude, Double longitude, Long resolution) return string;
-com.neo4jh3.gridPathCellsHexAddress(String hexAddress, String hexAddress, Long resolution) returns String;
-com.neo4jh3.lineHexAddresses(List String(lat,lon), Long resolution) returns String;
+com.neo4jh3.gridDisk(String hexAddress, Long ringSize) returns String;  
+com.neo4jh3.cellToChildren(String hexAddress, Long resolution) returns String;  
+com.neo4jh3.returnHexAddress(Double Lat, Double Long, Long Resolution) returns String hexAddress;  
+com.neo4jh3.returnLongAddress(Double Lat, Double Long, Long Resolution) returns Long hexAddress;  
+com.neo4jh3.polygonToCells(List String(lat,lon), List String(lat,lon), Long resolution) returns String;  
+com.neo4jh3.gridPathCells(Double latitude, Double longitude, Double latitude, Double longitude, Long resolution) return string;  
+com.neo4jh3.gridPathCellsHexAddress(String hexAddress, String hexAddress, Long resolution) returns String;  
+com.neo4jh3.lineHexAddresses(List String(lat,lon), Long resolution) returns String;  
