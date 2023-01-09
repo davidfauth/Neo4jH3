@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.dfauth</groupId>
-    <artifactId>uberh3</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <groupId>com.neo4jh3</groupId>
+    <artifactId>neo4jh3</artifactId>
+    <version>0.9.1</version>
 
     <properties>
-        <neo4j.version>3.5.1</neo4j.version>
+        <neo4j.version>5.1.0</neo4j.version>
         <csv.version>1.2</csv.version>
 		<lang3.version>3.7</lang3.version>
-		<uber.version>3.3.0</uber.version>
+		<uber.version>4.0.2</uber.version>
 		<commons.version>4.1</commons.version>
     </properties>
 
@@ -56,7 +56,7 @@
             <!-- Used to send cypher statements to our procedure. -->
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
-            <version>1.4.3</version>
+            <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -85,7 +85,8 @@
             <version>${neo4j.version}</version>
             <optional>true</optional>
             <scope>compile</scope>
-        </dependency>
+        </dependency> 
+        
     </dependencies>
 
     <build>
@@ -94,9 +95,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <!-- Neo4j Procedures require Java 8 -->
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <!-- Neo4j 5 Procedures require Java 17 -->
+                    <source>17</source>
+                    <target>17</target>
                 </configuration>
             </plugin>
             <plugin>
