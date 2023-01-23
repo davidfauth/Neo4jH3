@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.neo4jh3</groupId>
   <artifactId>neo4jh3</artifactId>
-  <version>0.9.1</version>
+  <version>5.2.0</version>
   <build>
     <plugins>
       <plugin>
@@ -28,6 +28,17 @@
       </plugin>
     </plugins>
   </build>
+  <repositories>
+    <repository>
+      <releases />
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>osgeo</id>
+      <name>OSGeo Release Repository</name>
+      <url>https://repo.osgeo.org/repository/release/</url>
+    </repository>
+  </repositories>
   <dependencies>
     <dependency>
       <groupId>org.neo4j</groupId>
