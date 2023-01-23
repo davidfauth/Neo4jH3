@@ -47,3 +47,4 @@ com.neo4jh3.polygonToCells(List String(lat,lon), List String(lat,lon), Long reso
 com.neo4jh3.gridPathCells(Double latitude, Double longitude, Double latitude, Double longitude, Long resolution) return string;  
 com.neo4jh3.gridPathCellsHexAddress(String hexAddress, String hexAddress, Long resolution) returns String;  
 com.neo4jh3.lineHexAddresses(List String(lat,lon), Long resolution) returns String;  
+
