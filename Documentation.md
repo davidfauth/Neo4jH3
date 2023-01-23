@@ -636,7 +636,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns false;
 
 ### Example
     
-    RETURN com.neo4jh3.ispentagon('85283473fffffff') AS value;
+    RETURN com.neo4jh3.ispentagonString('85283473fffffff') AS value;
     false
 
 ##com.neo4jh3.h3ValidateString( h3CellIdExpr )
