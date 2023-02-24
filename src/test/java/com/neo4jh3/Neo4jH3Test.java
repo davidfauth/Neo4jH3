@@ -300,6 +300,12 @@ public class Neo4jH3Test {
                 result = session.run("RETURN com.neo4jh3.pointash3('POINT(37.8199 -122.4783)',13) AS value");
                 assertEquals(635714569676958015L, result.single().get("value").asLong(),0);
        
+                result = session.run("RETURN com.neo4jh3.multilineash3('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value");
+                assertEquals(635714810904422079L, result.single().get("value").asLong(),0);
+       
+                result = session.run("RETURN com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018))',13) AS value");
+                assertEquals(635747522315622719L, result.single().get("value").asLong(),0);
+       
                 result = session.run("RETURN com.neo4jh3.centeraswkb(599686042433355775) AS value");
                 assertEquals("\"00000000014042AC42F51330C7C05E7E7CF1A5AD49\"", result.single().get("value").toString());
 

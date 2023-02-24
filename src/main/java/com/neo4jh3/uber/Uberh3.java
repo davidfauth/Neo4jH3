@@ -738,6 +738,69 @@ public class Uberh3 {
         return h3Address;
     }
 
+    // Geography Functions
+    @UserFunction(name = "com.neo4jh3.multilineash3")
+    @Description("com.neo4jh3.multilineash3(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
+    public Long multilineash3(
+            @Name("wktString") String wktString, 
+            @Name("h3Res") Long h3Res) throws InterruptedException 
+            {
+            Long h3Address = 0L;
+            if (h3 == null) {
+                throw new InterruptedException("h3 failed to initialize");
+            }
+    
+            final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+
+            try {
+                if (h3Resolution > 0 && h3Resolution <= 15) { 
+                    Geometry geometry = GeometryReader.readGeometry(wktString);
+                    //System.out.println(geometry.getGeometryType());
+                   if (geometry.getGeometryType().toString().equalsIgnoreCase("MultiLineString")){
+                        h3Address=h3.latLngToCell(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
+                    }
+                } else {
+                    h3Address = -2L;
+                }
+            } catch (Exception e) {
+                //System.out.println(e);
+                h3Address = -1L;
+                // TODO Auto-generated catch block
+                //e.printStackTrace();
+            }
+        return h3Address;
+    }
+    @UserFunction(name = "com.neo4jh3.multilineash3String")
+    @Description("com.neo4jh3.multilineash3String(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
+    public String multilineash3String(
+            @Name("wktString") String wktString, 
+            @Name("h3Res") Long h3Res) throws InterruptedException 
+            {
+            String h3Address = "";
+            if (h3 == null) {
+                throw new InterruptedException("h3 failed to initialize");
+            }
+    
+            final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+
+            try {
+                if (h3Resolution > 0 && h3Resolution <= 15) { 
+                    Geometry geometry = GeometryReader.readGeometry(wktString);
+                   if (geometry.getGeometryType().toString().equalsIgnoreCase("MultiLineString")){
+                        h3Address=h3.latLngToCellAddress(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
+                    }
+                } else {
+                    h3Address = "-2";
+                }
+            } catch (Exception e) {
+                //System.out.println(e);
+                h3Address = "-1";
+                // TODO Auto-generated catch block
+                //e.printStackTrace();
+            }
+        return h3Address;
+    }
+
     @UserFunction(name = "com.neo4jh3.centeraswkb")
     @Description("com.neo4jh3.centeraswkb(hexAddress) - Provides the distance in grid cells between the two indexes.")
     public String centeraswkb(
