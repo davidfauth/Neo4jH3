@@ -1,5 +1,5 @@
 # Documentation
-##com.neo4jh3.boundaryaswkt( h3CellIdExpr )
+## com.neo4jh3.boundaryaswkt( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in WKT format.
 
 ### Syntax
@@ -21,7 +21,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.boundaryaswkt(1234) AS value
     -1
 
-##com.neo4jh3.boundaryaswktString( h3CellIdExpr )
+## com.neo4jh3.boundaryaswktString( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in WKT format.
 
 ### Syntax
@@ -43,7 +43,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.boundaryaswktString('1234') AS value
     -1
 
-##com.neo4jh3.boundaryaswkb( h3CellIdExpr )
+## com.neo4jh3.boundaryaswkb( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in WKB format.
 
 ### Syntax
@@ -65,7 +65,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.boundaryaswkb(1234) AS value
     -1
 
-##com.neo4jh3.boundaryaswkbString( h3CellIdExpr )
+## com.neo4jh3.boundaryaswkbString( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in WKB format.
 
 ### Syntax
@@ -87,7 +87,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.boundaryaswkbString('1234') AS value
     -1
     
-##com.neo4jh3.boundaryasgeojson( h3CellIdExpr )
+## com.neo4jh3.boundaryasgeojson( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in GeoJSON format.
 
 ### Syntax
@@ -109,7 +109,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.boundaryasgeojson(1234) AS value
     -1
 
-##com.neo4jh3.boundaryasgeojsonString( h3CellIdExpr )
+## com.neo4jh3.boundaryasgeojsonString( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in GeoJSON format.
 
 ### Syntax
@@ -131,7 +131,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.boundaryasgeojsonString('1234') AS value
     -1
     
-##com.neo4jh3.toparent( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.toparent( h3CellIdExpr, resolutionExpr )
 Returns the parent H3 cell of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -158,7 +158,7 @@ If h3CellIdExpr is an invalid H3 cell, the function returns -2.
     RETURN com.neo4jh3.toparent(12345, 6) AS value
     -2
 
-##com.neo4jh3.toparentString( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.toparentString( h3CellIdExpr, resolutionExpr )
 Returns the parent H3 cell of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -186,7 +186,7 @@ If h3CellIdExpr is an invalid H3 cell, the function returns -2.
     -2
     
 
-##com.neo4jh3.cellToLatLng( h3CellId1Expr )
+## com.neo4jh3.cellToLatLng( h3CellId1Expr )
 Returns the center latitude and longitude of the input H3 cell.
 
 ### Syntax
@@ -208,7 +208,7 @@ If h3XellIdExpr is an invalid h3 address, the function returns -1.
     RETURN com.neo4jh3.cellToLatLng(123) AS value
     -1
     
-##com.neo4jh3.cellToLatLngString( h3CellIdExpr )
+## com.neo4jh3.cellToLatLngString( h3CellIdExpr )
 Returns the center latitude and longitude of the input H3 cell.
 
 ### Syntax
@@ -230,7 +230,7 @@ If h3XellIdExpr is an invalid h3 address, the function returns -1.
     RETURN com.neo4jh3.cellToLatLngString('notavalidhex') AS value
     -1
     
-##com.neo4jh3.centerasgeojson( h3CellIdExpr )
+## com.neo4jh3.centerasgeojson( h3CellIdExpr )
 Returns the center of the input H3 cell as a point in GeoJSON format.
 
 ### Syntax
@@ -252,7 +252,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.centerasgeojson(1234) AS value
     -1
     
-##com.neo4jh3.centerasgeojsonString( h3CellIdExpr )
+## com.neo4jh3.centerasgeojsonString( h3CellIdExpr )
 Returns the center of the input H3 cell as a point in GeoJSON format.
 
 ### Syntax
@@ -275,7 +275,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.centerasgeojsonString(1234) AS value
     -1
      
-##com.neo4jh3.centeraswkt( h3CellIdExpr )
+## com.neo4jh3.centeraswkt( h3CellIdExpr )
 Returns the center of the input H3 cell as a point in WKT format.
 
 ### Syntax
@@ -297,7 +297,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.centeraswkt(1234) AS value
     -1
 
-##com.neo4jh3.centeraswktString( h3CellIdExpr )
+## com.neo4jh3.centeraswktString( h3CellIdExpr )
 Returns the center of the input H3 cell as a point in WKT format.
 
 ### Syntax
@@ -319,7 +319,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.centeraswktString('1234') AS value
     -1
     
-##com.neo4jh3.centeraswkb( h3CellIdExpr )
+## com.neo4jh3.centeraswkb( h3CellIdExpr )
 Returns the center of the input H3 cell as a point in WKB format.
 
 ### Syntax
@@ -341,7 +341,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.centeraswkb(1234) AS value
     -1
 
-##com.neo4jh3.centeraswkbString( h3CellIdExpr )
+## com.neo4jh3.centeraswkbString( h3CellIdExpr )
 Returns the center of the input H3 cell as a point in WKB format.
 
 ### Syntax
@@ -363,7 +363,7 @@ If h3CellIdExpr is invalid, the function returns -1
     RETURN com.neo4jh3.centeraswkbString('1234') AS value
     -1
     
-##com.neo4jh3.distanceBetweenHexes( h3CellId1Expr, h3CellId2Expr )
+## com.neo4jh3.distanceBetweenHexes( h3CellId1Expr, h3CellId2Expr )
 Returns the great circle distance in KM between two valid H3 addresses.
 
 ### Syntax
@@ -386,7 +386,7 @@ If h3CellId1Expr or h3CellId2Expr is an invalid h3 address, the function returns
     RETURN com.neo4jh3.distanceBetweenHexes(3111,599686015589810175) AS value
     -1.0
 
-##com.neo4jh3.distanceBetweenHexesString( h3CellId1Expr, h3CellId2Expr )
+## com.neo4jh3.distanceBetweenHexesString( h3CellId1Expr, h3CellId2Expr )
 Returns the great circle distance in KM between two valid H3 addresses.
 
 ### Syntax
@@ -409,7 +409,7 @@ If h3CellId1Expr or h3CellId2Expr is an invalid h3 address, the function returns
     RETURN com.neo4jh3.distanceBetweenHexesString('123','8a498935223ffff') AS value
     -1.0
 
-##com.neo4jh3.gridDistance( h3CellId1Expr, h3CellId2Expr )
+## com.neo4jh3.gridDistance( h3CellId1Expr, h3CellId2Expr )
 Returns the grid distance of the two input H3 cells, that are expected to have the same resolution.
 
 ### Syntax
@@ -432,7 +432,7 @@ If h3CellId1Expr or h3CellId2Expr is not a valid H3 cell ID, the function return
     RETURN com.neo4jh3.gridDistance(1234,599686015589810175) as value
     -1
     
-##com.neo4jh3.gridDistanceString( h3CellId1Expr, h3CellId2Expr )
+## com.neo4jh3.gridDistanceString( h3CellId1Expr, h3CellId2Expr )
 Returns the grid distance of the two input H3 cells, that are expected to have the same resolution.
 
 ### Syntax
@@ -455,7 +455,7 @@ If h3CellId1Expr or h3CellId2Expr is not a valid H3 cell ID, the function return
     RETURN com.neo4jh3.gridDistanceString('12111','8528342bfffffff') as value
     -1
 
-##com.neo4jh3.h3HexAddress( latitude, longitude, resolution )
+## com.neo4jh3.h3HexAddress( latitude, longitude, resolution )
 Returns the H3 cell ID (as a LONG) corresponding to the provided longitude and latitude at the specified resolution.
 
 ### Syntax
@@ -485,7 +485,7 @@ A value of the type of LONG representing, as a hexadecimal string, the H3 cell I
     -3
         
     
-##com.neo4jh3.h3HexAddressString( latitude, longitude, resolution )
+## com.neo4jh3.h3HexAddressString( latitude, longitude, resolution )
 Returns the H3 cell ID (as a hexadecimal STRING) corresponding to the provided longitude and latitude at the specified resolution.
 
 ### Syntax
@@ -514,7 +514,7 @@ A value of the type of STRING representing, as a hexadecimal string, the H3 cell
     RETURN com.neo4jh3.h3HexAddressString( 97.8199, -122.4783, 13) AS value
     -3
         
-##com.neo4jh3.h3tostring( h3CellIdExpr )
+## com.neo4jh3.h3tostring( h3CellIdExpr )
 Converts the input H3 cell ID to its equivalent hexadecimal string representation.
 
 ### Syntax
@@ -537,7 +537,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns "-1".
     RETURN com.neo4jh3.h3tostring(0) AS value
     -1
 
-##com.neo4jh3.h3Resolution( h3CellIdExpr )
+## com.neo4jh3.h3Resolution( h3CellIdExpr )
 Returns the resolution of the input H3 cell.
 
 ### Syntax
@@ -560,7 +560,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns -1.
     RETURN com.neo4jh3.h3Resolution(337) AS value
     -1
     
-##com.neo4jh3.h3ResolutionString( h3CellIdExpr )
+## com.neo4jh3.h3ResolutionString( h3CellIdExpr )
 Returns the resolution of the input H3 cell.
 
 ### Syntax
@@ -583,7 +583,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns -1.
     RETURN com.neo4jh3.h3ResolutionString('notavalidhexaddress') AS value
     -1
 
-##com.neo4jh3.h3Validate( h3CellIdExpr )
+## com.neo4jh3.h3Validate( h3CellIdExpr )
 Returns the input value, that is of type LONG if it corresponds to a valid H3 cell ID, or emits an error otherwise.
 
 ### Syntax
@@ -602,7 +602,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns 0.
     RETURN com.neo4jh3.h3Validate(123411) AS value;
     -1
     
-##com.neo4jh3.ispentagon( h3CellIdExpr )
+## com.neo4jh3.ispentagon( h3CellIdExpr )
 Returns true if the input LONG corresponds to a pentagonal H3 cell or not.
 
 ### Syntax
@@ -621,7 +621,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns false;
     RETURN com.neo4jh3.ispentagon(123456) AS value;
     false
 
-##com.neo4jh3.ispentagonString( h3CellIdExpr )
+## com.neo4jh3.ispentagonString( h3CellIdExpr )
 Returns true if the input STRING corresponds to a pentagonal H3 cell or not.
 
 ### Syntax
@@ -638,7 +638,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns false;
     RETURN com.neo4jh3.ispentagonString('85283473fffffff') AS value;
     false
 
-##com.neo4jh3.h3ValidateString( h3CellIdExpr )
+## com.neo4jh3.h3ValidateString( h3CellIdExpr )
 Returns the input value, that is of type STRING if it corresponds to a valid H3 cell ID, or emits an error otherwise.
 
 ### Syntax
@@ -658,7 +658,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns "invalid h3 reso
     -1
     
 
-##com.neo4jh3.latlongash3( latitude, longitude, resolution )
+## com.neo4jh3.latlongash3( latitude, longitude, resolution )
 Returns the H3 cell ID (as a LONG) corresponding to the provided longitude and latitude at the specified resolution.
 
 ### Syntax
@@ -691,7 +691,7 @@ A value of the type of LONG representing, as a hexadecimal string, the H3 cell I
     RETURN com.neo4jh3.latlongash3( 67.8199, -222.4783, 13) AS value
     -4
      
-##com.neo4jh3.latlongash3String( latitude, longitude, resolution )
+## com.neo4jh3.latlongash3String( latitude, longitude, resolution )
 Returns the H3 cell ID (as a hexadecimal STRING) corresponding to the provided longitude and latitude at the specified resolution.
 
 ### Syntax
@@ -723,7 +723,7 @@ A value of the type of STRING representing, as a hexadecimal string, the H3 cell
     RETURN com.neo4jh3.latlongash3String( 97.8199, -222.4783, 13) AS value
     -4
         
-##com.neo4jh3.maxChild( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.maxChild( h3CellIdExpr, resolutionExpr )
 Returns the child of minimum value of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -750,7 +750,7 @@ If resolutionExpr is an invalid h3 resolution, the function returns -2.
     RETURN com.neo4jh3.maxChild(599686042433355775,23) AS value
     -2
     
-##com.neo4jh3.maxChildString( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.maxChildString( h3CellIdExpr, resolutionExpr )
 Returns the child of maximum value of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -777,7 +777,7 @@ If resolutionExpr is an invalid h3 resolution, the function returns -2.
     RETURN com.neo4jh3.maxChildString('85283473fffffff',27) AS value
     -2
     
-##com.neo4jh3.minChild( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.minChild( h3CellIdExpr, resolutionExpr )
 Returns the child of minimum value of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -804,7 +804,7 @@ If resolutionExpr is an invalid resolution or smaller than h3_resolution(h3CellI
      RETURN com.neo4jh3.minChild(599686042433355775,23) AS value
     -2
     
-##com.neo4jh3.minChildString( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.minChildString( h3CellIdExpr, resolutionExpr )
 Returns the child of minimum value of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -831,7 +831,7 @@ If resolutionExpr is an invalid resolution or smaller than h3_resolution(h3CellI
     RETURN com.neo4jh3.minChildString('85283473fffffff',27) AS value
     -2
 
-##com.neo4jh3.multilineash3( geographyExpr, resolutionExpr )
+## com.neo4jh3.multilineash3( geographyExpr, resolutionExpr )
 Returns the H3 cell ID (as a LONG) corresponding to the provided MULTILINESTRING at the specified resolution.
 
 ### Syntax
@@ -859,7 +859,7 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
     RETURN com.neo4jh3.multilineash3('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
     -2
 
-##com.neo4jh3.multilineash3String( geographyExpr, resolutionExpr )
+## com.neo4jh3.multilineash3String( geographyExpr, resolutionExpr )
 Returns the H3 cell ID (as a STRING) corresponding to the provided MULTILINESTRING at the specified resolution.
 
 ### Syntax
@@ -887,7 +887,7 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
     RETURN com.neo4jh3.multilineash3String('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
     -2
 
-##com.neo4jh3.pointash3( geographyExpr, resolutionExpr )
+## com.neo4jh3.pointash3( geographyExpr, resolutionExpr )
 Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
 
 ### Syntax
@@ -915,7 +915,7 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
     RETURN com.neo4jh3.maxChildString('POINT(37.8199 -122.4783)',16) AS value
     -2
 
-##com.neo4jh3.pointash3String( geographyExpr, resolutionExpr )
+## com.neo4jh3.pointash3String( geographyExpr, resolutionExpr )
 Returns the H3 cell ID (as a STRING) corresponding to the provided point at the specified resolution.
 
 ### Syntax
@@ -943,7 +943,7 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
     RETURN com.neo4jh3. pointash3String('POINT(37.8199 -122.4783)',16) AS value
     -2
 
-##com.neo4jh3.stringToH3( h3CellIdExpr )
+## com.neo4jh3.stringToH3( h3CellIdExpr )
 Converts the input string, which is expected to be a hexadecimal string representing an H3 cell, to the corresponding LONG representation of the H3 cell.
 
 ### Syntax
@@ -966,7 +966,7 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns -1.
     -1
         
 # Procedures
-##com.neo4jh3.gridDisk( h3CellIdExpr, kExpr )
+## com.neo4jh3.gridDisk( h3CellIdExpr, kExpr )
 Returns the H3 cells that are within (grid) distance k of the origin cell. The set of these H3 cells is called the k-ring of the origin cell.
 
 ### Syntax
@@ -993,7 +993,7 @@ If kExpr < 0, the function returns -2
     CALL com.neo4jh3.gridDisk(599686042433355775,-1) yield value return value;
     -2
     
-##com.neo4jh3.gridDiskString( h3CellIdExpr, kExpr )
+## com.neo4jh3.gridDiskString( h3CellIdExpr, kExpr )
 Returns the children H3 cells of the input H3 cell at the specified resolution.
 
 ### Syntax
@@ -1021,7 +1021,7 @@ If kExpr < 0, the function returns -2
     CALL com.neo4jh3.gridDiskString('85283473fffffff',-1) yield value return value;
     -2
 
-##com.neo4jh3.polygonToCells( ListOuterGeography, ListHoleGeography, resolutionExpr, LatLonOrder )
+## com.neo4jh3.polygonToCells( ListOuterGeography, ListHoleGeography, resolutionExpr, LatLonOrder )
 Returns a list of H3 cell IDs (represented as LONGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained by the input area geography.
 
 ### Syntax
@@ -1046,7 +1046,7 @@ If resolutionExpr is invalid, the function returns -2
     call com.neo4jh3.polygonToCells(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],20,'latlon') yield value return value
     -2
     
-##com.neo4jh3.polygonToCellsString( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.polygonToCellsString( h3CellIdExpr, resolutionExpr )
 Returns a list of H3 cell IDs (represented as STRINGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained by the input area geography.
 
 ### Syntax
@@ -1071,7 +1071,7 @@ If resolutionExpr is invalid, the function returns -2
     call com.neo4jh3.polygonToCellsString(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],20,'latlon') yield value return value
     -2
 
-##com.neo4jh3.compact( h3CellIdsExpr )
+## com.neo4jh3.compact( h3CellIdsExpr )
 Compacts the input set of H3 cells. The compacted set covers the same set of H3 cells as the original one.
 
 ### Syntax
@@ -1090,7 +1090,7 @@ An LIST of H3 cell IDs of the same type as the values in the input LIST expressi
     CALL com.neo4jh3.compact([599686042433355775,599686030622195711,599686044580839423,599686038138388479,599686043507097599,599686015589810175,599686014516068351,599686034917163007,599686029548453887,599686032769679359,599686198125920255,599686040285872127,599686041359613951,599686039212130303,599686023106002943,599686027400970239,599686013442326527,599686012368584703,599686018811035647]);
     599686030622195711,599686015589810175,599686014516068351,599686034917163007,599686029548453887,599686032769679359,599686198125920255,599686023106002943,599686027400970239,599686013442326527,599686012368584703,599686018811035647,595182446027210751      
     
-##com.neo4jh3.compactString( h3CellIdsExpr )
+## com.neo4jh3.compactString( h3CellIdsExpr )
 Compacts the input set of H3 cells. The compacted set covers the same set of H3 cells as the original one.
 
 ### Syntax
@@ -1110,7 +1110,7 @@ An LIST of H3 cell IDs of the same type as the values in the input LIST expressi
     
     "85283447fffffff", "8528340ffffffff", "8528340bfffffff", "85283457fffffff", "85283443fffffff", "8528344ffffffff", "852836b7fffffff", "8528342bfffffff", "8528343bfffffff", "85283407fffffff", "85283403fffffff", "8528341bfffffff", "8428347ffffffff" 
     
-##com.neo4jh3.gridpathcell( h3CellId1Expr, h3CellId2Expr )
+## com.neo4jh3.gridpathcell( h3CellId1Expr, h3CellId2Expr )
 Returns the line of indexes as LONGs between two H3 indexes (inclusive).
 
 ### Syntax
@@ -1133,7 +1133,7 @@ If h3CellId1Expr or h3CellId2Expr is an invalid h3 address, the function returns
     CALL com.neo4jh3.gridpathcell(604189641121202175,604189642126508543) yield value return value;
     -1
 
-##com.neo4jh3.gridpathcellString( h3CellId1Expr, h3CellId2Expr )
+## com.neo4jh3.gridpathcellString( h3CellId1Expr, h3CellId2Expr )
 Returns the line of indexes as STRINGs between two H3 indexes (inclusive).
 
 ### Syntax
@@ -1157,7 +1157,7 @@ If h3CellId1Expr or h3CellId2Expr is an invalid h3 address, the function returns
     CALL com.neo4jh3.gridpathcellString('as331','86283472fffffff') yield value return value
     -1
 
-##com.neo4jh3.gridpathlatlon( latitude1, longitude1, latitude2, longitude2, resolutionExpr )
+## com.neo4jh3.gridpathlatlon( latitude1, longitude1, latitude2, longitude2, resolutionExpr )
 Returns the line of indexes as LONGs between a pair of latitude/longitude points converted to Hex Addresses at the specified resolution.
 
 ### Syntax
@@ -1191,7 +1191,7 @@ If resolutionExpr is invalid, the procedure returns -2
     CALL com.neo4jh3.gridpathlatlon(37.2,-219.2,38.2,-119.2,5) yield value return collect(value);
     -4
 
-##com.neo4jh3.gridpathlatlonString( latitude1, longitude1, latitude2, longitude2, resolutionExpr )
+## com.neo4jh3.gridpathlatlonString( latitude1, longitude1, latitude2, longitude2, resolutionExpr )
 Returns the line of indexes as STRINGs between a pair of latitude/longitude points converted to Hex Addresses at the specified resolution.
 
 ### Syntax
@@ -1225,7 +1225,7 @@ If resolutionExpr is invalid, the procedure returns -2
     CALL com.neo4jh3.gridpathlatlonString(37.2,-219.2,38.2,-119.2,5) yield value return collect(value);
     -4
     
-##com.neo4jh3.uncompact( h3CellIdsExpr, resolutionExpr )
+## com.neo4jh3.uncompact( h3CellIdsExpr, resolutionExpr )
 Uncompacts the input set of H3 cells to the specified resolution. The uncompacted set covers the same set of H3 cells as the original one using cells at the specified resolution.
 
 ### Syntax
@@ -1248,7 +1248,7 @@ If resolutionExpr is smaller than the maximum resolution of the H3 cell in the i
     call com.neo4jh3.uncompact([599686030622195711,599686015589810175,599686014516068351,599686034917163007,599686029548453887,599686032769679359,599686198125920255,599686023106002943,599686027400970239,599686013442326527,599686012368584703,599686018811035647,595182446027210751], 5) yield value return value
 -2
     
-##com.neo4jh3.uncompactString( h3CellIdsExpr, resolutionExpr )
+## com.neo4jh3.uncompactString( h3CellIdsExpr, resolutionExpr )
 Uncompacts the input set of H3 cells to the specified resolution. The uncompacted set covers the same set of H3 cells as the original one using cells at the specified resolution.
 
 ### Syntax
@@ -1272,7 +1272,7 @@ If resolutionExpr is smaller than the maximum resolution of the H3 cell in the i
  CALL com.neo4jh3.uncompactString(["85283447fffffff", "8528340ffffffff", "8528340bfffffff", "85283457fffffff", "85283443fffffff", "8528344ffffffff", "852836b7fffffff", "8528342bfffffff", "8528343bfffffff", "85283407fffffff", "85283403fffffff", "8528341bfffffff", "8428347ffffffff"],0) yield value return value;
  -2
 
-##com.neo4jh3.tochildren( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.tochildren( h3CellIdExpr, resolutionExpr )
 Returns the H3 cells that are within (grid) distance k of the origin cell. The set of these H3 cells is called the k-ring of the origin cell.
 
 ### Syntax
@@ -1299,7 +1299,7 @@ If h3CellIdExpr is invalid, the function returns -1
    CALL com.neo4jh3.tochildren(599686042433355775,-1) yield value return value;
     -2
     
-##com.neo4jh3.tochildrenString( h3CellIdExpr, resolutionExpr )
+## com.neo4jh3.tochildrenString( h3CellIdExpr, resolutionExpr )
 Returns the H3 cells that are within (grid) distance k of the origin cell. The set of these H3 cells is called the k-ring of the origin cell.
 
 ### Syntax
