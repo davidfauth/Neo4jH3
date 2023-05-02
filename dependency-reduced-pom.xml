@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.neo4jh3</groupId>
   <artifactId>neo4jh3</artifactId>
-  <version>5.2.0</version>
+  <version>5.3.1</version>
   <build>
     <plugins>
       <plugin>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>5.1.0</version>
+      <version>5.5.0</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -111,10 +111,6 @@
           <groupId>org.neo4j.app</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>neo4j-buffers</artifactId>
-          <groupId>org.neo4j</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>neo4j-capabilities</artifactId>
           <groupId>org.neo4j</groupId>
         </exclusion>
@@ -123,7 +119,7 @@
     <dependency>
       <groupId>org.neo4j.test</groupId>
       <artifactId>neo4j-harness</artifactId>
-      <version>5.1.0</version>
+      <version>5.5.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -139,7 +135,7 @@
           <groupId>org.neo4j</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>neo4j-server</artifactId>
+          <artifactId>neo4j-server-test-utils</artifactId>
           <groupId>org.neo4j.app</groupId>
         </exclusion>
         <exclusion>
@@ -194,7 +190,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <neo4j.version>5.1.0</neo4j.version>
+    <neo4j.version>5.5.0</neo4j.version>
     <commons.version>4.1</commons.version>
     <csv.version>1.2</csv.version>
     <lang3.version>3.7</lang3.version>
