@@ -372,19 +372,6 @@ public class Neo4jH3Test {
                 
                 result = session.run("call com.neo4jh3.gridpathlatlonString(37.8199, -122.4783, 47.8199, -122.5, 13) yield value return value limit 1");
                 assertEquals("\"8d283087022a93f\"", result.single().get("value").toString());
-                
-                /* 
-                result = session.run("RETURN com.neo4jh3.boundaryasgeojson(599686042433355775) AS value");
-                assertEquals("\"POLYGON ((37.2713558667319 -121.91508032705622, 37.353926450852256 -121.86222328902491, 37.42834118609435 -121.92354999630156, 37.42012867767778 -122.03773496427027, 37.33755608435298 -122.09042892904397, 37.26319797461824 -122.02910130918998, 37.2713558667319 -121.91508032705622))\"", result.single().get("value").toString());
-       
-
-                result = session.run("RETURN com.neo4jh3.centerasgeojson(599686042433355775) AS value");
-                assertEquals("\"{\"type\":\"Point\",\"coordinates\":[37.34579337536848,-121.9763759725512]}\"", result.single().get("value"));
-                */
-                /* 
-       result = session.run("RETURN com.neo4jh3.boundaryasGeoJsonString(599686042433355775) AS value");
-       assertEquals("\"POLYGON ((37.2713558667319 -121.91508032705622, 37.353926450852256 -121.86222328902491, 37.42834118609435 -121.92354999630156, 37.42012867767778 -122.03773496427027, 37.33755608435298 -122.09042892904397, 37.26319797461824 -122.02910130918998, 37.2713558667319 -121.91508032705622))\"", result.single().get("value").toString());
-        */
 
      }
      driver.close();
