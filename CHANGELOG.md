@@ -1,5 +1,12 @@
 # CHANGELOG - Neo4jH3
 
+## 5.7 2023-05-01
+
+* [Added] Tested through Neo4j versions 5.7
+* [Modified] Converted com.neo4jh3.multilineash3 from a function to a procedure. This procedure returns a list of H3 numbers that are along the line using the H3 gridpathcells feature.
+* [Modified] Converted com.neo4jh3.multilineash3String from a function to a procedure. This procedure returns a list of H3 numbers that are along the line using the H3 gridpathcells feature.
+
+
 ## 5.5 2023-02-24
 
 * [Added] Tested through Neo4j versions 5.5

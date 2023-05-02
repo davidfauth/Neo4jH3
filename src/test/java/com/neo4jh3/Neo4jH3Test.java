@@ -296,15 +296,24 @@ public class Neo4jH3Test {
                 result=session.run("call com.neo4jh3.polygonToCellsString(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],20,'latlon') yield value return value limit 1");
                 assertEquals("\"-2\"",result.single().get(0).toString());
 
+                result = session.run("call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
+                assertEquals(631243922688264703L, result.single().get(0).asLong(),0);
+       
+                result = session.run("call com.neo4jh3.multilineash3String('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
+                assertEquals("\"8c2a100d27549ff\"",result.single().get(0).toString());
+                
+                result = session.run("call com.neo4jh3.multilineash3String('ZZZ((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
+                assertEquals("\"-1\"",result.single().get(0).toString());
+                
+                result = session.run("call com.neo4jh3.multilineash3String('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value limit 1");
+                assertEquals("\"-2\"",result.single().get(0).toString());
+                
+                result = session.run("call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value limit 1");
+                assertEquals(-2L,result.single().get(0).asLong(),0);
+                
                 /* Geography tests */
                 result = session.run("RETURN com.neo4jh3.pointash3('POINT(37.8199 -122.4783)',13) AS value");
                 assertEquals(635714569676958015L, result.single().get("value").asLong(),0);
-       
-                result = session.run("RETURN com.neo4jh3.multilineash3('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value");
-                assertEquals(635714810904422079L, result.single().get("value").asLong(),0);
-       
-                result = session.run("RETURN com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018))',13) AS value");
-                assertEquals(635747522315622719L, result.single().get("value").asLong(),0);
        
                 result = session.run("RETURN com.neo4jh3.centeraswkb(599686042433355775) AS value");
                 assertEquals("\"00000000014042AC42F51330C7C05E7E7CF1A5AD49\"", result.single().get("value").toString());
