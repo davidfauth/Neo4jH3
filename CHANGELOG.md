@@ -2,7 +2,7 @@
 
 ## 5.8 2023-0519
 
-* [Added] Tested through Neo4j 5.7
+* [Added] Tested through Neo4j 5.8
 * [Added] Added support for converting a LINESTRING geospatial object to H3 number - com.neo4jh3.lineash3
 * [Added] Added support for converting a LINESTRING geospatial object to H3 string - com.neo4jh3.lineash3String
 * [Updated] Bumped H3 library to 4.1.1
