@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.neo4jh3</groupId>
   <artifactId>neo4jh3</artifactId>
-  <version>5.7.0</version>
+  <version>5.8.0</version>
   <build>
     <plugins>
       <plugin>
@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>5.7.0</version>
+      <version>5.8.0</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -56,6 +56,10 @@
         </exclusion>
         <exclusion>
           <artifactId>neo4j-fabric</artifactId>
+          <groupId>org.neo4j</groupId>
+        </exclusion>
+        <exclusion>
+          <artifactId>neo4j-query-router</artifactId>
           <groupId>org.neo4j</groupId>
         </exclusion>
         <exclusion>
@@ -119,7 +123,7 @@
     <dependency>
       <groupId>org.neo4j.test</groupId>
       <artifactId>neo4j-harness</artifactId>
-      <version>5.7.0</version>
+      <version>5.8.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -190,11 +194,11 @@
     </dependency>
   </dependencies>
   <properties>
-    <neo4j.version>5.7.0</neo4j.version>
+    <neo4j.version>5.8.0</neo4j.version>
     <commons.version>4.1</commons.version>
     <csv.version>1.2</csv.version>
     <lang3.version>3.7</lang3.version>
-    <uber.version>4.0.2</uber.version>
+    <uber.version>4.1.1</uber.version>
   </properties>
 </project>
 

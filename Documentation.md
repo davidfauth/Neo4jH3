@@ -722,7 +722,63 @@ A value of the type of STRING representing, as a hexadecimal string, the H3 cell
     
     RETURN com.neo4jh3.latlongash3String( 97.8199, -222.4783, 13) AS value
     -4
-        
+
+## com.neo4jh3.lineash3( geographyExpr, resolutionExpr )
+Returns the H3 cell ID (as a LONG) corresponding to the provided LINESTRING at the specified resolution.
+
+### Syntax
+RETURN com.neo4jh3.lineash3( geographyExpr, resolutionExpr ) 
+
+### Arguments
+* geographyExpr: A STRING expression representing a LINESTRING geography in WKT format
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    RETURN com.neo4jh3.lineash3('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value
+    635714810904422079
+    
+    RETURN com.neo4jh3.lineash3('zzz(37.8199 -122.4783)',13) AS value
+    -1
+    
+    RETURN com.neo4jh3.lineash3('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
+    -2
+
+## com.neo4jh3.lineash3String( geographyExpr, resolutionExpr )
+Returns the H3 cell ID (as a STRING) corresponding to the provided LINESTRING at the specified resolution.
+
+### Syntax
+RETURN com.neo4jh3.lineash3String( geographyExpr, resolutionExpr ) 
+
+### Arguments
+* geographyExpr: A STRING expression representing a LINESTRING geography in WKT format
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns the H3 cell ID (as a LONG) corresponding to the provided LINESTRING at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    RETURN com.neo4jh3.lineash3String('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value
+    8d283409a69a6bf
+    
+    RETURN com.neo4jh3.lineash3String('zzz(37.8199 -122.4783)',13) AS value
+    -1
+    
+    RETURN com.neo4jh3.lineash3String('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
+    -2
+
 ## com.neo4jh3.maxChild( h3CellIdExpr, resolutionExpr )
 Returns the child of minimum value of the input H3 cell at the specified resolution.
 
@@ -792,7 +848,7 @@ A value of the same type as the type of the h3CellIdExpr expression, correspondi
 
 ### Error conditions
 If h3CellIdExpr is an invalid h3 address, the function returns -1.
-If resolutionExpr is an invalid resolution or smaller than h3_resolution(h3CellIdExpr), the function returns -2.
+If resolutionExpr is an i nvalid resolution or smaller than h3_resolution(h3CellIdExpr), the function returns -2.
 
 ### Example
     RETURN com.neo4jh3.minChild(599686042433355775, 10) AS value

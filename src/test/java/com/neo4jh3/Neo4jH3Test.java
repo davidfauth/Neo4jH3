@@ -311,6 +311,9 @@ public class Neo4jH3Test {
                 result = session.run("call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value limit 1");
                 assertEquals(-2L,result.single().get(0).asLong(),0);
                 
+                result = session.run("call com.neo4jh3.lineash3('LINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
+                assertEquals(631243922688264703L, result.single().get(0).asLong(),0);
+       
                 /* Geography tests */
                 result = session.run("RETURN com.neo4jh3.pointash3('POINT(37.8199 -122.4783)',13) AS value");
                 assertEquals(635714569676958015L, result.single().get("value").asLong(),0);
