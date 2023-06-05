@@ -1329,13 +1329,13 @@ If resolutionExpr is smaller than the maximum resolution of the H3 cell in the i
  -2
 
 ## com.neo4jh3.tochildren( h3CellIdExpr, resolutionExpr )
-Returns the H3 cells that are within (grid) distance k of the origin cell. The set of these H3 cells is called the k-ring of the origin cell.
+Returns an array of the children H3 cells of the input H3 cell at the specified resolution.
 
 ### Syntax
 CALL com.neo4jh3.tochildren(h3CellIdExpr, resolutionExpr) yield value return value;
 
 ### Arguments
-* h3CellIdExpr: A STRING expression representing an H3 cell ID.
+* h3CellIdExpr: A LONG expression representing an H3 cell ID.
 * resolutionExpr: An INT expression, whose value is expected to be between h3_resolution(h3CellIdExpr) and 15 inclusive, specifying the resolution of the children H3 cell IDs.
 
 ### Returns
@@ -1356,7 +1356,7 @@ If h3CellIdExpr is invalid, the function returns -1
     -2
     
 ## com.neo4jh3.tochildrenString( h3CellIdExpr, resolutionExpr )
-Returns the H3 cells that are within (grid) distance k of the origin cell. The set of these H3 cells is called the k-ring of the origin cell.
+Returns an array of the children H3 cells of the input H3 cell at the specified resolution.
 
 ### Syntax
 CALL com.neo4jh3.tochildrenString(h3CellIdExpr, resolutionExpr) yield value return value;
