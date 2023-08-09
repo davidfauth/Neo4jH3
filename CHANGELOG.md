@@ -1,5 +1,10 @@
 # CHANGELOG - Neo4jH3
 
+## 5.10 2023-0809
+
+* [Added] Tested through Neo4j 5.10
+* [Updated] Bumped org.apache.commons.commons-lang3 to 3.13.0
+
 ## 5.8 2023-0519
 
 * [Added] Tested through Neo4j 5.8

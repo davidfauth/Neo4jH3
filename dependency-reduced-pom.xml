@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.neo4jh3</groupId>
   <artifactId>neo4jh3</artifactId>
-  <version>5.8.0</version>
+  <version>5.10.0</version>
   <build>
     <plugins>
       <plugin>
@@ -23,6 +23,18 @@
             <goals>
               <goal>shade</goal>
             </goals>
+            <configuration>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -43,7 +55,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>5.8.0</version>
+      <version>5.10.0</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -123,7 +135,7 @@
     <dependency>
       <groupId>org.neo4j.test</groupId>
       <artifactId>neo4j-harness</artifactId>
-      <version>5.8.0</version>
+      <version>5.10.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -159,7 +171,7 @@
     <dependency>
       <groupId>org.neo4j.driver</groupId>
       <artifactId>neo4j-java-driver</artifactId>
-      <version>5.2.0</version>
+      <version>5.9.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -194,10 +206,10 @@
     </dependency>
   </dependencies>
   <properties>
-    <neo4j.version>5.8.0</neo4j.version>
+    <neo4j.version>5.10.0</neo4j.version>
     <commons.version>4.1</commons.version>
     <csv.version>1.2</csv.version>
-    <lang3.version>3.7</lang3.version>
+    <lang3.version>3.13.0</lang3.version>
     <uber.version>4.1.1</uber.version>
   </properties>
 </project>
