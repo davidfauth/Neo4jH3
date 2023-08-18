@@ -679,10 +679,11 @@ public class Uberh3 {
 
     // Geography Functions
     @UserFunction(name = "com.neo4jh3.pointash3")
-    @Description("com.neo4jh3.pointash3(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
+    @Description("com.neo4jh3.pointash3(wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
     public Long pointash3(
             @Name("wktString") String wktString, 
-            @Name("h3Res") Long h3Res) throws InterruptedException 
+            @Name("h3Res") Long h3Res,
+            @Name("latlonorder") String latlonorder) throws InterruptedException 
             {
             Long h3Address = 0L;
             if (h3 == null) {
@@ -694,8 +695,17 @@ public class Uberh3 {
             try {
                 if (h3Resolution > 0 && h3Resolution <= 15) { 
                     Geometry geometry = GeometryReader.readGeometry(wktString);
-                   if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
-                        h3Address=h3.latLngToCell(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
+                    System.out.println(geometry.getEnvelope().getMinX());
+                    System.out.println(geometry.getEnvelope().getMinY());
+                    
+                   if (latlonorder.equalsIgnoreCase("latlon")){
+                        if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
+                            h3Address=h3.latLngToCell(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
+                        }
+                    } else {
+                        if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
+                            h3Address=h3.latLngToCell(geometry.getEnvelope().getMinY(), geometry.getEnvelope().getMinX(), h3Resolution);
+                        }
                     }
                 } else {
                     h3Address = -2L;
@@ -709,10 +719,11 @@ public class Uberh3 {
         return h3Address;
     }
     @UserFunction(name = "com.neo4jh3.pointash3String")
-    @Description("com.neo4jh3.pointash3String(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
+    @Description("com.neo4jh3.pointash3String(wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
     public String pointash3String(
             @Name("wktString") String wktString, 
-            @Name("h3Res") Long h3Res) throws InterruptedException 
+            @Name("h3Res") Long h3Res,
+            @Name("latlonorder") String latlonorder) throws InterruptedException 
             {
             String h3Address = "";
             if (h3 == null) {
@@ -724,8 +735,14 @@ public class Uberh3 {
             try {
                 if (h3Resolution > 0 && h3Resolution <= 15) { 
                     Geometry geometry = GeometryReader.readGeometry(wktString);
-                   if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
-                        h3Address=h3.latLngToCellAddress(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
+                            h3Address=h3.latLngToCellAddress(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
+                        }
+                    } else {
+                        if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
+                            h3Address=h3.latLngToCellAddress(geometry.getEnvelope().getMinY(), geometry.getEnvelope().getMinX(), h3Resolution);
+                        }
                     }
                 } else {
                     h3Address = "-2";

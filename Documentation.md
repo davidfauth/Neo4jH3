@@ -943,7 +943,7 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
     RETURN com.neo4jh3.multilineash3String('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
     -2
 
-## com.neo4jh3.pointash3( geographyExpr, resolutionExpr )
+## com.neo4jh3.pointash3( geographyExpr, resolutionExpr, LatLonOrder )
 Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
 
 ### Syntax
@@ -952,6 +952,7 @@ RETURN com.neo4jh3.pointash3( geographyExpr, resolutionExpr )
 ### Arguments
 * geographyExpr: A LONG expression representing a point geography in WKT format
 * resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+* LatLonOrder A STRING that indicates the order of the geometry (latlon or lonlat)
 
 ### Returns
 Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
@@ -962,16 +963,16 @@ If geographyExpr is of type STRING and the value is either an invalid WKT or doe
 If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
 
 ### Example
-    RETURN com.neo4jh3.pointash3('POINT(37.8199 -122.4783)',13) AS value
+    RETURN com.neo4jh3.pointash3('POINT(37.8199 -122.4783)',13, 'latlon') AS value
     635714569676958015
     
-    RETURN com.neo4jh3.pointash3('zzz(37.8199 -122.4783)',13) AS value
+    RETURN com.neo4jh3.pointash3('zzz(37.8199 -122.4783)',13, 'latlon') AS value
     -1
     
-    RETURN com.neo4jh3.maxChildString('POINT(37.8199 -122.4783)',16) AS value
+    RETURN com.neo4jh3.pointash3('POINT(37.8199 -122.4783)',16, 'latlon') AS value
     -2
 
-## com.neo4jh3.pointash3String( geographyExpr, resolutionExpr )
+## com.neo4jh3.pointash3String( geographyExpr, resolutionExpr, LatLonOrder )
 Returns the H3 cell ID (as a STRING) corresponding to the provided point at the specified resolution.
 
 ### Syntax
@@ -980,6 +981,7 @@ RETURN com.neo4jh3.pointash3String( geographyExpr, resolutionExpr )
 ### Arguments
 * geographyExpr: A STRING expression representing a point geography in WKT format
 * resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+* LatLonOrder A STRING that indicates the order of the geometry (latlon or lonlat)
 
 ### Returns
 Returns the H3 cell ID (as a STRING) corresponding to the provided point at the specified resolution.
@@ -990,13 +992,13 @@ If geographyExpr is of type STRING and the value is either an invalid WKT or doe
 If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
 
 ### Example
-    RETURN com.neo4jh3.pointash3String('POINT(37.8199 -122.4783)',13) AS value
+    RETURN com.neo4jh3.pointash3String('POINT(37.8199 -122.4783)',13, 'latlon') AS value
     8d283087022a93f
     
-    RETURN com.neo4jh3.pointash3String('zzz(37.8199 -122.4783)',13) AS value
+    RETURN com.neo4jh3.pointash3String('zzz(37.8199 -122.4783)',13, 'latlon') AS value
     -1
     
-    RETURN com.neo4jh3. pointash3String('POINT(37.8199 -122.4783)',16) AS value
+    RETURN com.neo4jh3.pointash3String('POINT(37.8199 -122.4783)',16, 'latlon') AS value
     -2
 
 ## com.neo4jh3.stringToH3( h3CellIdExpr )

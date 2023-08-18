@@ -1,11 +1,16 @@
 # CHANGELOG - Neo4jH3
 
-## 5.10 2023-0809
+## 5.11 2023-08-18
+* [Added] Tested through Neo4j 5.11
+* [Updated] Updated the com.neo4jh3.pointash3String and com.neo4jh3.pointash3 functions to take a 3rd parameter to indicate if the point is in lat/lon format or lon/lat format.
+* [Updated] Updated tests to address issues between Linux and Windows
+
+## 5.10 2023-08-09
 
 * [Added] Tested through Neo4j 5.10
 * [Updated] Bumped org.apache.commons.commons-lang3 to 3.13.0
 
-## 5.8 2023-0519
+## 5.8 2023-05-19
 
 * [Added] Tested through Neo4j 5.8
 * [Added] Added support for converting a LINESTRING geospatial object to H3 number - com.neo4jh3.lineash3
