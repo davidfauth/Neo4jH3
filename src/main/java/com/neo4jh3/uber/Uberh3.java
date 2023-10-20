@@ -7,20 +7,16 @@ import com.uber.h3core.util.LatLng;
 import mil.nga.sf.Geometry;
 import mil.nga.sf.Point;
 import mil.nga.sf.geojson.FeatureConverter;
-import mil.nga.sf.util.ByteWriter;
-import mil.nga.sf.util.TextReader;
 import mil.nga.sf.wkb.GeometryWriter;
 import mil.nga.sf.wkt.GeometryReader;
 
+import org.apache.commons.math3.util.Precision;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.procedure.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -475,7 +471,7 @@ public class Uberh3 {
         }
         if (h3.isValidCell(hexAddress)){
             LatLng tmpGeoCoord = h3.cellToLatLng(hexAddress);
-            return String.valueOf(tmpGeoCoord.lat) + "," + String.valueOf(tmpGeoCoord.lng);
+            return String.valueOf(Precision.round(tmpGeoCoord.lat,6)) + "," + String.valueOf(Precision.round(tmpGeoCoord.lng,6));
         } else { 
             return "-1";
         }
@@ -493,7 +489,7 @@ public class Uberh3 {
 
         if (h3.isValidCell(hexAddress)){
             LatLng tmpGeoCoord = h3.cellToLatLng(hexAddress);
-            return String.valueOf(tmpGeoCoord.lat) + "," + String.valueOf(tmpGeoCoord.lng);
+            return String.valueOf(Precision.round(tmpGeoCoord.lat,6)) + "," + String.valueOf(Precision.round(tmpGeoCoord.lng,6));
         } else {
             return "-1";
         }
@@ -695,9 +691,7 @@ public class Uberh3 {
             try {
                 if (h3Resolution > 0 && h3Resolution <= 15) { 
                     Geometry geometry = GeometryReader.readGeometry(wktString);
-                    System.out.println(geometry.getEnvelope().getMinX());
-                    System.out.println(geometry.getEnvelope().getMinY());
-                    
+                     
                    if (latlonorder.equalsIgnoreCase("latlon")){
                         if (geometry.getGeometryType().toString().equalsIgnoreCase("Point")){
                             h3Address=h3.latLngToCell(geometry.getEnvelope().getMinX(), geometry.getEnvelope().getMinY(), h3Resolution);
@@ -755,6 +749,169 @@ public class Uberh3 {
             }
         return h3Address;
     }
+
+    @UserFunction(name = "com.neo4jh3.version")
+    @Description("com.neo4jh3.version() - Returns the version of the plugin.")
+    public String neo4jH3Version() throws InterruptedException 
+            {
+            String h3Version = "5.11.0";
+            if (h3 == null) {
+                throw new InterruptedException("h3 failed to initialize");
+            }
+        return h3Version;
+    }
+
+      @Procedure(name = "com.neo4jh3.lineash3", mode = Mode.READ)
+       @Description("com.neo4jh3.lineash3(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
+           public Stream<H3LongAddress> lineash3(
+               @Name("wktString") String wktString, 
+               @Name("h3Res") Long h3Res) throws InterruptedException 
+               {
+               List<Long> listh3Address = new ArrayList<Long>();
+               List<Long> gpCells = new ArrayList<Long>();
+               Long h3StartAddress = 0L;
+               Long h3MidAddress = 0L;
+               Long h3EndAddress = 0L;
+               Double fromLat = 0.0;
+               Double fromLon = 0.0;
+               Double toLat = 0.0;
+               Double toLon = 0.0;
+               Double midLat = 0.0;
+               Double midLon = 0.0;
+               String mls = "";
+   
+               if (h3 == null) {
+                   throw new InterruptedException("h3 failed to initialize");
+               }
+       
+               final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+   
+               try {
+                   if (h3Resolution > 0 && h3Resolution <= 15) { 
+                       mls = wktString.replace("LINESTRING((", "");
+                       mls = mls.replace(" (","");
+                       mls = mls.replace(")","");
+                       mls = mls.replace("(","");
+                       String[] latlonPairs = mls.split(",");
+                       for (int i = 0; i < latlonPairs.length; i++) {
+                           if (i > 0){
+                               fromLat = Double.valueOf(latlonPairs[i-1].split(" ")[0]);
+                               fromLon = Double.valueOf(latlonPairs[i-1].split(" ")[1]);
+                               toLat = Double.valueOf(latlonPairs[i].split(" ")[0]);
+                               toLon = Double.valueOf(latlonPairs[i].split(" ")[1]);
+                               midLat = (fromLat + toLat) / 2;
+                               midLon = (fromLon + toLon) / 2;
+                               h3StartAddress = h3.latLngToCell(fromLat, fromLon, h3Resolution);
+                               h3MidAddress = h3.latLngToCell(midLat, midLon, h3Resolution);
+                               h3EndAddress = h3.latLngToCell(toLat, toLon, h3Resolution);
+                               try {
+                                   gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
+                                   for (int j = 0; j < gpCells.size(); j++) {
+                                       listh3Address.add(gpCells.get(j));
+                                   }
+                                   gpCells.clear();  
+                               } catch (Exception e1){                
+                               }
+                               try {
+                                   gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
+                                   for (int j = 0; j < gpCells.size(); j++) {
+                                       listh3Address.add(gpCells.get(j));
+                                   }
+                                   gpCells.clear();  
+                               } catch (Exception e1){
+   
+                               }
+   
+                           }
+                       }
+                   } else {
+                       listh3Address = Collections.singletonList(-2L);
+                   
+                   }
+               } catch (Exception e) {
+                   //System.out.println(e);
+                   listh3Address = Collections.singletonList(-1L);
+                   // TODO Auto-generated catch block
+                   //e.printStackTrace();
+               }
+               return listh3Address.stream().map(H3LongAddress::of);
+       }
+   
+          // New Geo Procedures
+          @Procedure(name = "com.neo4jh3.lineash3String", mode = Mode.READ)
+          @Description("com.neo4jh3.lineash3String(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
+              public Stream<H3StringAddress> lineash3String(
+                  @Name("wktString") String wktString, 
+                  @Name("h3Res") Long h3Res) throws InterruptedException 
+                  {
+                  List<String> listh3Address = new ArrayList<String>();
+                  List<String> gpCells = new ArrayList<String>();
+                  String h3StartAddress = "";
+                  String h3MidAddress = "";
+                  String h3EndAddress = "";
+                  Double fromLat = 0.0;
+                  Double fromLon = 0.0;
+                  Double toLat = 0.0;
+                  Double toLon = 0.0;
+                  Double midLat = 0.0;
+                  Double midLon = 0.0;
+                  String mls = "";
+      
+                  if (h3 == null) {
+                      throw new InterruptedException("h3 failed to initialize");
+                  }
+          
+                  final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+      
+                  try {
+                      if (h3Resolution > 0 && h3Resolution <= 15) { 
+                          mls = wktString.replace("LINESTRING((", "");
+                          mls = mls.replace(" (","");
+                          mls = mls.replace(")","");
+                          mls = mls.replace("(","");
+                          String[] latlonPairs = mls.split(",");
+                          for (int i = 0; i < latlonPairs.length; i++) {
+                              if (i > 0){
+                                  fromLat = Double.valueOf(latlonPairs[i-1].split(" ")[0]);
+                                  fromLon = Double.valueOf(latlonPairs[i-1].split(" ")[1]);
+                                  toLat = Double.valueOf(latlonPairs[i].split(" ")[0]);
+                                  toLon = Double.valueOf(latlonPairs[i].split(" ")[1]);
+                                  midLat = (fromLat + toLat) / 2;
+                                  midLon = (fromLon + toLon) / 2;
+                                  h3StartAddress = h3.latLngToCellAddress(fromLat, fromLon, h3Resolution);
+                                  h3MidAddress = h3.latLngToCellAddress(midLat, midLon, h3Resolution);
+                                  h3EndAddress = h3.latLngToCellAddress(toLat, toLon, h3Resolution);
+                                  try {
+                                      gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
+                                      for (int j = 0; j < gpCells.size(); j++) {
+                                          listh3Address.add(gpCells.get(j));
+                                      }
+                                      gpCells.clear();  
+                                  } catch (Exception e1){
+                                       //listh3Address = Collections.singletonList("-1");
+                                  }
+                                  try {
+                                      gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
+                                      for (int j = 0; j < gpCells.size(); j++) {
+                                          listh3Address.add(gpCells.get(j));
+                                      }
+                                      gpCells.clear();  
+                                  } catch (Exception e1){
+                                       //listh3Address = Collections.singletonList("-1");
+                                  }
+                              }
+                          }
+                      } else {
+                           listh3Address = Collections.singletonList("-2");
+                      }
+                  } catch (Exception e) {
+                      //System.out.println(e);
+                      listh3Address = Collections.singletonList("-1");
+                      // TODO Auto-generated catch block
+                      //e.printStackTrace();
+                  }
+                  return listh3Address.stream().map(H3StringAddress::of);
+          }  
 
     @Procedure(name = "com.neo4jh3.multilineash3", mode = Mode.READ)
     @Description("com.neo4jh3.multilineash3(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
@@ -908,159 +1065,7 @@ public class Uberh3 {
                }
                return listh3Address.stream().map(H3StringAddress::of);
        }
-
-       @Procedure(name = "com.neo4jh3.lineash3", mode = Mode.READ)
-       @Description("com.neo4jh3.lineash3(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
-           public Stream<H3LongAddress> lineash3(
-               @Name("wktString") String wktString, 
-               @Name("h3Res") Long h3Res) throws InterruptedException 
-               {
-               List<Long> listh3Address = new ArrayList<Long>();
-               List<Long> gpCells = new ArrayList<Long>();
-               Long h3Address = 0L;
-               Long h3StartAddress = 0L;
-               Long h3MidAddress = 0L;
-               Long h3EndAddress = 0L;
-               Double fromLat = 0.0;
-               Double fromLon = 0.0;
-               Double toLat = 0.0;
-               Double toLon = 0.0;
-               Double midLat = 0.0;
-               Double midLon = 0.0;
-               String mls = "";
-   
-               if (h3 == null) {
-                   throw new InterruptedException("h3 failed to initialize");
-               }
-       
-               final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
-   
-               try {
-                   if (h3Resolution > 0 && h3Resolution <= 15) { 
-                       mls = wktString.replace("LINESTRING((", "");
-                       mls = mls.replace(" (","");
-                       mls = mls.replace(")","");
-                       mls = mls.replace("(","");
-                       String[] latlonPairs = mls.split(",");
-                       for (int i = 0; i < latlonPairs.length; i++) {
-                           if (i > 0){
-                               fromLat = Double.valueOf(latlonPairs[i-1].split(" ")[0]);
-                               fromLon = Double.valueOf(latlonPairs[i-1].split(" ")[1]);
-                               toLat = Double.valueOf(latlonPairs[i].split(" ")[0]);
-                               toLon = Double.valueOf(latlonPairs[i].split(" ")[1]);
-                               midLat = (fromLat + toLat) / 2;
-                               midLon = (fromLon + toLon) / 2;
-                               h3StartAddress = h3.latLngToCell(fromLat, fromLon, h3Resolution);
-                               h3MidAddress = h3.latLngToCell(midLat, midLon, h3Resolution);
-                               h3EndAddress = h3.latLngToCell(toLat, toLon, h3Resolution);
-                               try {
-                                   gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
-                                   for (int j = 0; j < gpCells.size(); j++) {
-                                       listh3Address.add(gpCells.get(j));
-                                   }
-                                   gpCells.clear();  
-                               } catch (Exception e1){                
-                               }
-                               try {
-                                   gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
-                                   for (int j = 0; j < gpCells.size(); j++) {
-                                       listh3Address.add(gpCells.get(j));
-                                   }
-                                   gpCells.clear();  
-                               } catch (Exception e1){
-   
-                               }
-   
-                           }
-                       }
-                   } else {
-                       listh3Address = Collections.singletonList(-2L);
-                   
-                   }
-               } catch (Exception e) {
-                   //System.out.println(e);
-                   listh3Address = Collections.singletonList(-1L);
-                   // TODO Auto-generated catch block
-                   //e.printStackTrace();
-               }
-               return listh3Address.stream().map(H3LongAddress::of);
-       }
-   
-          // New Geo Procedures
-          @Procedure(name = "com.neo4jh3.lineash3String", mode = Mode.READ)
-          @Description("com.neo4jh3.lineash3String(wktString, resolution) - Provides the distance in grid cells between the two indexes.")
-              public Stream<H3StringAddress> lineash3String(
-                  @Name("wktString") String wktString, 
-                  @Name("h3Res") Long h3Res) throws InterruptedException 
-                  {
-                  List<String> listh3Address = new ArrayList<String>();
-                  List<String> gpCells = new ArrayList<String>();
-                  String h3StartAddress = "";
-                  String h3MidAddress = "";
-                  String h3EndAddress = "";
-                  Double fromLat = 0.0;
-                  Double fromLon = 0.0;
-                  Double toLat = 0.0;
-                  Double toLon = 0.0;
-                  Double midLat = 0.0;
-                  Double midLon = 0.0;
-                  String mls = "";
-      
-                  if (h3 == null) {
-                      throw new InterruptedException("h3 failed to initialize");
-                  }
-          
-                  final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
-      
-                  try {
-                      if (h3Resolution > 0 && h3Resolution <= 15) { 
-                          mls = wktString.replace("LINESTRING((", "");
-                          mls = mls.replace(" (","");
-                          mls = mls.replace(")","");
-                          mls = mls.replace("(","");
-                          String[] latlonPairs = mls.split(",");
-                          for (int i = 0; i < latlonPairs.length; i++) {
-                              if (i > 0){
-                                  fromLat = Double.valueOf(latlonPairs[i-1].split(" ")[0]);
-                                  fromLon = Double.valueOf(latlonPairs[i-1].split(" ")[1]);
-                                  toLat = Double.valueOf(latlonPairs[i].split(" ")[0]);
-                                  toLon = Double.valueOf(latlonPairs[i].split(" ")[1]);
-                                  midLat = (fromLat + toLat) / 2;
-                                  midLon = (fromLon + toLon) / 2;
-                                  h3StartAddress = h3.latLngToCellAddress(fromLat, fromLon, h3Resolution);
-                                  h3MidAddress = h3.latLngToCellAddress(midLat, midLon, h3Resolution);
-                                  h3EndAddress = h3.latLngToCellAddress(toLat, toLon, h3Resolution);
-                                  try {
-                                      gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
-                                      for (int j = 0; j < gpCells.size(); j++) {
-                                          listh3Address.add(gpCells.get(j));
-                                      }
-                                      gpCells.clear();  
-                                  } catch (Exception e1){
-                                       //listh3Address = Collections.singletonList("-1");
-                                  }
-                                  try {
-                                      gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
-                                      for (int j = 0; j < gpCells.size(); j++) {
-                                          listh3Address.add(gpCells.get(j));
-                                      }
-                                      gpCells.clear();  
-                                  } catch (Exception e1){
-                                       //listh3Address = Collections.singletonList("-1");
-                                  }
-                              }
-                          }
-                      } else {
-                           listh3Address = Collections.singletonList("-2");
-                      }
-                  } catch (Exception e) {
-                      //System.out.println(e);
-                      listh3Address = Collections.singletonList("-1");
-                      // TODO Auto-generated catch block
-                      //e.printStackTrace();
-                  }
-                  return listh3Address.stream().map(H3StringAddress::of);
-          }       
+     
     // Geography Functions
     
     @UserFunction(name = "com.neo4jh3.centeraswkb")
@@ -1077,9 +1082,9 @@ public class Uberh3 {
             try {
                 if (h3.isValidCell(hexAddress)){
                     centerPoint = h3.cellToLatLng(hexAddress);
-                    Double lat = centerPoint.lat;
-                    Double lng = centerPoint.lng;
-                    Point point = new Point(false, false, lat, lng);
+                    Double lat = Precision.round(centerPoint.lat,6);
+                    Double lng = Precision.round(centerPoint.lng,6);
+                    Point point =new Point(false, false, lng, lat);
                     byte[] bytes = GeometryWriter.writeGeometry(point);
                     String hex = "";
                     for (byte i : bytes) {
@@ -1111,9 +1116,9 @@ public class Uberh3 {
             try {
                 if (h3.isValidCell(hexAddress)){
                     centerPoint = h3.cellToLatLng(hexAddress);
-                    Double lat = centerPoint.lat;
-                    Double lng = centerPoint.lng;
-                    Point point = new Point(false, false, lat, lng);
+                    Double lat = Precision.round(centerPoint.lat,6);
+                    Double lng = Precision.round(centerPoint.lng,6);
+                    Point point =new Point(false, false, lng, lat);
                     byte[] bytes = GeometryWriter.writeGeometry(point);
                     String hex = "";
                     for (byte i : bytes) {
@@ -1144,9 +1149,9 @@ public class Uberh3 {
             try {
                 if (h3.isValidCell(hexAddress)){
                     centerPoint = h3.cellToLatLng(hexAddress);
-                    Double lat = centerPoint.lat;
-                    Double lng = centerPoint.lng;
-                    Point point = new Point(false, false, lat, lng);
+                    Double lat = Precision.round(centerPoint.lat,6);
+                    Double lng = Precision.round(centerPoint.lng,6);
+                    Point point =new Point(false, false, lng, lat);
                     geoJsonString = mil.nga.sf.wkt.GeometryWriter.writeGeometry(point);
 
                 } else {
@@ -1174,9 +1179,9 @@ public class Uberh3 {
             try {
                 if (h3.isValidCell(hexAddress)){
                     centerPoint = h3.cellToLatLng(hexAddress);
-                    Double lat = centerPoint.lat;
-                    Double lng = centerPoint.lng;
-                    Point point = new Point(false, false, lat, lng);
+                    Double lat = Precision.round(centerPoint.lat,6);
+                    Double lng = Precision.round(centerPoint.lng,6);
+                    Point point =new Point(false, false, lng, lat);
                     geoJsonString = mil.nga.sf.wkt.GeometryWriter.writeGeometry(point);
 
                 } else {
@@ -1215,10 +1220,10 @@ public class Uberh3 {
                         LatLng thisHex = it.next();
 
                         if (i < 1){
-                            tpfirst =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            tpfirst =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             //ring.addPoint(tpfirst);
                         }
-                            Point tp =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            Point tp =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             ring.addPoint(tp);
                         i++;
                     } 
@@ -1260,10 +1265,10 @@ public class Uberh3 {
                         LatLng thisHex = it.next();
 
                         if (i < 1){
-                            tpfirst =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            tpfirst =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             //ring.addPoint(tpfirst);
                         }
-                            Point tp =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            Point tp =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             ring.addPoint(tp);
                         i++;
                     } 
@@ -1305,10 +1310,10 @@ public class Uberh3 {
                         LatLng thisHex = it.next();
 
                         if (i < 1){
-                            tpfirst =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            tpfirst =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             //ring.addPoint(tpfirst);
                         }
-                            Point tp =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            Point tp =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             ring.addPoint(tp);
                         i++;
                     } 
@@ -1355,10 +1360,10 @@ public class Uberh3 {
                         LatLng thisHex = it.next();
 
                         if (i < 1){
-                            tpfirst =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            tpfirst =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             //ring.addPoint(tpfirst);
                         }
-                            Point tp =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            Point tp =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             ring.addPoint(tp);
                         i++;
                     } 
@@ -1394,9 +1399,9 @@ public class Uberh3 {
             try {
                 if (h3.isValidCell(hexAddress)){
                     centerPoint = h3.cellToLatLng(hexAddress);
-                    Double lat = centerPoint.lat;
-                    Double lng = centerPoint.lng;
-                    Point point = new Point(false, false, lat, lng);
+                    Double lat = Precision.round(centerPoint.lat,6);
+                    Double lng = Precision.round(centerPoint.lng,6);
+                    Point point = new Point(false, false, lng, lat);
                     geoJsonString = FeatureConverter.toStringValue(point);
 
                 } else {
@@ -1424,9 +1429,9 @@ public class Uberh3 {
             try {
                 if (h3.isValidCell(hexAddress)){
                     centerPoint = h3.cellToLatLng(hexAddress);
-                    Double lat = centerPoint.lat;
-                    Double lng = centerPoint.lng;
-                    Point point = new Point(false, false, lat, lng);
+                    Double lat = Precision.round(centerPoint.lat,6);
+                    Double lng = Precision.round(centerPoint.lng,6);
+                    Point point = new Point(false, false, lng, lat);
                     geoJsonString = FeatureConverter.toStringValue(point);
                 } else {
                     geoJsonString = "-1";
@@ -1465,10 +1470,10 @@ public class Uberh3 {
                         LatLng thisHex = it.next();
 
                         if (i < 1){
-                            tpfirst =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            tpfirst =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             //ring.addPoint(tpfirst);
                         }
-                            Point tp =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            Point tp =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             ring.addPoint(tp);
                         i++;
                     } 
@@ -1510,10 +1515,10 @@ public class Uberh3 {
                         LatLng thisHex = it.next();
 
                         if (i < 1){
-                            tpfirst =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            tpfirst =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             //ring.addPoint(tpfirst);
                         }
-                            Point tp =  new Point(false, false, thisHex.lat, thisHex.lng);
+                            Point tp =  new Point(false, false, Precision.round(thisHex.lng,6), Precision.round(thisHex.lat,6));
                             ring.addPoint(tp);
                         i++;
                     } 
@@ -1796,6 +1801,201 @@ public class Uberh3 {
         }
         }
 
+        @Procedure(name = "com.neo4jh3.polygonIntersection", mode = Mode.READ)
+        @Description("CALL com.neo4jh3.polygonIntersection(polyEdges, polyEdgeHoles, polyEdgesSecond, polyEdgeHolesSecond,resolution, latlon order)")
+        public Stream<H3LongAddress> polygonIntersection(@Name("polyEdges") List<String> polyEdges, @Name("polyEdgeHoles") List<String> polyEdgeHoles, @Name("polyEdgesSecond") List<String> polyEdgesSecond, @Name("polyEdgeHolesSecond") List<String> polyEdgeHolesSecond, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
+            if (h3 == null) {
+                return Stream.empty();
+            }
+            if (polyEdges == null || polyEdgeHoles == null || polyEdgesSecond == null || polyEdgeHolesSecond == null) {
+                throw new InterruptedException("invalid arguments");
+            }
+    
+            List<LatLng> hexPoints = new ArrayList<>();
+            List<LatLng> hexHoles = new ArrayList<>();
+            List<List<LatLng>> holesList = new ArrayList<>();
+            List<LatLng> hexPointsSecond = new ArrayList<>();
+            List<LatLng> hexHolesSecond = new ArrayList<>();
+            List<List<LatLng>> holesListSecond = new ArrayList<>();
+    
+            final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+    
+            if (h3Resolution >= 1 && h3Resolution <= 15) {
+                for (String mapEdges : polyEdges) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
+                    }
+                    hexPoints.add(tmpGeoCoord);
+                }
+    
+                for (String mapEdges : polyEdgeHoles) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
+                    }
+                    hexHoles.add(tmpGeoCoord);
+                }
+    
+                for (String mapEdges : polyEdgesSecond) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
+                    }
+                    hexPointsSecond.add(tmpGeoCoord);
+                }
+    
+                for (String mapEdges : polyEdgeHolesSecond) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
+                    }
+                    hexHolesSecond.add(tmpGeoCoord);
+                }
+    
+    
+                List<Long> hexList;
+                List<Long> hexListSecond;
+                List<Long> hexListFinal = new ArrayList<Long>(); 
+                 
+                if (!hexHoles.isEmpty()) {
+                    holesList.add(hexHoles);
+                    hexList = h3.polygonToCells(hexPoints, holesList, h3Resolution);
+                } else {
+                    hexList = h3.polygonToCells(hexPoints, null, h3Resolution);
+                }
+    
+                if (!hexHolesSecond.isEmpty()) {
+                    holesListSecond.add(hexHoles);
+                    hexListSecond = h3.polygonToCells(hexPointsSecond, holesListSecond, h3Resolution);
+                } else {
+                    hexListSecond = h3.polygonToCells(hexPointsSecond, null, h3Resolution);
+                }
+    
+                for (Long secondHexList : hexListSecond){
+                    if (hexList.contains(secondHexList)){
+                        hexListFinal.add(secondHexList);
+                    }
+                }
+                return hexListFinal.stream().map(H3LongAddress::of);
+            } else {
+                List<Long> ringList = null;
+                ringList = Collections.singletonList(-2L);
+                return ringList.stream().map(H3LongAddress::of);
+            }
+            }
+ 
+
+
+        @Procedure(name = "com.neo4jh3.polygonIntersectionString", mode = Mode.READ)
+        @Description("CALL com.neo4jh3.polygonIntersectionString(polyEdges, polyEdgeHoles, polyEdgesSecond, polyEdgeHolesSecond,resolution, latlon order)")
+        public Stream<H3StringAddress> polygonIntersectionString(@Name("polyEdges") List<String> polyEdges, @Name("polyEdgeHoles") List<String> polyEdgeHoles, @Name("polyEdgesSecond") List<String> polyEdgesSecond, @Name("polyEdgeHolesSecond") List<String> polyEdgeHolesSecond, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
+            if (h3 == null) {
+                return Stream.empty();
+            }
+            if (polyEdges == null || polyEdgeHoles == null || polyEdgesSecond == null || polyEdgeHolesSecond == null) {
+                throw new InterruptedException("invalid arguments");
+            }
+    
+            List<LatLng> hexPoints = new ArrayList<>();
+            List<LatLng> hexHoles = new ArrayList<>();
+            List<List<LatLng>> holesList = new ArrayList<>();
+            List<LatLng> hexPointsSecond = new ArrayList<>();
+            List<LatLng> hexHolesSecond = new ArrayList<>();
+            List<List<LatLng>> holesListSecond = new ArrayList<>();
+    
+            final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+    
+            if (h3Resolution >= 1 && h3Resolution <= 15) {
+                for (String mapEdges : polyEdges) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
+                    }
+                    hexPoints.add(tmpGeoCoord);
+                }
+    
+                for (String mapEdges : polyEdgeHoles) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
+                    }
+                    hexHoles.add(tmpGeoCoord);
+                }
+    
+                for (String mapEdges : polyEdgesSecond) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
+                    }
+                    hexPointsSecond.add(tmpGeoCoord);
+                }
+    
+                for (String mapEdges : polyEdgeHolesSecond) {
+                    final String[] latLonList = mapEdges.split(",");
+                    LatLng tmpGeoCoord = null;
+                    if (latlonorder.equalsIgnoreCase("latlon")){
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                    } else {
+                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
+                    }
+                    hexHolesSecond.add(tmpGeoCoord);
+                }
+    
+    
+                List<String> hexList;
+                List<String> hexListSecond;
+                List<String> hexListFinal = new ArrayList<String>(); 
+                 
+                if (!hexHoles.isEmpty()) {
+                    holesList.add(hexHoles);
+                    hexList = h3.polygonToCellAddresses(hexPoints, holesList, h3Resolution);
+                } else {
+                    hexList = h3.polygonToCellAddresses(hexPoints, null, h3Resolution);
+                }
+    
+                if (!hexHolesSecond.isEmpty()) {
+                    holesListSecond.add(hexHoles);
+                    hexListSecond = h3.polygonToCellAddresses(hexPointsSecond, holesListSecond, h3Resolution);
+                } else {
+                    hexListSecond = h3.polygonToCellAddresses(hexPointsSecond, null, h3Resolution);
+                }
+    
+                for (String secondHexList : hexListSecond){
+                    if (hexList.contains(secondHexList)){
+                        hexListFinal.add(secondHexList);
+                    }
+                }
+                return hexListFinal.stream().map(H3StringAddress::of);
+            } else {
+                List<String> ringList = null;
+                ringList = Collections.singletonList("-2");
+                return ringList.stream().map(H3StringAddress::of);
+            }
+            }
+    
+
         @Procedure(name = "com.neo4jh3.gridpathlatlon", mode = Mode.READ)
         @Description("CALL com.neo4jh3.gridpathlatlon(latitude, longitude, latitude, longitude, h3Resolution)")
         public Stream<H3LongAddress> gridpathlatlon(@Name("startLat") Double startLat, @Name("startLong") Double startLong, @Name("endLat") Double endLat, @Name("endLong") Double endLong, @Name("h3Res") Long h3Res) throws InterruptedException {
@@ -2060,6 +2260,132 @@ public Stream<H3LongAddress> unCompact(@Name("listCells") List<Long> listCells, 
     
 }
 
+@Procedure(name = "com.neo4jh3.linepolyIntersection", mode = Mode.READ)
+@Description("com.neo4jh3.linepolyIntersection(polyEdges, polyEdgeHoles,wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
+    public Stream<H3LongAddress> lineash3(
+         @Name("polyEdges") List<String> polyEdges, 
+         @Name("polyEdgeHoles") List<String> polyEdgeHoles,
+        @Name("wktString") String wktString, 
+        @Name("h3Res") Long h3Res,
+        @Name("latlonorder") String latlonorder) throws InterruptedException 
+        {
+
+        List<LatLng> hexPoints = new ArrayList<>();
+         List<LatLng> hexHoles = new ArrayList<>();
+         List<List<LatLng>> holesList = new ArrayList<>();
+         List<Long> hexList;
+          List<Long> hexListFinal = new ArrayList<Long>(); 
+        List<Long> listh3Address = new ArrayList<Long>();
+        List<Long> gpCells = new ArrayList<Long>();
+        Long h3StartAddress = 0L;
+        Long h3MidAddress = 0L;
+        Long h3EndAddress = 0L;
+        Double fromLat = 0.0;
+        Double fromLon = 0.0;
+        Double toLat = 0.0;
+        Double toLon = 0.0;
+        Double midLat = 0.0;
+        Double midLon = 0.0;
+        String mls = "";
+
+        if (h3 == null) {
+            throw new InterruptedException("h3 failed to initialize");
+        }
+
+        if (polyEdges == null || polyEdgeHoles == null) {
+         throw new InterruptedException("invalid arguments");
+         }
+
+        final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+
+        try {
+            if (h3Resolution > 0 && h3Resolution <= 15) {
+
+            for (String mapEdges : polyEdges) {
+                final String[] latLonList = mapEdges.split(",");
+                LatLng tmpGeoCoord = null;
+                if (latlonorder.equalsIgnoreCase("latlon")){
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                } else {
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
+                }
+                hexPoints.add(tmpGeoCoord);
+            }
+
+            for (String mapEdges : polyEdgeHoles) {
+                final String[] latLonList = mapEdges.split(",");
+                LatLng tmpGeoCoord = null;
+                if (latlonorder.equalsIgnoreCase("latlon")){
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                } else {
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
+                }
+                hexHoles.add(tmpGeoCoord);
+            }
+
+            if (!hexHoles.isEmpty()) {
+                holesList.add(hexHoles);
+                hexList = h3.polygonToCells(hexPoints, holesList, h3Resolution);
+            } else {
+                hexList = h3.polygonToCells(hexPoints, null, h3Resolution);
+            }
+
+                mls = wktString.replace("LINESTRING((", "");
+                mls = mls.replace(" (","");
+                mls = mls.replace(")","");
+                mls = mls.replace("(","");
+                String[] latlonPairs = mls.split(",");
+                for (int i = 0; i < latlonPairs.length; i++) {
+                    if (i > 0){
+                        fromLat = Double.valueOf(latlonPairs[i-1].split(" ")[0]);
+                        fromLon = Double.valueOf(latlonPairs[i-1].split(" ")[1]);
+                        toLat = Double.valueOf(latlonPairs[i].split(" ")[0]);
+                        toLon = Double.valueOf(latlonPairs[i].split(" ")[1]);
+                        midLat = (fromLat + toLat) / 2;
+                        midLon = (fromLon + toLon) / 2;
+                        h3StartAddress = h3.latLngToCell(fromLat, fromLon, h3Resolution);
+                        h3MidAddress = h3.latLngToCell(midLat, midLon, h3Resolution);
+                        h3EndAddress = h3.latLngToCell(toLat, toLon, h3Resolution);
+                        try {
+                            gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
+                            for (int j = 0; j < gpCells.size(); j++) {
+                                listh3Address.add(gpCells.get(j));
+                            }
+                            gpCells.clear();  
+                        } catch (Exception e1){                
+                        }
+                        try {
+                            gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
+                            for (int j = 0; j < gpCells.size(); j++) {
+                                listh3Address.add(gpCells.get(j));
+                            }
+                            gpCells.clear();  
+                        } catch (Exception e1){
+
+                        }
+
+                        for (Long secondHexList : listh3Address){
+                         if (hexList.contains(secondHexList)){
+                             hexListFinal.add(secondHexList);
+                         }
+                         }
+
+                    }
+                }
+            } else {
+                hexListFinal = Collections.singletonList(-2L);
+            
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            hexListFinal = Collections.singletonList(-1L);
+            // TODO Auto-generated catch block
+            //e.printStackTrace();
+        }
+        return hexListFinal.stream().map(H3LongAddress::of);
+}
+
+
 // Uncompact
 @Procedure(name = "com.neo4jh3.uncompactString", mode = Mode.READ)
 @Description("CALL com.neo4jh3.uncompactString(listCells, h3Resolution)")
@@ -2099,6 +2425,8 @@ public Stream<H3StringAddress> uncompactString(@Name("listCells") List<String> l
     }
 }
 
+
+
     private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
 		if ((lat1 == lat2) && (lon1 == lon2)) {
 			return 0;
@@ -2117,6 +2445,7 @@ public Stream<H3StringAddress> uncompactString(@Name("listCells") List<String> l
 			return (dist);
 		}
 	}
+    
 
 
 }

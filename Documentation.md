@@ -104,7 +104,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.boundaryasgeojson(599686042433355775) AS value
-    {"type":"Polygon","coordinates":[[[-121.91508032706,37.271355866732],[-121.86222328902,37.353926450852],[-121.9235499963,37.428341186094],[-122.03773496427 37.420128677678],[-122.09042892904,37.337556084353],[-122.02910130919,37.263197974618],[-121.91508032706,37.271355866732]]]}
+    {"type":"Polygon","coordinates":[[[-121.91508,37.271356],[-121.862223,37.353926],[-121.92355,37.428341],[-122.037735,37.420129],[-122.090429,37.337556],[-122.029101,37.263198],[-121.91508,37.271356]]]}
        
     RETURN com.neo4jh3.boundaryasgeojson(1234) AS value
     -1
@@ -126,7 +126,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.boundaryasgeojsonString('8009fffffffffff') AS value
-    {"type":"Polygon","coordinates":[[[-10.444977544778,63.095054077525],[5.5236465492903,55.706768465152],[25.082722326708,58.401544870353],[31.831280499087,68.92995788194],[0.32561035194326,73.310223685444],[-10.444977544778,63.095054077525]]]}  
+    {"type":"Polygon","coordinates":[[[-10.444978,63.095054],[5.523647,55.706768],[25.082722,58.401545],[31.83128,68.929958],[0.32561,73.310224],[-10.444978,63.095054]]]}  
          
     RETURN com.neo4jh3.boundaryasgeojsonString('1234') AS value
     -1
@@ -203,7 +203,7 @@ If h3XellIdExpr is an invalid h3 address, the function returns -1.
 
 ### Example
     RETURN com.neo4jh3.cellToLatLng(635714569676958015) AS value
-    37.81989535912348,-122.47829651373911
+    37.819895,-122.478297
     
     RETURN com.neo4jh3.cellToLatLng(123) AS value
     -1
@@ -212,7 +212,7 @@ If h3XellIdExpr is an invalid h3 address, the function returns -1.
 Returns the center latitude and longitude of the input H3 cell.
 
 ### Syntax
-RETURN com.neo4jh3.cellToLatLng( h3CellIdExpr ) AS value;
+RETURN com.neo4jh3.cellToLatLngString( h3CellIdExpr ) AS value;
 
 ### Arguments
 * h3CellId1Expr: A hexadecimal STRING expression representing an H3 cell ID.
@@ -225,7 +225,7 @@ If h3XellIdExpr is an invalid h3 address, the function returns -1.
 
 ### Example
     RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value
-    37.56424780593244,-122.3253058831214
+    37.564248,-122.325306
     
     RETURN com.neo4jh3.cellToLatLngString('notavalidhex') AS value
     -1
@@ -247,7 +247,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.centerasgeojson(599686042433355775) AS value
-   {"type":"Point","coordinates":[-121.97637597255,37.345793375368]}
+   {"type":"Point","coordinates":[-121.976376,37.345793]}
     
     RETURN com.neo4jh3.centerasgeojson(1234) AS value
     -1
@@ -270,9 +270,9 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.centerasgeojsonString('8009fffffffffff') AS value
-   {"type":"Point","coordinates":[64.70000013,10.53619908]}
+    {"type":"Point","coordinates":[10.536199,64.7]}
     
-    RETURN com.neo4jh3.centerasgeojsonString(1234) AS value
+    RETURN com.neo4jh3.centerasgeojsonString('1234') AS value
     -1
      
 ## com.neo4jh3.centeraswkt( h3CellIdExpr )
@@ -292,7 +292,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.centeraswkt(599686042433355775) AS value
-    POINT ( 37.34579337536848 -121.9763759725512 )
+    POINT (-121.976376 37.345793)
        
     RETURN com.neo4jh3.centeraswkt(1234) AS value
     -1
@@ -314,7 +314,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.centeraswktString('8009fffffffffff') AS value
-    POINT ( 64.70000012793487 10.53619907546767 )
+    POINT (10.536199 64.7)
        
     RETURN com.neo4jh3.centeraswktString('1234') AS value
     -1
@@ -336,7 +336,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.centeraswkb(599686042433355775) AS value
-    00000000014042AC42F51330C7C05E7E7CF1A5AD49
+    0000000001C05E7E7CF1C3265B4042AC42F1ED17C6
            
     RETURN com.neo4jh3.centeraswkb(1234) AS value
     -1
@@ -358,7 +358,7 @@ If h3CellIdExpr is invalid, the function returns -1
 
 ### Example
     RETURN com.neo4jh3.centeraswkbString('8009fffffffffff') AS value
-    000000000140502CCCCD562B4540251288AF6A8EE3
+    000000000140251288ACE24BBA40502CCCCCCCCCCD
            
     RETURN com.neo4jh3.centeraswkbString('1234') AS value
     -1
@@ -475,13 +475,13 @@ A value of the type of LONG representing, as a hexadecimal string, the H3 cell I
 * If longitudeExpr is not a valid longitude, the function returns -4.
 
 ### Example
-    RETURN com.neo4jh3.h3HexAddress( 37.8199, -122.4783, 13) AS value
+    RETURN com.neo4jh3.h3HexAddress(37.8199, -122.4783, 13) AS value
     635714569676958015
     
-     RETURN com.neo4jh3.h3HexAddress( 37.8199, -122.4783, 16) AS value
+    RETURN com.neo4jh3.h3HexAddress(37.8199, -122.4783, 16) AS value
     -2
     
-    RETURN com.neo4jh3.h3HexAddress( 97.8199, -122.4783, 13) AS value
+    RETURN com.neo4jh3.h3HexAddress(97.8199, -122.4783, 13) AS value
     -3
         
     
@@ -505,13 +505,13 @@ A value of the type of STRING representing, as a hexadecimal string, the H3 cell
 * If longitudeExpr is not a valid longitude, the function returns -4.
 
 ### Example
-    RETURN com.neo4jh3.h3HexAddressString( 37.8199, -122.4783, 13) AS value
+    RETURN com.neo4jh3.h3HexAddressString(37.8199, -122.4783, 13) AS value
     8d283087022a93f
     
-    RETURN com.neo4jh3.h3HexAddressString( 37.8199, -122.4783, 16) AS value
+    RETURN com.neo4jh3.h3HexAddressString(37.8199, -122.4783, 16) AS value
     -2
     
-    RETURN com.neo4jh3.h3HexAddressString( 97.8199, -122.4783, 13) AS value
+    RETURN com.neo4jh3.h3HexAddressString(97.8199, -122.4783, 13) AS value
     -3
         
 ## com.neo4jh3.h3tostring( h3CellIdExpr )
@@ -602,6 +602,26 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns 0.
     RETURN com.neo4jh3.h3Validate(123411) AS value;
     -1
     
+## com.neo4jh3.h3ValidateString( h3CellIdExpr )
+Returns the input value, that is of type STRING if it corresponds to a valid H3 cell ID, or emits an error otherwise.
+
+### Syntax
+RETURN com.neo4jh3.h3ValidateString( h3CellIdExpr) AS value;
+
+### Arguments
+h3CellIdExpr: A STRING expression that is expected to represent a valid H3 cell ID.
+
+### Error conditions
+If h3CellIdExpr is not a valid H3 cell ID, the function returns -1.
+
+### Example
+    RETURN com.neo4jh3.h3ValidateString('85283447fffffff') AS value;
+    '85283447fffffff'
+    
+    RETURN com.neo4jh3.h3ValidateString('123411') AS value;
+    "-1"
+    
+
 ## com.neo4jh3.ispentagon( h3CellIdExpr )
 Returns true if the input LONG corresponds to a pentagonal H3 cell or not.
 
@@ -635,8 +655,30 @@ If h3CellIdExpr is not a valid H3 cell ID, the function returns false;
 
 ### Example
     
+    RETURN com.neo4jh3.ispentagonString('830800fffffffff') AS value;
+    true
+
     RETURN com.neo4jh3.ispentagonString('85283473fffffff') AS value;
     false
+
+## com.neo4jh3.h3Validate( h3CellIdExpr )
+Returns the input value, that is of type LONG if it corresponds to a valid H3 cell ID, or emits an error otherwise.
+
+### Syntax
+RETURN com.neo4jh3.h3Validate(h3CellIdExpr) AS value;
+
+### Arguments
+h3CellIdExpr: A LONG expression that is expected to represent a valid H3 cell ID.
+
+### Error conditions
+If h3CellIdExpr is not a valid H3 cell ID, the function returns -1.
+
+### Example
+    RETURN com.neo4jh3.h3Validate(590112357393367039) AS value;
+    590112357393367039
+    
+    RETURN com.neo4jh3.h3Validate(1110) AS value;
+    -1
 
 ## com.neo4jh3.h3ValidateString( h3CellIdExpr )
 Returns the input value, that is of type STRING if it corresponds to a valid H3 cell ID, or emits an error otherwise.
@@ -679,16 +721,16 @@ A value of the type of LONG representing, as a hexadecimal string, the H3 cell I
 
 
 ### Example
-    RETURN com.neo4jh3.latlongash3( 37.8199, -122.4783, 13) AS value
+    RETURN com.neo4jh3.latlongash3(37.8199, -122.4783, 13) AS value
     635714569676958015
     
-    RETURN com.neo4jh3.latlongash3( 37.8199, -122.4783, 16) AS value
+    RETURN com.neo4jh3.latlongash3(37.8199, -122.4783, 16) AS value
     -2
 
-	RETURN com.neo4jh3.latlongash3( 97.8199, -122.4783, 13) AS value
+	RETURN com.neo4jh3.latlongash3(97.8199, -122.4783, 13) AS value
     -3
     
-    RETURN com.neo4jh3.latlongash3( 67.8199, -222.4783, 13) AS value
+    RETURN com.neo4jh3.latlongash3(67.8199, -222.4783, 13) AS value
     -4
      
 ## com.neo4jh3.latlongash3String( latitude, longitude, resolution )
@@ -711,73 +753,18 @@ A value of the type of STRING representing, as a hexadecimal string, the H3 cell
 * If longitudeExpr is not a valid longitude, the function returns -4.
 * 
 ### Example
-    RETURN com.neo4jh3.latlongash3String( 37.8199, -122.4783, 13) AS value
+    RETURN com.neo4jh3.latlongash3String(37.8199, -122.4783, 13) AS value
     8d283087022a93f
     
-    RETURN com.neo4jh3.latlongash3String( 37.8199, -122.4783, 16) AS value
+    RETURN com.neo4jh3.latlongash3String(37.8199, -122.4783, 16) AS value
     -2
     
-    RETURN com.neo4jh3.latlongash3String( 97.8199, -222.4783, 13) AS value
+    RETURN com.neo4jh3.latlongash3String(97.8199, -122.4783, 13) AS value
     -3
     
-    RETURN com.neo4jh3.latlongash3String( 97.8199, -222.4783, 13) AS value
+    RETURN com.neo4jh3.latlongash3String(67.8199, -222.4783, 13) AS value
     -4
 
-## com.neo4jh3.lineash3( geographyExpr, resolutionExpr )
-Returns the H3 cell ID (as a LONG) corresponding to the provided LINESTRING at the specified resolution.
-
-### Syntax
-RETURN com.neo4jh3.lineash3( geographyExpr, resolutionExpr ) 
-
-### Arguments
-* geographyExpr: A STRING expression representing a LINESTRING geography in WKT format
-* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
-
-### Returns
-Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
-
-### Error conditions
-If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
-
-If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
-
-### Example
-    RETURN com.neo4jh3.lineash3('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value
-    635714810904422079
-    
-    RETURN com.neo4jh3.lineash3('zzz(37.8199 -122.4783)',13) AS value
-    -1
-    
-    RETURN com.neo4jh3.lineash3('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
-    -2
-
-## com.neo4jh3.lineash3String( geographyExpr, resolutionExpr )
-Returns the H3 cell ID (as a STRING) corresponding to the provided LINESTRING at the specified resolution.
-
-### Syntax
-RETURN com.neo4jh3.lineash3String( geographyExpr, resolutionExpr ) 
-
-### Arguments
-* geographyExpr: A STRING expression representing a LINESTRING geography in WKT format
-* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
-
-### Returns
-Returns the H3 cell ID (as a LONG) corresponding to the provided LINESTRING at the specified resolution.
-
-### Error conditions
-If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
-
-If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
-
-### Example
-    RETURN com.neo4jh3.lineash3String('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value
-    8d283409a69a6bf
-    
-    RETURN com.neo4jh3.lineash3String('zzz(37.8199 -122.4783)',13) AS value
-    -1
-    
-    RETURN com.neo4jh3.lineash3String('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
-    -2
 
 ## com.neo4jh3.maxChild( h3CellIdExpr, resolutionExpr )
 Returns the child of minimum value of the input H3 cell at the specified resolution.
@@ -810,7 +797,7 @@ If resolutionExpr is an invalid h3 resolution, the function returns -2.
 Returns the child of maximum value of the input H3 cell at the specified resolution.
 
 ### Syntax
-RETURN com.neo4jh3.maxChild( h3CellIdExpr, resolutionExpr ) AS value
+RETURN com.neo4jh3.maxChildString( h3CellIdExpr, resolutionExpr ) AS value
 
 ### Arguments
 * h3CellId1Expr: A hexadecimal STRING expression representing an H3 cell ID.
@@ -825,13 +812,13 @@ If resolutionExpr is an invalid h3 resolution, the function returns -2.
 
 ### Example
     RETURN com.neo4jh3.maxChildString('85283473fffffff', 10) AS value
-    8a2834736db7fff
+    '8a2834736db7fff'
     
     RETURN com.neo4jh3.maxChildString('123',10) AS value
-    -1
+    '-1'
     
     RETURN com.neo4jh3.maxChildString('85283473fffffff',27) AS value
-    -2
+    '-2'
     
 ## com.neo4jh3.minChild( h3CellIdExpr, resolutionExpr )
 Returns the child of minimum value of the input H3 cell at the specified resolution.
@@ -879,69 +866,13 @@ If resolutionExpr is an invalid resolution or smaller than h3_resolution(h3CellI
 
 ### Example
     RETURN com.neo4jh3.minChildString('85283473fffffff', 10) AS value
-    8a2834700007fff
+    '8a2834700007fff'
     
     RETURN com.neo4jh3.minChildString('123',10) AS value
-    -1
+    '-1'
     
     RETURN com.neo4jh3.minChildString('85283473fffffff',27) AS value
-    -2
-
-## com.neo4jh3.multilineash3( geographyExpr, resolutionExpr )
-Returns the H3 cell ID (as a LONG) corresponding to the provided MULTILINESTRING at the specified resolution.
-
-### Syntax
-RETURN com.neo4jh3.multilineash3( geographyExpr, resolutionExpr ) 
-
-### Arguments
-* geographyExpr: A STRING expression representing a MULTILINESTRING geography in WKT format
-* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
-
-### Returns
-Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
-
-### Error conditions
-If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
-
-If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
-
-### Example
-    RETURN com.neo4jh3.multilineash3('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value
-    635714810904422079
-    
-    RETURN com.neo4jh3.multilineash3('zzz(37.8199 -122.4783)',13) AS value
-    -1
-    
-    RETURN com.neo4jh3.multilineash3('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
-    -2
-
-## com.neo4jh3.multilineash3String( geographyExpr, resolutionExpr )
-Returns the H3 cell ID (as a STRING) corresponding to the provided MULTILINESTRING at the specified resolution.
-
-### Syntax
-RETURN com.neo4jh3.multilineash3String( geographyExpr, resolutionExpr ) 
-
-### Arguments
-* geographyExpr: A STRING expression representing a MULTILINESTRING geography in WKT format
-* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
-
-### Returns
-Returns the H3 cell ID (as a LONG) corresponding to the provided MULTILINESTRING at the specified resolution.
-
-### Error conditions
-If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
-
-If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
-
-### Example
-    RETURN com.neo4jh3.multilineash3String('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',13) AS value
-    8d283409a69a6bf
-    
-    RETURN com.neo4jh3.multilineash3String('zzz(37.8199 -122.4783)',13) AS value
-    -1
-    
-    RETURN com.neo4jh3.multilineash3String('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) AS value
-    -2
+    '-2'
 
 ## com.neo4jh3.pointash3( geographyExpr, resolutionExpr, LatLonOrder )
 Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
@@ -1031,11 +962,11 @@ Returns the H3 cells that are within (grid) distance k of the origin cell. The s
 CALL com.neo4jh3.gridDisk( h3CellIdExpr, kExpr ) yield value return value;
 
 ### Arguments
-* h3CellIdExpr: A STRING expression representing an H3 cell ID.
+* h3CellIdExpr: A LONG expression representing an H3 cell ID.
 * kExpr: An INTEGER expression representing the grid distance. kExpr must be non-negative.
 
 ### Returns
-A list of values of the same type as the type of the h3CellIdExpr expression, corresponding to the H3 cell IDs that have the same resolution as the input H3 cell and are within grid distance k of the input H3 cell, where k is the value of the kExpr.
+A list of LONG values corresponding to the H3 cell IDs that have the same resolution as the input H3 cell and are within grid distance k of the input H3 cell, where k is the value of the kExpr.
 
 ### Error conditions
 If h3CellIdExpr is invalid, the function returns -1
@@ -1062,7 +993,7 @@ CALL com.neo4jh3.gridDiskString( h3CellIdExpr, kExpr ) yield value return value;
 * kExpr: An INTEGER expression representing the grid distance. kExpr must be non-negative.
 
 ### Returns
-A list of values of the same type as the type of the h3CellIdExpr expression, corresponding to the H3 cell IDs that have the same resolution as the input H3 cell and are within grid distance k of the input H3 cell, where k is the value of the kExpr.
+A list of STRING values corresponding to the H3 cell IDs that have the same resolution as the input H3 cell and are within grid distance k of the input H3 cell, where k is the value of the kExpr.
 
 ### Error conditions
 If h3CellIdExpr is invalid, the function returns -1
@@ -1078,6 +1009,119 @@ If kExpr < 0, the function returns -2
     
     CALL com.neo4jh3.gridDiskString('85283473fffffff',-1) yield value return value;
     -2
+
+## com.neo4jh3.lineash3( geographyExpr, resolutionExpr )
+Returns a list of H3 cell IDs (as a LONG) corresponding to the provided LINESTRING at the specified resolution.
+
+### Syntax
+call com.neo4jh3.lineash3( geographyExpr, resolutionExpr ) yield value
+
+### Arguments
+* geographyExpr: A STRING expression representing a LINESTRING geography in WKT format
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns a list of H3 cell IDs (as a LONG) corresponding to the provided point at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    call com.neo4jh3.lineash3('LINESTRING((37.271355 -121.915080), (37.353926 -121.862223))',7)  yield value return value
+    608693213150052351,608693229507837951,608693241537101823,608693229038075903,608693229038075903,608693228954189823
+    
+    call com.neo4jh3.lineash3('ZZZ((37.271355 -121.915080), (37.353926 -121.862223))',7)  yield value return value
+    -1
+    
+    call com.neo4jh3.lineash3('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) yield value return value
+    -2
+
+## com.neo4jh3.lineash3String( geographyExpr, resolutionExpr )
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided LINESTRING at the specified resolution.
+
+### Syntax
+RETURN com.neo4jh3.lineash3String( geographyExpr, resolutionExpr ) 
+
+### Arguments
+* geographyExpr: A STRING expression representing a LINESTRING geography in WKT format
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided LINESTRING at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    call com.neo4jh3.lineash3String('LINESTRING((37.271355 -121.915080), (37.353926 -121.862223))',7)  yield value return value
+    '87283409affffff','872834469ffffff','872834736ffffff','87283444dffffff','87283444dffffff','872834448ffffff'
+    
+    call com.neo4jh3.lineash3String('ZZZ((37.271355 -121.915080), (37.353926 -121.862223))',7)  yield value return value
+    -1
+    
+    call com.neo4jh3.lineash3String('LINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',16) yield value return value
+    -2
+
+## com.neo4jh3.multilineash3( geographyExpr, resolutionExpr )
+Returns the H3 cell ID (as a LONG) corresponding to the provided MULTILINESTRING at the specified resolution.
+
+### Syntax
+RETURN com.neo4jh3.multilineash3( geographyExpr, resolutionExpr ) 
+
+### Arguments
+* geographyExpr: A STRING expression representing a MULTILINESTRING geography in WKT format
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns the H3 cell ID (as a LONG) corresponding to the provided point at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    CALL com.neo4jh3.multilineash3('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',6) yield value return value;
+    604189629981130751, 604189629444259839, 604189629444259839
+    
+    call com.neo4jh3.multilineash3('ZZZ((37.271355 -121.915080), (37.353926 -121.862223))',7) yield value return value
+    -1
+    
+    call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value
+    -2
+
+## com.neo4jh3.multilineash3String( geographyExpr, resolutionExpr )
+Returns the H3 cell ID (as a STRING) corresponding to the provided MULTILINESTRING at the specified resolution.
+
+### Syntax
+call com.neo4jh3.multilineash3String( geographyExpr, resolutionExpr ) yield value
+
+### Arguments
+* geographyExpr: A STRING expression representing a MULTILINESTRING geography in WKT format
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns the H3 cell ID (as a STRING) corresponding to the provided MULTILINESTRING at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a point, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    CALL com.neo4jh3.multilineash3String('MULTILINESTRING((37.2713558667319 -121.91508032705622), (37.353926450852256 -121.86222328902491))',6) yield value return value;
+    '86283446fffffff', '86283444fffffff', '86283444fffffff'
+    
+    call com.neo4jh3.multilineash3String('ZZZ((37.271355 -121.915080), (37.353926 -121.862223))',7) yield value return value
+    '-1'
+    
+    call com.neo4jh3.multilineash3String('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value
+    '-2'
+
 
 ## com.neo4jh3.polygonToCells( ListOuterGeography, ListHoleGeography, resolutionExpr, LatLonOrder )
 Returns a list of H3 cell IDs (represented as LONGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained by the input area geography.
@@ -1145,7 +1189,7 @@ An LIST of H3 cell IDs of the same type as the values in the input LIST expressi
 
 
 ### Example
-    CALL com.neo4jh3.compact([599686042433355775,599686030622195711,599686044580839423,599686038138388479,599686043507097599,599686015589810175,599686014516068351,599686034917163007,599686029548453887,599686032769679359,599686198125920255,599686040285872127,599686041359613951,599686039212130303,599686023106002943,599686027400970239,599686013442326527,599686012368584703,599686018811035647]);
+    CALL com.neo4jh3.compact([599686042433355775,599686030622195711,599686044580839423,599686038138388479,599686043507097599,599686015589810175,599686014516068351,599686034917163007,599686029548453887,599686032769679359,599686198125920255,599686040285872127,599686041359613951,599686039212130303,599686023106002943,599686027400970239,599686013442326527,599686012368584703,599686018811035647]) yield value return value;
     599686030622195711,599686015589810175,599686014516068351,599686034917163007,599686029548453887,599686032769679359,599686198125920255,599686023106002943,599686027400970239,599686013442326527,599686012368584703,599686018811035647,595182446027210751      
     
 ## com.neo4jh3.compactString( h3CellIdsExpr )
@@ -1164,7 +1208,7 @@ An LIST of H3 cell IDs of the same type as the values in the input LIST expressi
 
 
 ### Example
-    CALL com.neo4jh3.compactString(['85283473fffffff', '85283447fffffff', '8528347bfffffff', '85283463fffffff', '85283477fffffff', '8528340ffffffff', '8528340bfffffff', '85283457fffffff', '85283443fffffff', '8528344ffffffff', '852836b7fffffff', '8528346bfffffff', '8528346ffffffff', '85283467fffffff', '8528342bfffffff', '8528343bfffffff', '85283407fffffff', '85283403fffffff', '8528341bfffffff']);
+    CALL com.neo4jh3.compactString(['85283473fffffff', '85283447fffffff', '8528347bfffffff', '85283463fffffff', '85283477fffffff', '8528340ffffffff', '8528340bfffffff', '85283457fffffff', '85283443fffffff', '8528344ffffffff', '852836b7fffffff', '8528346bfffffff', '8528346ffffffff', '85283467fffffff', '8528342bfffffff', '8528343bfffffff', '85283407fffffff', '85283403fffffff', '8528341bfffffff']) yield value return value;
     
     "85283447fffffff", "8528340ffffffff", "8528340bfffffff", "85283457fffffff", "85283443fffffff", "8528344ffffffff", "852836b7fffffff", "8528342bfffffff", "8528343bfffffff", "85283407fffffff", "85283403fffffff", "8528341bfffffff", "8428347ffffffff" 
     
@@ -1185,7 +1229,7 @@ Returns the line of indexes as LONG values between h3CellId1Expr and h3CellId2Ex
 If h3CellId1Expr or h3CellId2Expr is an invalid h3 address, the function returns -1.
 
 ### Example
-    CALL com.neo4jh3.gridpathcell(599686030622195711, 599686015589810175) yield value return collect(value);    
+    CALL com.neo4jh3.gridpathcell(599686030622195711, 599686015589810175) yield value return value;    
     599686030622195711, 599686014516068351, 599686015589810175
     
     CALL com.neo4jh3.gridpathcell(604189641121202175,604189642126508543) yield value return value;
@@ -1232,9 +1276,10 @@ CALL com.neo4jh3.gridpathlatlon( latitude1, longitude1, latitude2, longitude2, r
 Returns the line of indexes as LONG values between the two points
 
 ### Error conditions
-If latitude1 or latitude2 are invalid, the procedure returns -3
-If longitude1 or longitude2 are invalid, the procedure returns -4
-If resolutionExpr is invalid, the procedure returns -2
+If resolutionExpr is invalid, the procedure returns -2.  
+If latitude1 or latitude2 are invalid, the procedure returns -3.  
+If longitude1 or longitude2 are invalid, the procedure returns -4.  
+
 
 ### Example
     CALL com.neo4jh3.gridpathlatlon(37.2,-119.2,38.2,-119.2,5) yield value return value;
@@ -1266,23 +1311,77 @@ CALL com.neo4jh3.gridpathlatlonString( latitude1, longitude1, latitude2, longitu
 Returns the line of indexes as STRING values between the two points
 
 ### Error conditions
-If latitude1 or latitude2 are invalid, the procedure returns -3
-If longitude1 or longitude2 are invalid, the procedure returns -4
-If resolutionExpr is invalid, the procedure returns -2
+If resolutionExpr is invalid, the procedure returns -2.  
+If latitude1 or latitude2 are invalid, the procedure returns -3.  
+If longitude1 or longitude2 are invalid, the procedure returns -4.  
 
 ### Example
     CALL com.neo4jh3.gridpathlatlonString(37.2,-119.2,38.2,-119.2,5) yield value return value;
     "8529ab53fffffff", "8529ab43fffffff", "8529ab4ffffffff", "85298cb7fffffff", "85298ca7fffffff", "85298ddbfffffff", "85298dcbfffffff"
     
     CALL com.neo4jh3.gridpathlatlonString(37.2,-119.2,38.2,-119.2,17) yield value return value;
-    -2
+    "-2"
     
     CALL com.neo4jh3.gridpathlatlonString(97.2,-119.2,38.2,-119.2,5) yield value return collect(value);
-    -3
+    "-3"
     
     CALL com.neo4jh3.gridpathlatlonString(37.2,-219.2,38.2,-119.2,5) yield value return collect(value);
-    -4
+    "-4"
     
+## com.neo4jh3.polygonIntersection( ListOuterGeography, ListHoleGeography, ListSecondOuterGeography, ListSecondHoleGeography, resolutionExpr, LatLonOrder )
+Returns a list of H3 cell IDs (represented as LONGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained within both polygons.
+
+### Syntax
+call com.neo4jh3.polygonIntersection( ListOuterGeography, ListHoleGeography, ListSecondOuterGeography, ListSecondHoleGeography, resolutionExpr, LatLonOrder ) yield value return value;
+
+### Arguments
+* ListOuterGeography: A LIST of latitude and longitude values that express a polygon
+* ListHoleGeography: A LIST of latitude and longitude values that express a hole within the ListLatLon polygon
+* ListSecondOuterGeography: A LIST of latitude and longitude values that express a polygon
+* ListSecondHoleGeography: A LIST of latitude and longitude values that express a hole within the ListLatLon polygon
+* h3_resolution(h3CellIdExpr) and 15 inclusive, specifying the resolution of the children H3 cell IDs.
+* LatLonOrder A STRING that indicates the order of the geometry (latlon or lonlat)
+
+### Returns
+Returns a list of H3 cell IDs (represented as LONGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained within both polygons.
+
+### Error conditions
+If resolutionExpr is invalid, the function returns -2
+
+### Example
+    call com.neo4jh3.polygonIntersection(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],['37.9866,-123.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],7,'latlon') yield value return value 
+    608692975685337087, 608692970668949503, 608692975920218111, 608692975718891519, 608692975903440895, 608692975467233279, 608692975702114303, 608692975886663679, 608692975450456063, 608692975735668735
+         
+    call com.neo4jh3.polygonIntersection(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],[],[],20,'latlon') yield value return value
+    -2
+    
+## com.neo4jh3.polygonIntersectionString( ListOuterGeography, ListHoleGeography, ListSecondOuterGeography, ListSecondHoleGeography, resolutionExpr, LatLonOrder )
+Returns a list of H3 cell IDs (represented as STRINGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained within both polygons.
+
+### Syntax
+call com.neo4jh3.polygonIntersectionString( ListOuterGeography, ListHoleGeography, ListSecondOuterGeography, ListSecondHoleGeography, resolutionExpr, LatLonOrder ) yield value return value;
+
+### Arguments
+* ListOuterGeography: A LIST of latitude and longitude values that express a polygon
+* ListHoleGeography: A LIST of latitude and longitude values that express a hole within the List LatLon polygon
+* ListSecondOuterGeography: A LIST of latitude and longitude values that express a polygon
+* ListSecondHoleGeography: A LIST of latitude and longitude values that express a hole within the List LatLon polygon
+* h3_resolution(h3CellIdExpr) and 15 inclusive, specifying the resolution of the children H3 cell IDs.
+* LatLonOrder A STRING that indicates the order of the geometry (latlon or lonlat)
+
+### Returns
+Returns a list of H3 cell IDs (represented as LONGs) corresponding to hexagons or pentagons, of the specified resolution, that are contained within both polygons.
+
+### Error conditions
+If resolutionExpr is invalid, the function returns -2
+
+### Example
+    call com.neo4jh3.polygonIntersectionString(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],['37.9866,-123.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],7,'latlon') yield value return value 
+    "872830950ffffff", "872830825ffffff", "87283095effffff", "872830952ffffff", "87283095dffffff", "872830943ffffff", "872830951ffffff", "87283095cffffff", "872830942ffffff", "872830953ffffff"
+         
+    call com.neo4jh3.polygonIntersectionString(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],[],[],20,'latlon') yield value return value
+    "-2"
+
 ## com.neo4jh3.uncompact( h3CellIdsExpr, resolutionExpr )
 Uncompacts the input set of H3 cells to the specified resolution. The uncompacted set covers the same set of H3 cells as the original one using cells at the specified resolution.
 
@@ -1327,8 +1426,8 @@ If resolutionExpr is smaller than the maximum resolution of the H3 cell in the i
     
     "85283447fffffff", "8528340ffffffff", "8528340bfffffff", "85283457fffffff", "85283443fffffff", "8528344ffffffff", "852836b7fffffff", "8528342bfffffff", "8528343bfffffff", "85283407fffffff", "85283403fffffff", "8528341bfffffff", "85283463fffffff", "85283467fffffff", "8528346bfffffff", "8528346ffffffff", "85283473fffffff", "85283477fffffff", "8528347bfffffff"    
     
- CALL com.neo4jh3.uncompactString(["85283447fffffff", "8528340ffffffff", "8528340bfffffff", "85283457fffffff", "85283443fffffff", "8528344ffffffff", "852836b7fffffff", "8528342bfffffff", "8528343bfffffff", "85283407fffffff", "85283403fffffff", "8528341bfffffff", "8428347ffffffff"],0) yield value return value;
- -2
+     CALL com.neo4jh3.uncompactString(["85283447fffffff", "8528340ffffffff", "8528340bfffffff", "85283457fffffff", "85283443fffffff", "8528344ffffffff", "852836b7fffffff", "8528342bfffffff", "8528343bfffffff", "85283407fffffff", "85283403fffffff", "8528341bfffffff", "8428347ffffffff"],0) yield value return value;
+     "-2"
 
 ## com.neo4jh3.tochildren( h3CellIdExpr, resolutionExpr )
 Returns an array of the children H3 cells of the input H3 cell at the specified resolution.
@@ -1341,7 +1440,7 @@ CALL com.neo4jh3.tochildren(h3CellIdExpr, resolutionExpr) yield value return val
 * resolutionExpr: An INT expression, whose value is expected to be between h3_resolution(h3CellIdExpr) and 15 inclusive, specifying the resolution of the children H3 cell IDs.
 
 ### Returns
-A list of values of values of the same type as the type of the h3CellIdExpr expression, corresponding to the children H3 cell IDs of the input H3 cell at the specified resolution.
+A list of LONG values corresponding to the children H3 cell IDs of the input H3 cell at the specified resolution.
 
 ### Error conditions
 If h3CellIdExpr is invalid, the function returns -1
@@ -1368,7 +1467,7 @@ CALL com.neo4jh3.tochildrenString(h3CellIdExpr, resolutionExpr) yield value retu
 * resolutionExpr: An INT expression, whose value is expected to be between h3_resolution(h3CellIdExpr) and 15 inclusive, specifying the resolution of the children H3 cell IDs.
 
 ### Returns
-A list of values of values of the same type as the type of the h3CellIdExpr expression, corresponding to the children H3 cell IDs of the input H3 cell at the specified resolution.
+A list of STRING values corresponding to the children H3 cell IDs of the input H3 cell at the specified resolution.
 
 ### Error conditions
 If h3CellIdExpr is invalid, the function returns -1
@@ -1378,10 +1477,10 @@ If h3CellIdExpr is invalid, the function returns -1
     862834707ffffff,86283470fffffff,862834717ffffff,86283471fffffff,862834727ffffff,86283472fffffff,862834737ffffff
          
     CALL com.neo4jh3.tochildrenString('1234',1) yield value return value;
-    -1
+    "-1"
     
     CALL com.neo4jh3. tochildrenString('85283473fffffff',-1) yield value return value;
-    -2
+    "-2"
 
 ## Error Codes
 * -1 or "-1" : Invalid H3 Address

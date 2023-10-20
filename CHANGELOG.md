@@ -1,5 +1,14 @@
 # CHANGELOG - Neo4jH3
 
+## 5.12 2023-10-20
+* [Added] Tested through Neo4j 5.12
+* [Added] Added com.neo4jh3.polygonIntersection and com.neo4jh3.polygonIntersectionString to return the h3 addresses that are in the intersection between two polygons
+* [Added] Added dependency on org.apache.commons.commons-math3 for decimal rounding
+* [Updated] Updated com.neo4jh3.cellToLatLng, com.neo4jh3.cellToLatLngString, com.neo4jh3.centeraswkb, com.neo4jh3.centeraswkbString, com.neo4jh3.centeraswkt, com.neo4jh3.centeraswktString, com.neo4jh3.boundaryaswkt, com.neo4jh3.boundaryaswktString, com.neo4jh3.boundaryaswkb, com.neo4jh3.boundaryaswkbString, com.neo4jh3.centerasgeojson, com.neo4jh3.centerasgeojsonString, com.neo4jh3.boundaryasgeojson and com.neo4jh3.boundaryasgeojsonString to return results in lon / lat format at 6 decimal precision.
+* [Updated] - Multiple fixes within the Documentation.md file
+
+
+
 ## 5.11 2023-08-18
 * [Added] Tested through Neo4j 5.11
 * [Updated] Updated the com.neo4jh3.pointash3String and com.neo4jh3.pointash3 functions to take a 3rd parameter to indicate if the point is in lat/lon format or lon/lat format.

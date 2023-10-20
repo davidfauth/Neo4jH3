@@ -12,7 +12,6 @@ import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
-import org.neo4j.driver.Values;
 import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.Neo4jBuilders;
 
@@ -45,76 +44,91 @@ public class Neo4jH3Test {
         assertEquals(599686042433355775L,result.single().get(0).asLong());
         */
                 if (System.getProperty("os.name").toLowerCase().equalsIgnoreCase("mac os x")){
-                        result = session.run("RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value");
-                        assertEquals("\"37.56424780593244,-122.3253058831214\"", result.single().get("value").toString());
-                
                         result = session.run("return com.neo4jh3.distanceBetweenHexes(599686042433355775,599686015589810175) as value");
                         String myResult = result.single().get("value").toString();
+                        
                         myResult = myResult.substring(0, 11);
                         assertEquals("17.87016346",myResult);
                         //assertEquals(17.870163466857925,result.single().get("value").asDouble(),0);
 
                         result = session.run("RETURN com.neo4jh3.centeraswkb(599686042433355775) AS value");
-                        assertEquals("\"00000000014042AC42F51330C7C05E7E7CF1A5AD49\"", result.single().get("value").toString());
+                        assertEquals("\"0000000001C05E7E7CF1C3265B4042AC42F1ED17C6\"", result.single().get("value").toString());
 
                         result = session.run("RETURN com.neo4jh3.boundaryaswkt(599686042433355775) AS value");
-                        assertEquals("\"POLYGON ((37.2713558667319 -121.91508032705622, 37.353926450852256 -121.86222328902491, 37.42834118609435 -121.92354999630156, 37.42012867767778 -122.03773496427027, 37.33755608435298 -122.09042892904397, 37.26319797461824 -122.02910130918998, 37.2713558667319 -121.91508032705622))\"", result.single().get("value").toString());
+                        assertEquals("\"POLYGON ((-121.91508 37.271356, -121.862223 37.353926, -121.92355 37.428341, -122.037735 37.420129, -122.090429 37.337556, -122.029101 37.263198, -121.91508 37.271356))\"", result.single().get("value").toString());
                 
-                        result = session.run("RETURN com.neo4jh3.centeraswkt(599686042433355775) AS value");
-                        assertEquals("\"POINT (37.34579337536848 -121.9763759725512)\"", result.single().get("value").toString());
+                        result = session.run("RETURN com.neo4jh3.boundaryaswkt(111) AS value");
+                        assertEquals("\"-1\"", result.single().get("value").toString());
+                        
+                        result = session.run("RETURN com.neo4jh3.boundaryaswktString('822d57fffffffff') AS value");
+                        assertEquals("\"POLYGON ((38.777546 44.198571, 39.938746 42.736298, 42.150674 42.631271, 43.258395 44.047542, 42.146575 45.539505, 39.897167 45.559577, 38.777546 44.198571))\"", result.single().get("value").toString());
 
-                        result = session.run("RETURN com.neo4jh3.boundaryaswktString('8009fffffffffff') AS value");
-                        assertEquals("\"POLYGON ((63.09505407752544 -10.444977544778336, 55.706768465152265 5.523646549290317, 58.40154487035269 25.082722326707884, 68.92995788193983 31.831280499087388, 73.31022368544396 0.32561035194326043, 63.09505407752544 -10.444977544778336))\"", result.single().get("value").toString());
+                        result = session.run("RETURN com.neo4jh3.boundaryaswktString('111') AS value");
+                        assertEquals("\"-1\"", result.single().get("value").toString());
+                        
+                        result = session.run("RETURN com.neo4jh3.centeraswkt(599686042433355775) AS value");
+                        assertEquals("\"POINT (-121.976376 37.345793)\"", result.single().get("value").toString());
 
                         result = session.run("RETURN com.neo4jh3.boundaryaswkb(599686042433355775) AS value");
-                        assertEquals("\"000000000300000001000000074042A2BBC9FE987BC05E7A90AD137AD84042AD4D7641CCC6C05E772EAA970D8A4042B6D3E24CE70DC05E7B1B717195834042B5C6C6C95E70C05E826A3FE95D384042AB3509AB6E52C05E85C9966B36CB4042A1B078A2ADECC05E81DCCBBCCF794042A2BBC9FE987BC05E7A90AD137AD8\"", result.single().get("value").toString());
+                        assertEquals("\"00000000030000000100000007C05E7A90ABB44E514042A2BBCB1CC964C05E772EA960B6FA4042AD4D72799A20C05E7B1B71758E224042B6D3E0BD449AC05E826A400FBA884042B5C6C97D8CF4C05E85C996B7670A4042AB3508F648C7C05E81DCCA70D1FA4042A1B078D92FB2C05E7A90ABB44E514042A2BBCB1CC964\"", result.single().get("value").toString());
 
                         result = session.run("RETURN com.neo4jh3.boundaryaswkbString('8009fffffffffff') AS value");
-                        assertEquals("\"00000000030000000100000006404F8C2ABB65295FC024E3D418C48DFE404BDA776399D62840161836CD0F75ED404D3365D283054B4039152D4A57DC0140513B846E1065B2403FD4CECC7D6205405253DAB471DB4A3FD4D6CCCD35766F404F8C2ABB65295FC024E3D418C48DFE\"", result.single().get("value").toString());
+                        assertEquals("\"00000000030000000100000006C024E3D4280AE105404F8C2ABABEAD4F40161836EB4E9814404BDA775FB2EDFE4039152D44DCA8E3404D3365D3996FA8403FD4CEC41DD1A240513B846E8F29D43FD4D6CB5350092D405253DAB5C39BCCC024E3D4280AE105404F8C2ABABEAD4F\"", result.single().get("value").toString());
                
                         result = session.run("RETURN com.neo4jh3.centeraswktString('8009fffffffffff') AS value");
-                        assertEquals("\"POINT (64.70000012793487 10.53619907546767)\"", result.single().get("value").toString());
+                        assertEquals("\"POINT (10.536199 64.7)\"", result.single().get("value").toString());
                 
                         result = session.run("RETURN com.neo4jh3.boundaryaswkbString('8009fffffffffff') AS value");
-                        assertEquals("\"00000000030000000100000006404F8C2ABB65295FC024E3D418C48DFE404BDA776399D62840161836CD0F75ED404D3365D283054B4039152D4A57DC0140513B846E1065B2403FD4CECC7D6205405253DAB471DB4A3FD4D6CCCD35766F404F8C2ABB65295FC024E3D418C48DFE\"", result.single().get("value").toString());
+                        assertEquals("\"00000000030000000100000006C024E3D4280AE105404F8C2ABABEAD4F40161836EB4E9814404BDA775FB2EDFE4039152D44DCA8E3404D3365D3996FA8403FD4CEC41DD1A240513B846E8F29D43FD4D6CB5350092D405253DAB5C39BCCC024E3D4280AE105404F8C2ABABEAD4F\"", result.single().get("value").toString());
                 
-
-               
+                        result = session.run("RETURN com.neo4jh3.centerasgeojson(599686042433355775) AS value");
+                        assertEquals("\"{\\\"type\\\":\\\"Point\\\",\\\"coordinates\\\":[-121.976376,37.345793]}\"", result.single().get("value").toString());
+                        
+                        result = session.run("RETURN com.neo4jh3.centerasgeojsonString('8009fffffffffff') AS value");
+                        assertEquals("\"{\\\"type\\\":\\\"Point\\\",\\\"coordinates\\\":[10.536199,64.7]}\"", result.single().get("value").toString());
+                
+                        result = session.run("RETURN com.neo4jh3.centerasgeojsonString('1234') AS value");
+                        assertEquals("\"-1\"", result.single().get("value").toString());
+                
+                        result = session.run("RETURN com.neo4jh3.centerasgeojson(1234) AS value");
+                        assertEquals("\"-1\"", result.single().get("value").toString());
                 }
 
                 if (System.getProperty("os.name").toLowerCase().startsWith("wind")){
-                       result = session.run("RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value");
-                        assertEquals("\"37.56424780593243,-122.32530588312142\"", result.single().get("value").toString());
-
                         result = session.run("return com.neo4jh3.distanceBetweenHexes(599686042433355775,599686015589810175) as value");
                         assertEquals(17.870163466857125,result.single().get("value").asDouble(),0);
 
                         result = session.run("RETURN com.neo4jh3.centeraswkb(599686042433355775) AS value");
-                        assertEquals("\"00000000014042AC42F51330C6C05E7E7CF1A5AD49\"", result.single().get("value").toString());
+                        assertEquals("\"0000000001C05E7E7CF1C3265B4042AC42F1ED17C6\"", result.single().get("value").toString());
                         
                         result = session.run("RETURN com.neo4jh3.boundaryaswkt(599686042433355775) AS value");
-                        assertEquals("\"POLYGON ((37.2713558667319 -121.91508032705622, 37.353926450852256 -121.86222328902491, 37.42834118609436 -121.92354999630156, 37.42012867767779 -122.03773496427027, 37.33755608435299 -122.090428929044, 37.26319797461824 -122.02910130919001, 37.2713558667319 -121.91508032705622))\"", result.single().get("value").toString());
+                        assertEquals("\"POLYGON ((-121.91508 37.271356, -121.862223 37.353926, -121.92355 37.428341, -122.037735 37.420129, -122.090429 37.337556, -122.029101 37.263198, -121.91508 37.271356))\"", result.single().get("value").toString());
                         
                         result = session.run("RETURN com.neo4jh3.centeraswkt(599686042433355775) AS value");
-                        assertEquals("\"POINT (37.34579337536847 -121.9763759725512)\"", result.single().get("value").toString());
+                        assertEquals("\"POINT (-121.976376 37.345793)\"", result.single().get("value").toString());
 
                         result = session.run("RETURN com.neo4jh3.boundaryaswktString('8009fffffffffff') AS value");
-                        assertEquals("\"POLYGON ((63.095054077525454 -10.444977544778325, 55.70676846515226 5.523646549290313, 58.4015448703527 25.082722326707874, 68.92995788193983 31.83128049908738, 73.31022368544396 0.32561035194326043, 63.095054077525454 -10.444977544778325))\"", result.single().get("value").toString());
+                        assertEquals("\"POLYGON ((-10.444978 63.095054, 5.523647 55.706768, 25.082722 58.401545, 31.83128 68.929958, 0.32561 73.310224, -10.444978 63.095054))\"", result.single().get("value").toString());
 
                         result = session.run("RETURN com.neo4jh3.boundaryaswkb(599686042433355775) AS value");
-                        assertEquals("\"000000000300000001000000074042A2BBC9FE987BC05E7A90AD137AD84042AD4D7641CCC6C05E772EAA970D8A4042B6D3E24CE70EC05E7B1B717195834042B5C6C6C95E71C05E826A3FE95D384042AB3509AB6E53C05E85C9966B36CD4042A1B078A2ADECC05E81DCCBBCCF7B4042A2BBC9FE987BC05E7A90AD137AD8\"", result.single().get("value").toString());
+                        assertEquals("\"00000000030000000100000007C05E7A90ABB44E514042A2BBCB1CC964C05E772EA960B6FA4042AD4D72799A20C05E7B1B71758E224042B6D3E0BD449AC05E826A400FBA884042B5C6C97D8CF4C05E85C996B7670A4042AB3508F648C7C05E81DCCA70D1FA4042A1B078D92FB2C05E7A90ABB44E514042A2BBCB1CC964\"", result.single().get("value").toString());
 
                         result = session.run("RETURN com.neo4jh3.boundaryaswkbString('8009fffffffffff') AS value");
-                        assertEquals("\"00000000030000000100000006404F8C2ABB652961C024E3D418C48DF8404BDA776399D62740161836CD0F75E9404D3365D283054D4039152D4A57DBFE40513B846E1065B2403FD4CECC7D6203405253DAB471DB4A3FD4D6CCCD35766F404F8C2ABB652961C024E3D418C48DF8\"", result.single().get("value").toString());
+                        assertEquals("\"00000000030000000100000006C024E3D4280AE105404F8C2ABABEAD4F40161836EB4E9814404BDA775FB2EDFE4039152D44DCA8E3404D3365D3996FA8403FD4CEC41DD1A240513B846E8F29D43FD4D6CB5350092D405253DAB5C39BCCC024E3D4280AE105404F8C2ABABEAD4F\"", result.single().get("value").toString());
                
                         result = session.run("RETURN com.neo4jh3.centeraswktString('8009fffffffffff') AS value");
-                        assertEquals("\"POINT (64.70000012793487 10.53619907546767)\"", result.single().get("value").toString());
+                        assertEquals("\"POINT (10.536199 64.7)\"", result.single().get("value").toString());
                 
-                        result = session.run("RETURN com.neo4jh3.boundaryaswkbString('8009fffffffffff') AS value");
-                        assertEquals("\"00000000030000000100000006404F8C2ABB652961C024E3D418C48DF8404BDA776399D62740161836CD0F75E9404D3365D283054D4039152D4A57DBFE40513B846E1065B2403FD4CECC7D6203405253DAB471DB4A3FD4D6CCCD35766F404F8C2ABB652961C024E3D418C48DF8\"", result.single().get("value").toString());
-                
-
                  }
+
+                result = session.run("RETURN com.neo4jh3.version() AS value");
+                assertEquals("\"5.11.0\"", result.single().get("value").toString());
+
+                result = session.run("RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value");
+                assertEquals("\"37.564248,-122.325306\"", result.single().get("value").toString());
+                
+                result = session.run("RETURN com.neo4jh3.cellToLatLng(599686042433355775) AS value");
+                assertEquals("\"37.345793,-121.976376\"", result.single().get("value").toString());
                
                 result = session.run("RETURN com.neo4jh3.h3Validate(599686042433355775) AS value");
                 assertEquals(599686042433355775L, result.single().get("value").asLong());
@@ -249,7 +263,7 @@ public class Neo4jH3Test {
                 assertEquals(-1L, result.single().get("value").asLong());
 
                 result = session.run("RETURN com.neo4jh3.cellToLatLng( 635714569676958015) AS value");
-                assertEquals("\"37.81989535912348,-122.47829651373911\"", result.single().get("value").toString());
+                assertEquals("\"37.819895,-122.478297\"", result.single().get("value").toString());
                 
                 /* 
                 result = session.run("RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value");
@@ -366,21 +380,36 @@ public class Neo4jH3Test {
                 result=session.run("call com.neo4jh3.polygonToCellsString(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],20,'latlon') yield value return value limit 1");
                 assertEquals("\"-2\"",result.single().get(0).toString());
 
+                result=session.run("call com.neo4jh3.polygonIntersection(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],['37.9866,-123.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],7,'latlon') yield value return value limit 1");
+                assertEquals(608692975685337087L, result.single().get(0).asLong(),0);
+
+                result=session.run("call com.neo4jh3.polygonIntersectionString(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],['37.9866,-123.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],7,'latlon') yield value return value limit 1");
+                assertEquals("\"872830950ffffff\"",result.single().get(0).toString());
+
                 result = session.run("call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
                 assertEquals(631243922688264703L, result.single().get(0).asLong(),0);
        
                 result = session.run("call com.neo4jh3.multilineash3String('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
                 assertEquals("\"8c2a100d27549ff\"",result.single().get(0).toString());
                 
+                result = session.run("call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value limit 1");
+                assertEquals(-2L,result.single().get(0).asLong(),0);
+                
                 result = session.run("call com.neo4jh3.multilineash3String('ZZZ((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
                 assertEquals("\"-1\"",result.single().get(0).toString());
                 
                 result = session.run("call com.neo4jh3.multilineash3String('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value limit 1");
                 assertEquals("\"-2\"",result.single().get(0).toString());
+
+                result = session.run("call com.neo4jh3.lineash3String('ZZZ((37.271355 -121.915080), (37.353926 -121.862223))',7) yield value return value limit 1");
+                assertEquals("\"-1\"", result.single().get("value").toString());
+
+                result = session.run("call com.neo4jh3.lineash3String('LINESTRING((37.271355 -121.915080), (37.353926 -121.862223))',7)  yield value return value limit 1");
+                assertEquals("\"87283409affffff\"",result.single().get(0).toString());
                 
-                result = session.run("call com.neo4jh3.multilineash3('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17) yield value return value limit 1");
-                assertEquals(-2L,result.single().get(0).asLong(),0);
-                
+                result = session.run("call com.neo4jh3.lineash3('ZZZ((37.271355 -121.915080), (37.353926 -121.862223))',7) yield value return value limit 1");
+                assertEquals(-1L, result.single().get(0).asLong(),0);
+       
                 result = session.run("call com.neo4jh3.lineash3('LINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',12) yield value return value limit 1");
                 assertEquals(631243922688264703L, result.single().get(0).asLong(),0);
        
@@ -435,6 +464,12 @@ public class Neo4jH3Test {
                 
                 result = session.run("call com.neo4jh3.gridpathlatlonString(37.8199, -122.4783, 47.8199, -122.5, 13) yield value return value limit 1");
                 assertEquals("\"8d283087022a93f\"", result.single().get("value").toString());
+
+                result=session.run("call com.neo4jh3.linepolyIntersection(['37.271355,-121.915080','37.353926,-121.862223','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798','37.271355,-121.915080'],[],'LINESTRING((37.271355 -121.915080), (37.353926 -121.862223))',7,'latlon') yield value return value limit 1");
+                assertEquals(608693241537101823L, result.single().get(0).asLong(),0);
+
+                result=session.run("call com.neo4jh3.linepolyIntersection(['37.7866,-122.3805','37.7198,-122.3544','37.7076,-122.5123','37.7835,-122.5247','37.8151,-122.4798'],[],'LINESTRING((37.271355 -121.915080), (37.353926 -121.862223))',27,'latlon') yield value return value limit 1");
+                assertEquals(-2L, result.single().get(0).asLong(),0);
 
      }
      driver.close();

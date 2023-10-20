@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.neo4jh3</groupId>
   <artifactId>neo4jh3</artifactId>
-  <version>5.10.0</version>
+  <version>5.11.0</version>
   <build>
     <plugins>
       <plugin>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>org.neo4j</groupId>
       <artifactId>neo4j</artifactId>
-      <version>5.10.0</version>
+      <version>5.11.0</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -130,12 +130,16 @@
           <artifactId>neo4j-capabilities</artifactId>
           <groupId>org.neo4j</groupId>
         </exclusion>
+        <exclusion>
+          <artifactId>neo4j-slf4j-provider</artifactId>
+          <groupId>org.neo4j</groupId>
+        </exclusion>
       </exclusions>
     </dependency>
     <dependency>
       <groupId>org.neo4j.test</groupId>
       <artifactId>neo4j-harness</artifactId>
-      <version>5.10.0</version>
+      <version>5.11.0</version>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -206,10 +210,11 @@
     </dependency>
   </dependencies>
   <properties>
-    <neo4j.version>5.10.0</neo4j.version>
+    <neo4j.version>5.11.0</neo4j.version>
     <commons.version>4.1</commons.version>
     <csv.version>1.2</csv.version>
     <lang3.version>3.13.0</lang3.version>
+    <commons.math.version>3.6.1</commons.math.version>
     <uber.version>4.1.1</uber.version>
   </properties>
 </project>
