@@ -122,7 +122,7 @@ public class Neo4jH3Test {
                  }
 
                 result = session.run("RETURN com.neo4jh3.version() AS value");
-                assertEquals("\"5.11.0\"", result.single().get("value").toString());
+                assertEquals("\"5.13.0\"", result.single().get("value").toString());
 
                 result = session.run("RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value");
                 assertEquals("\"37.564248,-122.325306\"", result.single().get("value").toString());
@@ -280,7 +280,7 @@ public class Neo4jH3Test {
                 assertEquals(-1.0,result.single().get("value").asDouble(),0);
         
                 result = session.run("return com.neo4jh3.distanceBetweenHexesString('8a2989352777fff','8a498935223ffff') as value");
-                assertEquals(2360.8203881920604,result.single().get("value").asDouble(),0);
+                assertEquals(2360.820388,result.single().get("value").asDouble(),0);
         
                 result = session.run("return com.neo4jh3.distanceBetweenHexesString('123','8a498935223ffff') as value");
                 assertEquals(-1.0,result.single().get("value").asDouble(),0);

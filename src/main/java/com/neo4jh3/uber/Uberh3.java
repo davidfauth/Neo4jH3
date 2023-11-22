@@ -28,6 +28,7 @@ public class Uberh3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
+    private final static String NEO4J_H3_VERSION = "5.13.0";
 
     private static H3Core h3 = null;
                     
@@ -519,6 +520,7 @@ public class Uberh3 {
     @UserFunction(name = "com.neo4jh3.distanceBetweenHexesString")
     @Description("CALL com.neo4jh3.distanceBetweenHexesString(fromHexAddress, toHexAddress)")
     public double distanceBetweenHexesString(@Name("fromHexAddress") String fromHexAddress, @Name("toHexAddress") String toHexAddress) throws InterruptedException {
+        double returnDistance = 0.0;
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
         }
@@ -528,7 +530,7 @@ public class Uberh3 {
         if (h3.isValidCell(fromHexAddress) && h3.isValidCell(fromHexAddress)){
             LatLng fromGeoCoord = h3.cellToLatLng(fromHexAddress);
             LatLng toGeoCoord = h3.cellToLatLng(toHexAddress);
-            return h3.greatCircleDistance(fromGeoCoord, toGeoCoord, LengthUnit.km);
+            return returnDistance =  Precision.round(h3.greatCircleDistance(fromGeoCoord, toGeoCoord, LengthUnit.km),6);
         } else {
             return -1.0;
         }
@@ -754,7 +756,7 @@ public class Uberh3 {
     @Description("com.neo4jh3.version() - Returns the version of the plugin.")
     public String neo4jH3Version() throws InterruptedException 
             {
-            String h3Version = "5.11.0";
+            String h3Version = NEO4J_H3_VERSION;
             if (h3 == null) {
                 throw new InterruptedException("h3 failed to initialize");
             }

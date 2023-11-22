@@ -1,4 +1,7 @@
 # CHANGELOG - Neo4jH3
+* [ Added ] Tested through Neo4j 5.13
+* [ Added ] Updated README.md to mention that /tmp directory needs to have execute privileges.
+* [ Fixed ] Ensure the version value returned is correct.
 
 ## 5.12 2023-10-20
 * [Added] Tested through Neo4j 5.12

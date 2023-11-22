@@ -6,10 +6,10 @@
 
     <groupId>com.neo4jh3</groupId>
     <artifactId>neo4jh3</artifactId>
-    <version>5.12.0</version>
+    <version>5.13.0</version>
 
     <properties>
-        <neo4j.version>5.12.0</neo4j.version>
+        <neo4j.version>5.13.0</neo4j.version>
         <csv.version>1.2</csv.version>
 		<lang3.version>3.13.0</lang3.version>
 		<uber.version>4.1.1</uber.version>
@@ -20,10 +20,7 @@
         <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <assertj.version>3.22.0</assertj.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
-
-
-    
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>    
     </properties>
 
     <dependencies>
@@ -75,7 +72,7 @@
 		    <artifactId>h3</artifactId>
 		    <version>${uber.version}</version>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-collections4</artifactId>
@@ -96,7 +93,7 @@
             <!-- Used to send cypher statements to our procedure. -->
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
-            <version>5.9.0</version>
+            <version>5.13.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -118,13 +115,19 @@
     </dependencies>
 
     <repositories>
+    <repository>
+        <id>osgeo</id>
+        <name>OSGeo Release Repository</name>
+        <url>https://repo.osgeo.org/repository/release/</url>
+        <snapshots><enabled>false</enabled></snapshots>
+        <releases><enabled>true</enabled></releases>
+ </repository>
+ <!--
   <repository>
-    <id>osgeo</id>
-    <name>OSGeo Release Repository</name>
-    <url>https://repo.osgeo.org/repository/release/</url>
-    <snapshots><enabled>false</enabled></snapshots>
-    <releases><enabled>true</enabled></releases>
-  </repository>
+        <id>maven-repository</id>
+        <url>file:////Users/davidfauth/.m2/repository/com/uber/h3/4.1.2-SNAPSHOT</url>
+    </repository>
+-->
 </repositories>
 
     <build>
