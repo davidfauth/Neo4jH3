@@ -1,4 +1,9 @@
-# CHANGELOG - Neo4jH3
+# CHANGELOG - 5.14 - 2023-12-12
+* [Updated] - Updated pom.xml to add multi-release plugin. There have been some changes to Neo4j 5.14 where Neo4j 5.14 supports both Java 17 and Java 21. The multi-release ensures that Neo4j will start with the plugin installed.
+
+If you are using Neo4j 5.14, please use the 5.14 version of the Neo4jH3 plugin.
+
+# CHANGELOG - 5.13 - 2023-11-20
 * [ Added ] Tested through Neo4j 5.13
 * [ Added ] Updated README.md to mention that /tmp directory needs to have execute privileges.
 * [ Fixed ] Ensure the version value returned is correct.

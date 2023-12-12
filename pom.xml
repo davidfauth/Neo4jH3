@@ -6,10 +6,10 @@
 
     <groupId>com.neo4jh3</groupId>
     <artifactId>neo4jh3</artifactId>
-    <version>5.13.0</version>
+    <version>5.14.0</version>
 
     <properties>
-        <neo4j.version>5.13.0</neo4j.version>
+        <neo4j.version>5.14.0</neo4j.version>
         <csv.version>1.2</csv.version>
 		<lang3.version>3.13.0</lang3.version>
 		<uber.version>4.1.1</uber.version>
@@ -20,7 +20,8 @@
         <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
         <assertj.version>3.22.0</assertj.version>
-        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>    
+        <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version> 
+        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>  
     </properties>
 
     <dependencies>
@@ -36,13 +37,13 @@
             <version>${neo4j.version}</version>
             <scope>provided</scope>
         </dependency>
-
+<!--
 		<dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${lang3.version}</version>
         </dependency>
-
+-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
@@ -122,12 +123,6 @@
         <snapshots><enabled>false</enabled></snapshots>
         <releases><enabled>true</enabled></releases>
  </repository>
- <!--
-  <repository>
-        <id>maven-repository</id>
-        <url>file:////Users/davidfauth/.m2/repository/com/uber/h3/4.1.2-SNAPSHOT</url>
-    </repository>
--->
 </repositories>
 
     <build>
@@ -160,6 +155,18 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${maven-jar-plugin.version}</version>
+            <configuration>
+                <archive>
+                    <manifestEntries>
+                        <Multi-Release>true</Multi-Release>
+                    </manifestEntries>
+                </archive>
+            </configuration>
+        </plugin>
             <plugin>
                 <!-- This generates a jar-file with our procedure code,
                      plus any dependencies marked as `compile` scope.
