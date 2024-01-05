@@ -1482,8 +1482,69 @@ If h3CellIdExpr is invalid, the function returns -1
     CALL com.neo4jh3. tochildrenString('85283473fffffff',-1) yield value return value;
     "-2"
 
+## Experimental - Added in version 5.15.0
+
+## com.neo4jh3.writeH3ToDB( ListOfCells, Neo4j Label, Neo4j Property, Transaction Size )
+Writes the H3 indexes to the Neo4j database using a user provided Label and Property.
+
+### Syntax
+CALL com.neo4jh3.writeH3ToDB(listCells, strLabel, strProperty, txSize) yield value return value;
+
+### Arguments
+* listCells: A LIST of LONG values representing an H3 cell ID.
+* strLabel: A STRING indicating what Neo4j Label will be applied to the nodes.
+* strProperty: A STRING indicating what Neo4j Property will be applied to the nodes.
+* txSize: A LONG indicating the number of nodes to create in each transaction.
+
+### Returns
+A STRING indicating completion.
+
+### Error conditions
+If the strLabel or strProperty is empty, the procedure returns "-5"
+
+### Example
+    call com.neo4jh3.polygonToCells(value.Geometry,[],9,'lonlat') yield value as h3
+    with collect(h3) as ch3
+    call com.neo4jh3.writeH3ToDB(ch3,'Hex','hexAddress9') yield value return value;
+    "Finished"
+         
+    call com.neo4jh3.polygonToCells(value.Geometry,[],9,'lonlat') yield value as h3
+    with collect(h3) as ch3
+    call com.neo4jh3.writeH3ToDB(ch3,'','') yield value return value;
+    "-5"
+
+## com.neo4jh3.writeH3ToDBString( ListOfCells, Neo4j Label, Neo4j Property, Transaction Size )
+Writes the H3 indexes to the Neo4j database using a user provided Label and Property.
+
+### Syntax
+CALL com.neo4jh3.writeH3ToDBString(listCells, strLabel, strProperty, txSize) yield value return value;
+
+### Arguments
+* listCells: A LIST of STRING values representing an H3 cell ID.
+* strLabel: A STRING indicating what Neo4j Label will be applied to the nodes.
+* strProperty: A STRING indicating what Neo4j Property will be applied to the nodes.
+* txSize: A LONG indicating the number of nodes to create in each transaction.
+
+### Returns
+A STRING indicating completion.
+
+### Error conditions
+If the strLabel or strProperty is empty, the procedure returns "-5"
+
+### Example
+    call com.neo4jh3.polygonToCellsString(value.Geometry,[],9,'lonlat') yield value as h3
+    with collect(h3) as ch3
+    call com.neo4jh3.writeH3ToDBString(ch3,'Hex','hexAddress9') yield value return value;
+    "Finished"
+         
+    call com.neo4jh3.polygonToCellsString(value.Geometry,[],9,'lonlat') yield value as h3
+    with collect(h3) as ch3
+    call com.neo4jh3.writeH3ToDBString(ch3,'','') yield value return value;
+    "-5"
+
 ## Error Codes
 * -1 or "-1" : Invalid H3 Address
 * -2 or "-2" : Invalid Resolution
 * -3 or "-3" : Invalid Latitude
 * -4 or "-4" : Invalid Longitude
+* -5 or "-5" : Empty Label and/or Property

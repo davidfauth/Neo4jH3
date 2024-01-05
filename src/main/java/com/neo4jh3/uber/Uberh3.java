@@ -12,8 +12,11 @@ import mil.nga.sf.wkt.GeometryReader;
 
 import org.apache.commons.math3.util.Precision;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Label;
+import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.procedure.*;
+import org.neo4j.procedure.builtin.BuiltInDbmsProcedures.StringResult;
 
 import java.io.IOException;
 import java.util.*;
@@ -28,7 +31,7 @@ public class Uberh3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "5.14.0";
+    private final static String NEO4J_H3_VERSION = "5.15.0";
 
     private static H3Core h3 = null;
                     
@@ -2427,6 +2430,102 @@ public Stream<H3StringAddress> uncompactString(@Name("listCells") List<String> l
     }
 }
 
+    // Experimental write to db procedure
+@Procedure(name = "com.neo4jh3.writeH3ToDB", mode = Mode.WRITE)
+@Description("CALL com.neo4jh3.writeH3ToDB(listCells, strLabel, strProperty, txSize)")
+public Stream<StringResult> writeH3ToDB(@Name("listCells") List<Long> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("txSize") Long txSize) throws InterruptedException {
+    String returnMessage = "";
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
+    }
+    if (strLabel.isBlank() || strProperty.isBlank()){
+        returnMessage = "-5";
+        //throw new InterruptedException("Empty Label and/or Property");
+    } else {
+        if (txSize < 1) {
+            txSize = 10000L;
+        }
+        Integer count = 0;
+        Long curRes = 0L;
+        Throwable txEx = null;
+        ListIterator<Long> iterator = listCells.listIterator();
+        Transaction tx = db.beginTx();
+        try {
+            while (iterator.hasNext()) {
+                curRes = iterator.next();
+                Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
+                if (h3Node == null) {
+                    h3Node = tx.createNode(Label.label(strLabel));
+                    h3Node.setProperty(strProperty,curRes);
+                }
+                    
+                if (count % txSize == 0) {
+                    tx.commit();
+                    tx = db.beginTx();
+                }
+                count++;
+            }
+            tx.commit();
+        } catch (Throwable ex) {
+            txEx = ex;
+            System.out.println(ex);
+        }
+    } 
+    if (returnMessage.isBlank()){
+        return Stream.of(new StringResult("Finished"));
+    } else {
+        return Stream.of(new StringResult(returnMessage));
+    }
+}
+
+    // Experimental write to db procedure
+@Procedure(name = "com.neo4jh3.writeH3StringToDB", mode = Mode.WRITE)
+@Description("CALL com.neo4jh3.writeH3StringToDB(listCells, strLabel, strProperty, txSize)")
+public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("txSize") Long txSize) throws InterruptedException {
+    String returnMessage = "";
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
+    }
+    if (strLabel.isBlank() || strProperty.isBlank()){
+        returnMessage = "Empty Label and/or Property";
+        //throw new InterruptedException("Empty Label and/or Property");
+    } else {
+        if (txSize < 1) {
+            txSize = 10000L;
+        }
+        Integer count = 0;
+        String curRes = "";
+        Throwable txEx = null;
+        ListIterator<String> iterator = listCells.listIterator();
+        Transaction tx = db.beginTx();
+        try {
+            while (iterator.hasNext()) {
+                curRes = iterator.next();
+                Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
+                if (h3Node == null) {
+                    h3Node = tx.createNode(Label.label(strLabel));
+                    h3Node.setProperty(strProperty,curRes);
+                }
+                    
+                if (count % txSize == 0) {
+                    tx.commit();
+                    tx = db.beginTx();
+                }
+                count++;
+            }
+            tx.commit();
+        } catch (Throwable ex) {
+            txEx = ex;
+            System.out.println(ex);
+        }
+    } 
+    if (returnMessage.isBlank()){
+        return Stream.of(new StringResult("Finished"));
+    } else {
+        return Stream.of(new StringResult(returnMessage));
+    }
+}
+
 
 
     private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
@@ -2447,7 +2546,5 @@ public Stream<H3StringAddress> uncompactString(@Name("listCells") List<String> l
 			return (dist);
 		}
 	}
-    
-
 
 }

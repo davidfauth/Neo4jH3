@@ -1,3 +1,8 @@
+# CHANGELOG - 5.15 - 2023-12-127
+* [Updated] - Tested through Neo4j 5.15
+* [Added] - Added MIT license.
+* [Added] - Added two new procedures that write to the Neo4j database. These are com.neo4jh3.writeH3StringToDB and com.neo4jh3.writeH3ToDB. These procedures take a list of hex addresses, a Label, a Property and a transaction size and write the results to the database. If you are using these procedures, it is highly recommended that you have a constraint or index for the Label and Property.
+
 # CHANGELOG - 5.14 - 2023-12-12
 * [Updated] - Updated pom.xml to add multi-release plugin. There have been some changes to Neo4j 5.14 where Neo4j 5.14 supports both Java 17 and Java 21. The multi-release ensures that Neo4j will start with the plugin installed.
 

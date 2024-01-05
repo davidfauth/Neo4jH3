@@ -11,8 +11,8 @@ project, simply package the project with maven:
 
     mvn clean package
 
-This will produce a jar-file, `neo4jh3-5.13.0.jar`,
-that can be copied to the `plugin` directory of your Neo4j instance.
+This will produce a jar-file, `neo4jh3-5.15.0.jar`,
+that can be copied to the `plugins` directory of your Neo4j instance.
 
     cp target/neo4jh3-5.13.0.jar  neo4j-enterprise-5.x.0/plugins/.
 
