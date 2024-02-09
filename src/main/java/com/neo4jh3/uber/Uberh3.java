@@ -14,6 +14,8 @@ import org.apache.commons.math3.util.Precision;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Label;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.procedure.*;
 import org.neo4j.procedure.builtin.BuiltInDbmsProcedures.StringResult;
@@ -31,7 +33,7 @@ public class Uberh3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "5.15.0";
+    private final static String NEO4J_H3_VERSION = "5.16.0";
 
     private static H3Core h3 = null;
                     
@@ -102,12 +104,12 @@ public class Uberh3 {
             returnValue = -1L;
         }
 
-        if ( latValue>90 || latValue<-90 ){
+        if ( latValue > 90 || latValue < -90 ){
             validLatLon = 0;
             returnValue = -3L;
         }
 
-        if ( longValue>180 || longValue<-180 ){
+        if ( longValue > 180 || longValue < -180 ){
             validLatLon = 0;
             returnValue = -4L;
         }
@@ -124,6 +126,7 @@ public class Uberh3 {
         return returnValue;
     }
 
+    @SuppressWarnings("null")
     @UserFunction(name = "com.neo4jh3.h3HexAddressString")
     @Description("com.neo4jh3.h3HexAddressString(latitude, longitude, resolution) - return the hex address for a given latitude.")
     public String h3HexAddressString(
@@ -139,12 +142,12 @@ public class Uberh3 {
             returnString = "NULL";
         }
 
-        if ( latValue>90 || latValue<-90 ){
+        if ( latValue > 90 || latValue < -90 ){
             validLatLon = 0;
             returnString = "-3";
         }
 
-        if ( longValue>180 || longValue<-180 ){
+        if ( longValue > 180 || longValue < -180 ){
             validLatLon = 0;
             returnString = "-4";
         }
@@ -162,6 +165,10 @@ public class Uberh3 {
 
     
 
+    /**
+     * @param longHex
+     * @return
+     */
     @UserFunction(name = "com.neo4jh3.h3tostring")
     @Description("com.neo4jh3.h3tostring(longHex) - return the string value of a long hex address.")
     public String h3tostringFunction(
@@ -179,7 +186,6 @@ public class Uberh3 {
             }
             return returnString;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             returnString = "-1";
             return returnString;
         }
@@ -202,7 +208,6 @@ public class Uberh3 {
             }
             return returnString;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             returnString = -1L;
             return returnString;
         }
@@ -225,7 +230,6 @@ public class Uberh3 {
             }
             return returnString;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             returnString = -1L;
             return returnString;
         }
@@ -248,7 +252,6 @@ public class Uberh3 {
             }
             return returnString;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             returnString = -1L;
             return returnString;
         }
@@ -378,10 +381,7 @@ public class Uberh3 {
             }
         }
 
-
-        return returnValue;
-        
-        
+        return returnValue;     
     }
 
     @UserFunction(name = "com.neo4jh3.gridDistanceString")
@@ -407,8 +407,7 @@ public class Uberh3 {
                 returnValue = -1L;
             }
         }
-        return returnValue;
-        
+        return returnValue;  
     }
 
     @UserFunction(name = "com.neo4jh3.toparent")
@@ -479,8 +478,8 @@ public class Uberh3 {
         } else { 
             return "-1";
         }
-
     }
+
     @UserFunction(name = "com.neo4jh3.cellToLatLngString")
     @Description("CALL com.neo4jh3.cellToLatLngString(hexAddress)")
     public String cellToLatLngString(@Name("hexAddress") String hexAddress) throws InterruptedException {
@@ -497,12 +496,12 @@ public class Uberh3 {
         } else {
             return "-1";
         }
-
     }
 
     @UserFunction(name = "com.neo4jh3.distanceBetweenHexes")
     @Description("CALL com.neo4jh3.distanceBetweenHexes(fromHexAddress, toHexAddress)")
     public double distanceBetweenHexes(@Name("fromHexAddress") Long fromHexAddress, @Name("toHexAddress") Long toHexAddress) throws InterruptedException {
+        double returnDistance = 0.0;
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
         }
@@ -512,12 +511,10 @@ public class Uberh3 {
         if (h3.isValidCell(fromHexAddress) && h3.isValidCell(toHexAddress)){
             LatLng fromGeoCoord = h3.cellToLatLng(fromHexAddress);
             LatLng toGeoCoord = h3.cellToLatLng(toHexAddress);
-            return h3.greatCircleDistance(fromGeoCoord, toGeoCoord, LengthUnit.km);
+            return returnDistance =  Precision.round(h3.greatCircleDistance(fromGeoCoord, toGeoCoord, LengthUnit.km),6);
         } else {
             return -1.0;
         }
-        //double geoDistance = distance(fromGeoCoord.lat, fromGeoCoord.lng, toGeoCoord.lat, toGeoCoord.lng,units);
-        //return geoDistance;
     }
 
     @UserFunction(name = "com.neo4jh3.distanceBetweenHexesString")
@@ -537,7 +534,6 @@ public class Uberh3 {
         } else {
             return -1.0;
         }
-
     }
 
     @UserFunction(name = "com.neo4jh3.minChild")
@@ -678,6 +674,35 @@ public class Uberh3 {
         }
     }
 
+    @UserFunction(name = "com.neo4jh3.angleBetweenPoints")
+    @Description("CALL com.neo4jh3.angleBetweenPoints(latitude1, longitude1, latitude2, longitude2)")
+    public Double angleBetweenPoints(
+        @Name("latitude1") Double lat1Value,
+        @Name("longitude1") Double lon1Value,
+        @Name("latitude2") Double lat2Value,
+        @Name("longitude2") Double lon2Value
+        ) throws InterruptedException {
+        Double returnValue = 0.0;
+        int hasError=0;
+        if (h3 == null) {
+            throw new InterruptedException("h3 failed to initialize");
+        }
+        if ( lat1Value>90 || lat2Value<-90  || lat1Value>90 || lat2Value<-90 ){
+            returnValue = -1.0;
+            hasError = 1;
+        }
+
+        if ( lon1Value>180 || lon1Value<-180 ||  lon2Value>180 || lon2Value<-180 ){
+            returnValue = -2.0;
+            hasError = 1;
+        }
+        if (hasError < 1){
+            return Precision.round(distance(lat1Value,lon1Value,lat2Value,lon2Value),6);
+        } else {
+            return returnValue;
+        }
+    }
+
     // Geography Functions
     @UserFunction(name = "com.neo4jh3.pointash3")
     @Description("com.neo4jh3.pointash3(wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
@@ -712,7 +737,6 @@ public class Uberh3 {
             } catch (Exception e) {
                 //System.out.println(e);
                 h3Address = -1L;
-                // TODO Auto-generated catch block
                 //e.printStackTrace();
             }
         return h3Address;
@@ -749,7 +773,6 @@ public class Uberh3 {
             } catch (Exception e) {
                 //System.out.println(e);
                 h3Address = "-1";
-                // TODO Auto-generated catch block
                 //e.printStackTrace();
             }
         return h3Address;
@@ -836,7 +859,6 @@ public class Uberh3 {
                } catch (Exception e) {
                    //System.out.println(e);
                    listh3Address = Collections.singletonList(-1L);
-                   // TODO Auto-generated catch block
                    //e.printStackTrace();
                }
                return listh3Address.stream().map(H3LongAddress::of);
@@ -912,7 +934,6 @@ public class Uberh3 {
                   } catch (Exception e) {
                       //System.out.println(e);
                       listh3Address = Collections.singletonList("-1");
-                      // TODO Auto-generated catch block
                       //e.printStackTrace();
                   }
                   return listh3Address.stream().map(H3StringAddress::of);
@@ -926,7 +947,6 @@ public class Uberh3 {
             {
             List<Long> listh3Address = new ArrayList<Long>();
             List<Long> gpCells = new ArrayList<Long>();
-            Long h3Address = 0L;
             Long h3StartAddress = 0L;
             Long h3MidAddress = 0L;
             Long h3EndAddress = 0L;
@@ -989,7 +1009,6 @@ public class Uberh3 {
             } catch (Exception e) {
                 //System.out.println(e);
                 listh3Address = Collections.singletonList(-1L);
-                // TODO Auto-generated catch block
                 //e.printStackTrace();
             }
             return listh3Address.stream().map(H3LongAddress::of);
@@ -1065,7 +1084,6 @@ public class Uberh3 {
                } catch (Exception e) {
                    //System.out.println(e);
                    listh3Address = Collections.singletonList("-1");
-                   // TODO Auto-generated catch block
                    //e.printStackTrace();
                }
                return listh3Address.stream().map(H3StringAddress::of);
@@ -1091,7 +1109,6 @@ public class Uberh3 {
                     Double lng = Precision.round(centerPoint.lng,6);
                     Point point =new Point(false, false, lng, lat);
                     byte[] bytes = GeometryWriter.writeGeometry(point);
-                    String hex = "";
                     for (byte i : bytes) {
                         geoJsonString += String.format("%02X", i);
                     }
@@ -1101,7 +1118,6 @@ public class Uberh3 {
                 }
                 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 geoJsonString = "Error getting value";
             }
         return geoJsonString;
@@ -1125,7 +1141,6 @@ public class Uberh3 {
                     Double lng = Precision.round(centerPoint.lng,6);
                     Point point =new Point(false, false, lng, lat);
                     byte[] bytes = GeometryWriter.writeGeometry(point);
-                    String hex = "";
                     for (byte i : bytes) {
                         geoJsonString += String.format("%02X", i);
                     }
@@ -1135,7 +1150,6 @@ public class Uberh3 {
                 }
                 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 geoJsonString = "Error getting value";
             }
         return geoJsonString;
@@ -1164,7 +1178,6 @@ public class Uberh3 {
                 }
                 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 geoJsonString = "Error getting value";
             }
         return geoJsonString;
@@ -1194,7 +1207,6 @@ public class Uberh3 {
                 }
                 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 geoJsonString = "Error getting value";
             }
         return geoJsonString;
@@ -1206,7 +1218,6 @@ public class Uberh3 {
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
             String geoJsonString = "";
-            LatLng centerPoint = null; 
             List<LatLng> hexPoints = new ArrayList<>();
             
             if (h3 == null) {
@@ -1239,7 +1250,6 @@ public class Uberh3 {
                     geoJsonString = "-1";
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         return geoJsonString;
@@ -1251,7 +1261,6 @@ public class Uberh3 {
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
             String geoJsonString = "";
-            LatLng centerPoint = null; 
             List<LatLng> hexPoints = new ArrayList<>();
             
             if (h3 == null) {
@@ -1284,7 +1293,6 @@ public class Uberh3 {
                     geoJsonString = "-1";
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         return geoJsonString;
@@ -1296,7 +1304,6 @@ public class Uberh3 {
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
             String geoJsonString = "";
-            LatLng centerPoint = null; 
             List<LatLng> hexPoints = new ArrayList<>();
             
             if (h3 == null) {
@@ -1325,7 +1332,6 @@ public class Uberh3 {
                     ring.addPoint(tpfirst);
                     mil.nga.sf.Polygon polygon = new mil.nga.sf.Polygon(ring);
                     byte[] bytes = GeometryWriter.writeGeometry(polygon);
-                    String hex = "";
                     for (byte bi : bytes) {
                         geoJsonString += String.format("%02X", bi);
                     }
@@ -1334,7 +1340,6 @@ public class Uberh3 {
                     geoJsonString = "-1";
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         return geoJsonString;
@@ -1346,7 +1351,6 @@ public class Uberh3 {
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
             String geoJsonString = "";
-            LatLng centerPoint = null; 
             List<LatLng> hexPoints = new ArrayList<>();
             
             if (h3 == null) {
@@ -1375,7 +1379,6 @@ public class Uberh3 {
                     ring.addPoint(tpfirst);
                     mil.nga.sf.Polygon polygon = new mil.nga.sf.Polygon(ring);
                     byte[] bytes = GeometryWriter.writeGeometry(polygon);
-                    String hex = "";
                     for (byte bi : bytes) {
                         geoJsonString += String.format("%02X", bi);
                     }
@@ -1384,7 +1387,6 @@ public class Uberh3 {
                     geoJsonString = "-1";
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         return geoJsonString;
@@ -1414,7 +1416,6 @@ public class Uberh3 {
                 }
                 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 geoJsonString = "Error getting value";
             }
         return geoJsonString;
@@ -1443,7 +1444,6 @@ public class Uberh3 {
                 }
                 
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 geoJsonString = "Error getting value";
             }
         return geoJsonString;
@@ -1456,7 +1456,6 @@ public class Uberh3 {
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
             String geoJsonString = "";
-            LatLng centerPoint = null; 
             List<LatLng> hexPoints = new ArrayList<>();
             
             if (h3 == null) {
@@ -1489,7 +1488,6 @@ public class Uberh3 {
                     geoJsonString = "-1";
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         return geoJsonString;
@@ -1534,7 +1532,6 @@ public class Uberh3 {
                     geoJsonString = "-1";
                 }
             } catch (Exception e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         return geoJsonString;
@@ -2184,7 +2181,6 @@ public class Uberh3 {
             }
         };
 
-        // XXX Not sure if this is correct...
         final Spliterator<List<String>> spliterator = Spliterators.spliterator(iterator, addresses.size() - 1, Spliterator.ORDERED);
 
         return StreamSupport
@@ -2268,8 +2264,8 @@ public Stream<H3LongAddress> unCompact(@Name("listCells") List<Long> listCells, 
 @Procedure(name = "com.neo4jh3.linepolyIntersection", mode = Mode.READ)
 @Description("com.neo4jh3.linepolyIntersection(polyEdges, polyEdgeHoles,wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
     public Stream<H3LongAddress> lineash3(
-         @Name("polyEdges") List<String> polyEdges, 
-         @Name("polyEdgeHoles") List<String> polyEdgeHoles,
+        @Name("polyEdges") List<String> polyEdges, 
+        @Name("polyEdgeHoles") List<String> polyEdgeHoles,
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res,
         @Name("latlonorder") String latlonorder) throws InterruptedException 
@@ -2384,7 +2380,6 @@ public Stream<H3LongAddress> unCompact(@Name("listCells") List<Long> listCells, 
         } catch (Exception e) {
             //System.out.println(e);
             hexListFinal = Collections.singletonList(-1L);
-            // TODO Auto-generated catch block
             //e.printStackTrace();
         }
         return hexListFinal.stream().map(H3LongAddress::of);
@@ -2526,7 +2521,173 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
     }
 }
 
+    // Experimental write to db procedure
+    @Procedure(name = "com.neo4jh3.writeH3NodesRelsToDB", mode = Mode.WRITE)
+    @Description("CALL com.neo4jh3.writeH3NodesRelsToDB(From Node, List of H3 Cells, To Node Label, To Node Property Name, RelationshipType, Transaction Size)")
+    public Stream<StringResult> writeH3NodesRelsToDB(@Name("fromNode") Node fromNode, @Name("listCells") List<Long> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("strRelationshipType") String strRelationshipType, @Name("txSize") Long txSize) throws InterruptedException {
+        String returnMessage = "";
+        String fromNodeElmementID = "";
+        if (listCells == null) {
+            throw new InterruptedException("invalid list of hex addresses");
+        }
+        if (strLabel.isBlank() || strProperty.isBlank() || strRelationshipType.isBlank()){
+            returnMessage = "-5";
+            //throw new InterruptedException("Empty Label and/or Property");
+        } else {
+            if (txSize < 1) {
+                txSize = 10000L;
+            }
+            Integer count = 1;
+            Long curRes =0L;
+            Throwable txEx = null;
+            ListIterator<Long> iterator = listCells.listIterator();
+            HashMap<String, String> relNodeList = new HashMap<String, String>();
+            String endNodeID = "";
+            String qry = "";
+            List<String> hexList = new ArrayList<String>();
+            Map<String,Object> params = new HashMap<>();
+            Transaction tx = db.beginTx();
+            
+            try {
+                fromNodeElmementID = fromNode.getElementId();
+                Node tFromNode = tx.getNodeByElementId(fromNodeElmementID);
+                for (Relationship r : tFromNode.getRelationships(RelationshipType.withName(strRelationshipType))) {
+                    endNodeID = r.getEndNode().getElementId();
+                    relNodeList.put(endNodeID,endNodeID);
+                }
 
+                while (iterator.hasNext()) {
+                    curRes = iterator.next();
+                    Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
+                    if (h3Node == null) {
+                        h3Node = tx.createNode(Label.label(strLabel));
+                        h3Node.setProperty(strProperty,curRes);
+                    }
+
+                    endNodeID = h3Node.getElementId();
+                    if (relNodeList.get(endNodeID) == null){
+                        hexList.add(endNodeID);
+                        relNodeList.put(endNodeID,endNodeID);
+                    }
+
+                    if (count % txSize == 0) {
+                        params.put("fromNode",fromNodeElmementID);
+                        params.put("hexList",hexList);
+                        qry = "UNWIND $hexList as teid MATCH (t) where elementId(t) = teid MATCH (f) where elementID(f) = $fromNode MERGE (f)-[:" + strRelationshipType + "]->(t);";
+                        tx.execute( qry, params);
+                        hexList.clear();
+                        params.clear();
+                    }
+
+                    if (count % txSize == 0) {
+                        tx.commit();
+                        tx = db.beginTx();
+                    }
+                    count++;
+                }
+                // Run final relationship group
+                params.put("hexList",hexList);
+                params.put("fromNode",fromNodeElmementID);
+                qry = "UNWIND $hexList as teid MATCH (t) where elementId(t) = teid MATCH (f) where elementID(f) = $fromNode MERGE (f)-[:" + strRelationshipType + "]->(t);";
+                tx.execute( qry, params);
+                tx.commit();
+                hexList.clear();
+                params.clear();
+            } catch (Throwable ex) {
+                txEx = ex;
+                System.out.println(ex);
+            }
+        } 
+        if (returnMessage.isBlank()){
+            return Stream.of(new StringResult("Finished"));
+        } else {
+            return Stream.of(new StringResult(returnMessage));
+        }
+    }
+
+    // Experimental write to db procedure
+    @Procedure(name = "com.neo4jh3.writeH3StringNodesRelsToDB", mode = Mode.WRITE)
+    @Description("CALL com.neo4jh3.writeH3StringNodesRelsToDB(From Node, List of H3 Cells, To Node Label, To Node Property Name, RelationshipType, Transaction Size)")
+    public Stream<StringResult> writeH3StringNodesRelsToDB(@Name("fromNode") Node fromNode, @Name("listCells") List<String> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("strRelationshipType") String strRelationshipType, @Name("txSize") Long txSize) throws InterruptedException {
+        String returnMessage = "";
+        String fromNodeElmementID = "";
+        if (listCells == null) {
+            throw new InterruptedException("invalid list of hex addresses");
+        }
+        if (strLabel.isBlank() || strProperty.isBlank() || strRelationshipType.isBlank()){
+            returnMessage = "-5";
+            //throw new InterruptedException("Empty Label and/or Property");
+        } else {
+            if (txSize < 1) {
+                txSize = 10000L;
+            }
+            Integer count = 1;
+            String curRes = "";
+            Throwable txEx = null;
+            ListIterator<String> iterator = listCells.listIterator();
+            HashMap<String, String> relNodeList = new HashMap<String, String>();
+            String endNodeID = "";
+            String qry = "";
+            List<String> hexList = new ArrayList<String>();
+            Map<String,Object> params = new HashMap<>();
+            Transaction tx = db.beginTx();
+            
+            try {
+                fromNodeElmementID = fromNode.getElementId();
+                Node tFromNode = tx.getNodeByElementId(fromNodeElmementID);
+                for (Relationship r : tFromNode.getRelationships(RelationshipType.withName(strRelationshipType))) {
+                    endNodeID = r.getEndNode().getElementId();
+                    relNodeList.put(endNodeID,endNodeID);
+                }
+
+                while (iterator.hasNext()) {
+                    curRes = iterator.next();
+                    Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
+                    if (h3Node == null) {
+                        h3Node = tx.createNode(Label.label(strLabel));
+                        h3Node.setProperty(strProperty,curRes);
+                    }
+
+                    endNodeID = h3Node.getElementId();
+                    if (relNodeList.get(endNodeID) == null){
+                        hexList.add(endNodeID);
+                        relNodeList.put(endNodeID,endNodeID);
+                    }
+
+                    if (count % txSize == 0) {
+                        params.put("fromNode",fromNodeElmementID);
+                        params.put("hexList",hexList);
+                        qry = "UNWIND $hexList as teid MATCH (t) where elementId(t) = teid MATCH (f) where elementID(f) = $fromNode MERGE (f)-[:" + strRelationshipType + "]->(t);";
+                        tx.execute( qry, params);
+                        hexList.clear();
+                        params.clear();
+                    }
+
+                    if (count % txSize == 0) {
+                        tx.commit();
+                        tx = db.beginTx();
+                    }
+                    count++;
+                }
+                // Run final relationship group
+                params.put("hexList",hexList);
+                params.put("fromNode",fromNodeElmementID);
+                qry = "UNWIND $hexList as teid MATCH (t) where elementId(t) = teid MATCH (f) where elementID(f) = $fromNode MERGE (f)-[:" + strRelationshipType + "]->(t);";
+                tx.execute( qry, params);
+                tx.commit();
+                hexList.clear();
+                params.clear();
+            } catch (Throwable ex) {
+                txEx = ex;
+                System.out.println(ex);
+            }
+        } 
+        if (returnMessage.isBlank()){
+            return Stream.of(new StringResult("Finished"));
+        } else {
+            return Stream.of(new StringResult(returnMessage));
+        }
+    }
 
     private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
 		if ((lat1 == lat2) && (lon1 == lon2)) {
@@ -2544,6 +2705,23 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
 				dist = dist * 0.8684;
 			}
 			return (dist);
+		}
+	}
+
+    private static double distance(double lat1, double lon1, double lat2, double lon2) {
+		if ((lat1 == lat2) && (lon1 == lon2)) {
+			return 0;
+		}
+		else {
+			double longitude1 = lon1;
+            double longitude2 = lon2;
+            double latitude1 = Math.toRadians(lat1);
+            double latitude2 = Math.toRadians(lat2);
+            double longDiff= Math.toRadians(longitude2-longitude1);
+            double y= Math.sin(longDiff)*Math.cos(latitude2);
+            double x=Math.cos(latitude1)*Math.sin(latitude2)-Math.sin(latitude1)*Math.cos(latitude2)*Math.cos(longDiff);
+
+            return (Math.toDegrees(Math.atan2(y, x))+360)%360;
 		}
 	}
 

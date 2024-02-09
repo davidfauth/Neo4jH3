@@ -3,11 +3,6 @@ package com.neo4jh3;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import com.google.common.collect.ImmutableList;
-import com.uber.h3core.exceptions.H3Exception;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import org.junit.Test;
 

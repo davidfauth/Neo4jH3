@@ -3,10 +3,6 @@ package com.neo4jh3;
 import org.assertj.core.api.Assertions;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.Rule;
 import org.junit.Test;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -18,8 +14,6 @@ import org.neo4j.harness.Neo4jBuilders;
 import com.neo4jh3.uber.Uberh3;
 import com.uber.h3core.H3CoreLoader;
 
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
 
 public class Neo4jH3Test {
     private static Driver driver;
@@ -45,11 +39,7 @@ public class Neo4jH3Test {
         */
                 if (System.getProperty("os.name").toLowerCase().equalsIgnoreCase("mac os x")){
                         result = session.run("return com.neo4jh3.distanceBetweenHexes(599686042433355775,599686015589810175) as value");
-                        String myResult = result.single().get("value").toString();
-                        
-                        myResult = myResult.substring(0, 11);
-                        assertEquals("17.87016346",myResult);
-                        //assertEquals(17.870163466857925,result.single().get("value").asDouble(),0);
+                        assertEquals(17.870163, result.single().get("value").asDouble(),0);
 
                         result = session.run("RETURN com.neo4jh3.centeraswkb(599686042433355775) AS value");
                         assertEquals("\"0000000001C05E7E7CF1C3265B4042AC42F1ED17C6\"", result.single().get("value").toString());
@@ -122,7 +112,7 @@ public class Neo4jH3Test {
                  }
 
                 result = session.run("RETURN com.neo4jh3.version() AS value");
-                assertEquals("\"5.15.0\"", result.single().get("value").toString());
+                assertEquals("\"5.16.0\"", result.single().get("value").toString());
 
                 result = session.run("RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value");
                 assertEquals("\"37.564248,-122.325306\"", result.single().get("value").toString());
@@ -329,6 +319,9 @@ public class Neo4jH3Test {
 
                 result = session.run("RETURN com.neo4jh3.h3Resolution(599686042433355775) AS value");
                 assertEquals(5L, result.single().get("value").asLong(),0);
+
+                result = session.run("RETURN com.neo4jh3.angleBetweenPoints(40.123,-78.111,40.555,-78.910) AS value");
+                assertEquals(305.607560, result.single().get("value").asDouble(),0);
 
                 /* Procedures */
 

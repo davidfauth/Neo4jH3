@@ -26,10 +26,11 @@ Edit your Neo4j/conf/neo4j.conf file by adding this line:
 (Re)start Neo4j
 
 # Documentation
-Refer to the Documentation.md file for detailed documenation on the functions / procedures.
+Refer to the Documentation.md file for detailed documentation on the functions / procedures.
 
 # Note
 The Neo4jH3 plugin requires the ability to write to the temp directory. If the temp directory configured with noexec, then you need to update the neo4j.conf with these two lines:
+
     server.jvm.additional=-Djava.io.tmpdir=/path_to_a_new_directory/temp
     server.jvm.additional=-Djna.tmpdir=/path_to_a_new_directory/temp
 

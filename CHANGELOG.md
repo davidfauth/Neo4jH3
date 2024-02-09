@@ -1,4 +1,9 @@
-# CHANGELOG - 5.15 - 2023-12-127
+# CHANGELOG - 5.16 - 2024-02-09
+* [Updated] - Tested through Neo4j 5.16
+* [Added] - Added two new procedures that write to the Neo4j database. These are com.neo4jh3.writeH3NodesRelsToDB and com.neo4jh3.writeH3StringNodesRelsToDB. These procedures take the from node, a list of hex addresses, a Label, a Property and a transaction size and write the H3 address nodes and create relationships between the H3 node and the From Node to the database. If you are using these procedures, it is highly recommended that you have a constraint or index for the Label and Property.
+* [Added] - Added a function com.neo4jh3.angleBetweenPoints to calculate the angle between two points (latitude and longitude). 
+
+# CHANGELOG - 5.15 - 2023-12-17
 * [Updated] - Tested through Neo4j 5.15
 * [Added] - Added MIT license.
 * [Added] - Added two new procedures that write to the Neo4j database. These are com.neo4jh3.writeH3StringToDB and com.neo4jh3.writeH3ToDB. These procedures take a list of hex addresses, a Label, a Property and a transaction size and write the results to the database. If you are using these procedures, it is highly recommended that you have a constraint or index for the Label and Property.

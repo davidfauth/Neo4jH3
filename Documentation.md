@@ -1,4 +1,29 @@
 # Documentation
+## com.neo4jh3.angleBetweenPoints( Latitude1, Longitude1, Latitude2, Longitude2 )
+Returns the angle in degrees between two points.
+
+### Syntax
+RETURN com.neo4jh3.angleBetweenPoints( Latitude1, Longitude1, Latitude2, Longitude2 ) as value
+
+### Arguments
+* Latitude1: A DOUBLE expression representing the latitude (in degrees) of the first point
+* Longitude1: A DOUBLE expression representing the longitude (in degrees) of the first point
+* Latitude2: A DOUBLE expression representing the latitude (in degrees) of the second point
+* Longitude2: A DOUBLE expression representing the longitude (in degrees) of the second point
+
+### Returns
+A value of the type DOUBLE representing the angle in degrees between the two points.
+
+### Error conditions
+If any of the latitude or longitude values are invalid, the function returns -1
+
+### Example
+    RETURN com.neo4jh3.angleBetweenPoints(40.123,-78.111,40.555,-78.910) AS value
+    305.607560
+       
+    RETURN com.neo4jh3.angleBetweenPoints(240.123,-78.111,40.555,-78.910) AS value
+    -1.0
+
 ## com.neo4jh3.boundaryaswkt( h3CellIdExpr )
 Returns the polygonal boundary of the input H3 cell in WKT format.
 
@@ -199,7 +224,7 @@ RETURN com.neo4jh3.cellToLatLng( h3CellId1Expr ) AS value;
 A STRING value consisting of the latitude and longitude of the h3CellIdExpr.
 
 ### Error conditions
-If h3XellIdExpr is an invalid h3 address, the function returns -1.
+If h3CellIdExpr is an invalid h3 address, the function returns -1.
 
 ### Example
     RETURN com.neo4jh3.cellToLatLng(635714569676958015) AS value
@@ -221,7 +246,7 @@ RETURN com.neo4jh3.cellToLatLngString( h3CellIdExpr ) AS value;
 A STRING value consisting of the latitude and longitude of the h3CellIdExpr.
 
 ### Error conditions
-If h3XellIdExpr is an invalid h3 address, the function returns -1.
+If h3CellIdExpr is an invalid h3 address, the function returns -1.
 
 ### Example
     RETURN com.neo4jh3.cellToLatLngString('892830926cfffff') AS value
@@ -1540,6 +1565,74 @@ If the strLabel or strProperty is empty, the procedure returns "-5"
     call com.neo4jh3.polygonToCellsString(value.Geometry,[],9,'lonlat') yield value as h3
     with collect(h3) as ch3
     call com.neo4jh3.writeH3ToDBString(ch3,'','') yield value return value;
+    "-5"
+
+## com.neo4jh3.writeH3NodesRelsToDB( From Node, ListOfCells, Neo4j Label, Neo4j Property, Relationships Type, Transaction Size )
+Writes the H3 index values to the Neo4j database as a node using a user provided Label and Property.
+Connects the H3 index values to the From Node using the specified Relationship value.
+
+### Syntax
+CALL com.neo4jh3.writeH3NodesRelsToDB(fromNode, listCells, strLabel, strProperty, relationshipType, txSize) yield value return value;
+
+### Arguments
+* fromNode: An existing Node in the Neo4j database.
+* listCells: A LIST of LONG values representing an H3 cell ID.
+* strLabel: A STRING indicating what Neo4j Label will be applied to the nodes.
+* strProperty: A STRING indicating what Neo4j Property will be applied to the nodes.
+* relationshipType: A STRING indicating what relationship type will be used for the relationships.
+* txSize: A LONG indicating the number of nodes to create in each transaction.
+
+### Returns
+A STRING indicating completion.
+
+### Error conditions
+If the strLabel or strProperty is empty, the procedure returns "-5"
+
+### Example
+    match (cs:CountySubDivision {cousubns:value.COUSUBNS})
+    call com.neo4jh3.polygonToCells(value.Geometry,[],8,'lonlat') yield value as h3
+    with cs, collect(h3) as ch3
+    call com.neo4jh3.writeH3NodesRelsToDB(cs,ch3,'Hex','hexAddress8','HAS_HEXADDRESS', 10000) yield value return value;
+    "Success"
+         
+    match (cs:CountySubDivision {cousubns:value.COUSUBNS})
+    call com.neo4jh3.polygonToCells(value.Geometry,[],8,'lonlat') yield value as h3
+    with cs, collect(h3) as ch3
+    call com.neo4jh3.writeH3NodesRelsToDB(cs,ch3,'Hex','','HAS_HEXADDRESS', 10000) yield value return value;
+    "-5"
+
+# com.neo4jh3.writeH3StringNodesRelsToDB( From Node, ListOfCells, Neo4j Label, Neo4j Property, Relationships Type, Transaction Size )
+Writes the H3 index values to the Neo4j database as a node using a user provided Label and Property.
+Connects the H3 index values to the From Node using the specified Relationship value.
+
+### Syntax
+CALL com.neo4jh3.writeH3StringNodesRelsToDB(fromNode, listCells, strLabel, strProperty, relationshipType, txSize) yield value return value;
+
+### Arguments
+* fromNode: An existing Node in the Neo4j database.
+* listCells: A LIST of STRING values representing an H3 cell ID.
+* strLabel: A STRING indicating what Neo4j Label will be applied to the nodes.
+* strProperty: A STRING indicating what Neo4j Property will be applied to the nodes.
+* relationshipType: A STRING indicating what relationship type will be used for the relationships.
+* txSize: A LONG indicating the number of nodes to create in each transaction.
+
+### Returns
+A STRING indicating completion.
+
+### Error conditions
+If the strLabel or strProperty is empty, the procedure returns "-5"
+
+### Example
+    match (cs:CountySubDivision {cousubns:value.COUSUBNS})
+    call com.neo4jh3.polygonToCells(value.Geometry,[],8,'lonlat') yield value as h3
+    with cs, collect(h3) as ch3
+    call com.neo4jh3.writeH3StringNodesRelsToDB(cs,ch3,'Hex','hexAddress8','HAS_HEXADDRESS', 10000) yield value return value;
+    "Success"
+         
+    match (cs:CountySubDivision {cousubns:value.COUSUBNS})
+    call com.neo4jh3.polygonToCells(value.Geometry,[],8,'lonlat') yield value as h3
+    with cs, collect(h3) as ch3
+    call com.neo4jh3.writeH3StringNodesRelsToDB(cs,ch3,'Hex','','HAS_HEXADDRESS', 10000) yield value return value;
     "-5"
 
 ## Error Codes
