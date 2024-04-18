@@ -1,3 +1,6 @@
+# CHANGELOG - 5.19 - 2024-04-15
+* [Updated] - Tested through Neo4j 5.19
+
 # CHANGELOG - 5.16 - 2024-02-09
 * [Updated] - Tested through Neo4j 5.16
 * [Added] - Added two new procedures that write to the Neo4j database. These are com.neo4jh3.writeH3NodesRelsToDB and com.neo4jh3.writeH3StringNodesRelsToDB. These procedures take the from node, a list of hex addresses, a Label, a Property and a transaction size and write the H3 address nodes and create relationships between the H3 node and the From Node to the database. If you are using these procedures, it is highly recommended that you have a constraint or index for the Label and Property.
