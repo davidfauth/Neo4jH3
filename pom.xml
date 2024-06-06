@@ -6,12 +6,11 @@
 
     <groupId>com.neo4jh3</groupId>
     <artifactId>neo4jh3</artifactId>
-    <version>5.19.0</version>
+    <version>5.19.1</version>
 
     <properties>
         <neo4j.version>5.19.0</neo4j.version>
-        <csv.version>1.2</csv.version>
-		<lang3.version>3.13.0</lang3.version>
+        <lang3.version>3.13.0</lang3.version>
 		<uber.version>4.1.1</uber.version>
 		<commons.version>4.1</commons.version>
         <commons.math.version>3.6.1</commons.math.version>

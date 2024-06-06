@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.neo4jh3</groupId>
   <artifactId>neo4jh3</artifactId>
-  <version>5.11.0</version>
+  <version>5.19.0</version>
   <build>
     <plugins>
       <plugin>
@@ -210,7 +210,7 @@
     </dependency>
   </dependencies>
   <properties>
-    <neo4j.version>5.11.0</neo4j.version>
+    <neo4j.version>5.19.0</neo4j.version>
     <commons.version>4.1</commons.version>
     <csv.version>1.2</csv.version>
     <lang3.version>3.13.0</lang3.version>

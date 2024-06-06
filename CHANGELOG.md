@@ -1,3 +1,8 @@
+# CHANGELOG - 5.19.1 - 2024-06-05
+* [Added] - Added two new procedures to read a WKT polygon file and return the Hex Addresss. These are com.neo4jh3.polygonash3 and com.neo4jh3.polygonash3String. These procedures expect the POLYGON in Longitude, Latitude order.
+* [Updated] - Updated Documentation with bug fixes.
+* [Updated] - Added optional LatLon argument to com.neo4jh3.multilineash3, com.neo4jh3.multilineash3String, com.neo4jh3.lineash3, and com.neo4jh3.lineash3String
+
 # CHANGELOG - 5.19 - 2024-04-15
 * [Updated] - Tested through Neo4j 5.19
 

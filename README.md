@@ -1,5 +1,7 @@
 # Neo4j H3 Library 
-This library provides a set of H3 functions and procedures for Neo4j 5
+This library provides a set of H3 functions and procedures for Neo4j 5.
+
+
 H3 is a hexagonal hierarchical geospatial indexing system (https://h3geo.org)
 This library uses the H3 api which can be found at https://h3geo.org/docs/api/indexing
 
@@ -11,10 +13,10 @@ project, simply package the project with maven:
 
     mvn clean package
 
-This will produce a jar-file, `neo4jh3-5.15.0.jar`,
+This will produce a jar-file, `neo4jh3-5.19.1.jar`,
 that can be copied to the `plugins` directory of your Neo4j instance.
 
-    cp target/neo4jh3-5.13.0.jar  neo4j-enterprise-5.x.0/plugins/.
+    cp target/neo4jh3-5.19.1.jar  neo4j-enterprise-5.x.0/plugins/.
 
 
 Edit your Neo4j/conf/neo4j.conf file by adding this line:
