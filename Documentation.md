@@ -1189,11 +1189,67 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
     call com.neo4jh3.multilineash3String('MULTILINESTRING((40.736691045913472 73.99311953429248), (40.73733046783797 -73.99265431029018) , (40.93733046783797 -74.00265431029018))',17, 'latlon') yield value return value
     '-2'
 
+## com.neo4jh3.multipolygonash3( geographyExpr, resolutionExpr )
+Returns a list of H3 cell IDs (as a LONG) corresponding to the provided POLYGON at the specified resolution.
+
+### Syntax
+call com.neo4jh3.multipolygonash3( geographyExpr, resolutionExpr ) yield value
+
+### Arguments
+* geographyExpr: A STRING expression representing a POLYGON geography in WKT format (Longitude and then Latitude)
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns a list of H3 cell IDs (as a LONG) corresponding to the provided point at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a POLYGON, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    call com.neo4jh3.multipolygonash3('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value
+    613229524731035647, 613229523017662463, 613229524217233407, 613229524714258431, 613229524733132799
+    
+    call com.neo4jh3.multipolygonash3('ZZZ(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value
+    -1
+    
+   call com.neo4jh3.multipolygonash3('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',19) yield value return value
+   -2
+
+## com.neo4jh3.multipolygonash3String( geographyExpr, resolutionExpr )
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided POLYGON at the specified resolution.
+
+### Syntax
+RETURN com.neo4jh3.multipolygonash3String( geographyExpr, resolutionExpr ) 
+
+### Arguments
+* geographyExpr: A STRING expression representing a POLYGON geography in WKT format (Longitude and then Latitude)
+* resolutionExpr: An INT expression, whose value is expected to be between 0 and 15 inclusive, specifying the resolution of the child H3 cell ID.
+
+### Returns
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided POLYGON at the specified resolution.
+
+### Error conditions
+If geographyExpr is of type STRING and the value is either an invalid WKT or does not represent a polygon, the function returns -1
+
+If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
+
+### Example
+    call com.neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value
+    '882a100f35fffff','882a1008d3fffff','882a100d4bfffff', '882a100f25fffff', '882a100f37fffff'
+        
+    call com.neo4jh3.multipolygonash3String('zzz(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value
+    -1
+    
+    call com.neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',18) yield value return value
+    -2
+   
 ## com.neo4jh3.polygonash3( geographyExpr, resolutionExpr )
 Returns a list of H3 cell IDs (as a LONG) corresponding to the provided POLYGON at the specified resolution.
 
 ### Syntax
-call com.neo4jh3. polygonash3( geographyExpr, resolutionExpr ) yield value
+call com.neo4jh3.polygonash3( geographyExpr, resolutionExpr ) yield value
 
 ### Arguments
 * geographyExpr: A STRING expression representing a POLYGON geography in WKT format (Longitude and then Latitude)
@@ -1221,7 +1277,7 @@ If resolutionExpr is smaller than 0 or larger than 15, the function returns -2
 Returns a list of H3 cell IDs (as a STRING) corresponding to the provided POLYGON at the specified resolution.
 
 ### Syntax
-RETURN com.neo4jh3. polygonash3String( geographyExpr, resolutionExpr ) 
+RETURN com.neo4jh3.polygonash3String( geographyExpr, resolutionExpr ) 
 
 ### Arguments
 * geographyExpr: A STRING expression representing a POLYGON geography in WKT format (Longitude and then Latitude)

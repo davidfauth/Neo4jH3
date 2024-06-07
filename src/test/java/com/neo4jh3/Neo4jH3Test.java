@@ -479,6 +479,24 @@ public class Neo4jH3Test {
 
         result = session.run("call com.neo4jh3.polygonash3String('POLYGON((-77.436031 38.471420, -77.395123 38.536569, -77.294124 38.511703, -77.310611 38.395709, -77.436031 38.471420))',13) yield value return value limit 1");
         assertEquals("\"8d2aabc333558bf\"",result.single().get(0).toString());
+        
+        result = session.run("call com.neo4jh3.multipolygonash3('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-77.436031 38.471420, -77.395123 38.536569, -77.294124 38.511703, -77.310611 38.395709, -77.436031 38.471420)))',19) yield value return value limit 1");
+        assertEquals(-2L,result.single().get(0).asLong());
+
+        result = session.run("call com.neo4jh3.multipolygonash3('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-77.436031 38.471420, -77.395123 38.536569, -77.294124 38.511703, -77.310611 38.395709, -77.436031 38.471420)))',8) yield value return value limit 1");
+        assertEquals(613240230178193407L,result.single().get(0).asLong());
+
+        result = session.run("call com.neo4jh3.multipolygonash3('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-77.436031 38.471420, -77.395123 38.536569, -77.294124 38.511703, -77.310611 38.395709, -77.436031 38.471420)))',8) yield value return count(value)");
+        assertEquals(162L,result.single().get(0).asLong());
+
+        result = session.run("call com.neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-77.436031 38.471420, -77.395123 38.536569, -77.294124 38.511703, -77.310611 38.395709, -77.436031 38.471420)))',19) yield value return value limit 1");
+        assertEquals("\"-2\"", result.single().get("value").toString());
+
+        result = session.run("call com.neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value limit 1");
+        assertEquals("\"882a100f35fffff\"", result.single().get("value").toString());
+
+        result = session.run("call com.neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return count(value)");
+        assertEquals(5L,result.single().get(0).asLong());
 
      }
      driver.close();

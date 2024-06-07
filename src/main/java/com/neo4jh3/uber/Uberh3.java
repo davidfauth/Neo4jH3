@@ -1283,9 +1283,9 @@ public class Uberh3 {
         return listh3Address.stream().map(H3StringAddress::of);
     }
      
-    // Stub procedure
+    // Added June 2024
     @Procedure(name = "com.neo4jh3.multipolygonash3", mode = Mode.READ)
-    @Description("com.neo4jh3.multipolygonash3(wktString, resolution) - Returns the hex addresses as a long from a WKT Polygon string.")
+    @Description("com.neo4jh3.multipolygonash3(wktString, resolution) - Returns the hex addresses as a long from a WKT MultiPolygon string.")
     public Stream<H3LongAddress> multipolygonash3(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res) throws InterruptedException 
@@ -1295,17 +1295,104 @@ public class Uberh3 {
         List<LatLng> hexHoles = new ArrayList<>();
         List<List<LatLng>> holesList = new ArrayList<>();
         String mls = "";
-
+        String mps = "";
+    
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
         }
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
+        try {
+            if (h3Resolution > 0 && h3Resolution <= 15) { 
+                mls = wktString.replace("MULTIPOLYGON", "");
+                String[] polygonStrings = mls.split("\\)\\),\\(\\(");
+                // Loop through each polygon and create Hex Addresses
+                for (int i=0; i<polygonStrings.length; i++){
+                    mps = polygonStrings[i];
+                    mps = mps.replace("(","");
+                    mps = mps.replace(")","");
+                    String[] lonlatPairs = mps.split(",");
+                    for (int ii = 0; ii < lonlatPairs.length; ii++) {
+                        LatLng tmpGeoCoord = null;
+                        tmpGeoCoord = returnLngLat(lonlatPairs[ii]);
+                        hexPoints.add(tmpGeoCoord);
+                    }
+                
+                    if (!hexHoles.isEmpty()) {
+                        holesList.add(hexHoles);
+                        listh3Address = h3.polygonToCells(hexPoints, holesList, h3Resolution);
+                    } else {
+                        listh3Address = h3.polygonToCells(hexPoints, null, h3Resolution);
+                    }       
+                }
+            } else {
+                listh3Address = Collections.singletonList(-2L);
+            
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            listh3Address = Collections.singletonList(-1L);
+            //e.printStackTrace();
+        }
+
         return listh3Address.stream().map(H3LongAddress::of);
     }
+   // Added June 2024
+   @Procedure(name = "com.neo4jh3.multipolygonash3String", mode = Mode.READ)
+   @Description("com.neo4jh3.multipolygonash3String(wktString, resolution) - Returns the hex addresses as a String from a WKT MultiPolygon string.")
+   public Stream<H3StringAddress> multipolygonash3String(
+       @Name("wktString") String wktString, 
+       @Name("h3Res") Long h3Res) throws InterruptedException 
+       {
+       List<String> listh3Address = new ArrayList<String>();
+       List<LatLng> hexPoints = new ArrayList<>();
+       List<LatLng> hexHoles = new ArrayList<>();
+       List<List<LatLng>> holesList = new ArrayList<>();
+       String mls = "";
+       String mps = "";
+   
+       if (h3 == null) {
+           throw new InterruptedException("h3 failed to initialize");
+       }
 
+       final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
+       try {
+           if (h3Resolution > 0 && h3Resolution <= 15) { 
+               mls = wktString.replace("MULTIPOLYGON", "");
+               String[] polygonStrings = mls.split("\\)\\),\\(\\(");
+               // Loop through each polygon and create Hex Addresses
+               for (int i=0; i<polygonStrings.length; i++){
+                   mps = polygonStrings[i];
+                   mps = mps.replace("(","");
+                   mps = mps.replace(")","");
+                   String[] lonlatPairs = mps.split(",");
+                   for (int ii = 0; ii < lonlatPairs.length; ii++) {
+                       LatLng tmpGeoCoord = null;
+                       tmpGeoCoord = returnLngLat(lonlatPairs[ii]);
+                       hexPoints.add(tmpGeoCoord);
+                   }
+               
+                   if (!hexHoles.isEmpty()) {
+                       holesList.add(hexHoles);
+                       listh3Address = h3.polygonToCellAddresses(hexPoints, holesList, h3Resolution);
+                   } else {
+                       listh3Address = h3.polygonToCellAddresses(hexPoints, null, h3Resolution);
+                   }       
+               }
+           } else {
+               listh3Address = Collections.singletonList("-2");
+           
+           }
+       } catch (Exception e) {
+           System.out.println(e);
+           listh3Address = Collections.singletonList("-1");
+           //e.printStackTrace();
+       }
+
+       return listh3Address.stream().map(H3StringAddress::of);
+   }
 
     // Geography Functions
     
