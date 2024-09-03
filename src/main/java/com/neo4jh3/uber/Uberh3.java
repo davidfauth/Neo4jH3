@@ -33,7 +33,7 @@ public class Uberh3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "5.19.1";
+    private final static String NEO4J_H3_VERSION = "5.23.0";
 
     private static H3Core h3 = null;
                     
