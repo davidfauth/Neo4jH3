@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class Uberh3 {
+public class Neo4jH3 {
     @Context
     public GraphDatabaseService db;
 
@@ -47,9 +47,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3Validate")
-    @Description("com.neo4jh3.h3Validate(hexAddress) - validate a long hex Address.")
+    @UserFunction(name = "neo4jh3.h3Validate")
+    @Description("neo4jh3.h3Validate(hexAddress) - validate a long hex Address.")
     public Long h3Validate(
             @Name("hexAddress") Long hexAddress) {
         if (h3 == null) {
@@ -70,9 +69,8 @@ public class Uberh3 {
         
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3ValidateString")
-    @Description("com.neo4jh3.h3ValidateString(hexAddress) - validate a string hex Address.")
+    @UserFunction(name = "neo4jh3.h3ValidateString")
+    @Description("neo4jh3.h3ValidateString(hexAddress) - validate a string hex Address.")
     public String h3ValidateString(
             @Name("hexAddress") String hexAddress) {
         if (h3 == null) {
@@ -92,9 +90,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3HexAddress")
-    @Description("com.neo4jh3.h3HexAddress(latitude, longitude, resolution) - return the hex address for a given latitude.")
+    @UserFunction(name = "neo4jh3.h3HexAddress")
+    @Description("neo4jh3.h3HexAddress(latitude, longitude, resolution) - return the hex address for a given latitude.")
     public Long h3HexAddress(
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
@@ -131,9 +128,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3HexAddressString")
-    @Description("com.neo4jh3.h3HexAddressString(latitude, longitude, resolution) - return the hex address for a given latitude.")
+    @UserFunction(name = "neo4jh3.h3HexAddressString")
+    @Description("neo4jh3.h3HexAddressString(latitude, longitude, resolution) - return the hex address for a given latitude.")
     public String h3HexAddressString(
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
@@ -174,9 +170,8 @@ public class Uberh3 {
      * @param longHex
      * @return
      */
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3tostring")
-    @Description("com.neo4jh3.h3tostring(longHex) - return the string value of a long hex address.")
+    @UserFunction(name = "neo4jh3.h3tostring")
+    @Description("neo4jh3.h3tostring(longHex) - return the string value of a long hex address.")
     public String h3tostringFunction(
             @Name("longHex") Long longHex) {
         String returnString = "";
@@ -197,9 +192,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.stringToH3")
-    @Description("com.neo4jh3.stringToH3(longHex) - return the string value of a long hex address.")
+    @UserFunction(name = "neo4jh3.stringToH3")
+    @Description("neo4jh3.stringToH3(longHex) - return the string value of a long hex address.")
     public Long stringToH3Function(
             @Name("strHexAddress") String strHexAddress) {
         Long returnString = 0L;
@@ -220,9 +214,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3ResolutionString")
-    @Description("com.neo4jh3.h3ResolutionString(longHex) - return the resolution of a string hex address.")
+    @UserFunction(name = "neo4jh3.h3ResolutionString")
+    @Description("neo4jh3.h3ResolutionString(longHex) - return the resolution of a string hex address.")
     public Long h3ResolutionString(
             @Name("strHexAddress") String strHexAddress) {
         Long returnString = 0L;
@@ -243,9 +236,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3Resolution")
-    @Description("com.neo4jh3.h3Resolution(longHex) - return the string value of a long hex address.")
+    @UserFunction(name = "neo4jh3.h3Resolution")
+    @Description("neo4jh3.h3Resolution(longHex) - return the string value of a long hex address.")
     public Long h3Resolution(
             @Name("hexAddress") Long hexAddress) {
                 Long returnString = 0L;
@@ -267,9 +259,8 @@ public class Uberh3 {
     }
 
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.latlongash3String")
-    @Description("com.neo4jh3.latlongash3String(latitude, longitude, resolution) - return the hex address for a given latitude.")
+    @UserFunction(name = "neo4jh3.latlongash3String")
+    @Description("neo4jh3.latlongash3String(latitude, longitude, resolution) - return the hex address for a given latitude.")
     public String latlongash3String(
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
@@ -312,9 +303,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.latlongash3")
-    @Description("com.neo4jh3.latlongash3(latitude, longitude, resolution) - return the hex address for a given latitude.")
+    @UserFunction(name = "neo4jh3.latlongash3")
+    @Description("neo4jh3.latlongash3(latitude, longitude, resolution) - return the hex address for a given latitude.")
     public Long latlongash3(
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
@@ -351,9 +341,8 @@ public class Uberh3 {
         return returnValue;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.h3RingsForDistance")
-    @Description("com.neo4jh3.h3RingsForDistance(resolution, distance) - return the number of rings for a given distance.")
+    @UserFunction(name = "neo4jh3.h3RingsForDistance")
+    @Description("neo4jh3.h3RingsForDistance(resolution, distance) - return the number of rings for a given distance.")
     public Long h3RingsForDistance(
             @Name("h3Res") Long h3Res,
             @Name("distanceValue") Long distanceValue) {
@@ -373,9 +362,8 @@ public class Uberh3 {
         throw new RuntimeException("invalid h3 resolution");
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.gridDistance")
-    @Description("com.neo4jh3.gridDistance(fromHexAddress, toHexAddress) - Provides the distance in grid cells between the two indexes.")
+    @UserFunction(name = "neo4jh3.gridDistance")
+    @Description("neo4jh3.gridDistance(fromHexAddress, toHexAddress) - Provides the distance in grid cells between the two indexes.")
     public Long gridDistance(
             @Name("fromHexAddress") Long fromHexAddress,
             @Name("toHexAddress") Long toHexAddress) {
@@ -398,9 +386,8 @@ public class Uberh3 {
         return returnValue;     
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.gridDistanceString")
-    @Description("com.neo4jh3.gridDistanceString(fromHexAddress, toHexAddress) - Provides the distance in grid cells between the two indexes.")
+    @UserFunction(name = "neo4jh3.gridDistanceString")
+    @Description("neo4jh3.gridDistanceString(fromHexAddress, toHexAddress) - Provides the distance in grid cells between the two indexes.")
     public double gridDistanceString(
             @Name("fromHexAddress") String fromHexAddress,
             @Name("toHexAddress") String toHexAddress) {
@@ -425,9 +412,8 @@ public class Uberh3 {
         return returnValue;  
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.toparent")
-    @Description("CALL com.neo4jh3.toparent(hexAddress, h3Resolution)")
+    @UserFunction(name = "neo4jh3.toparent")
+    @Description("CALL neo4jh3.toparent(hexAddress, h3Resolution)")
     public Long toparent(@Name("hexAddress") Long hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         Long returnValue = 0L;
         if (h3 == null) {
@@ -453,9 +439,8 @@ public class Uberh3 {
         return returnValue;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.toparentString")
-    @Description("CALL com.neo4jh3.toparentString(hexAddress, h3Resolution)")
+    @UserFunction(name = "neo4jh3.toparentString")
+    @Description("CALL neo4jh3.toparentString(hexAddress, h3Resolution)")
     public String toparentString(@Name("hexAddress") String hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         String returnValue = "";
         if (h3 == null) {
@@ -480,9 +465,8 @@ public class Uberh3 {
         return returnValue;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.cellToLatLng")
-    @Description("CALL com.neo4jh3.cellToLatLng(hexAddress)")
+    @UserFunction(name = "neo4jh3.cellToLatLng")
+    @Description("CALL neo4jh3.cellToLatLng(hexAddress)")
     public String cellToLatLng(@Name("hexAddress") Long hexAddress) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -498,9 +482,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.cellToLatLngString")
-    @Description("CALL com.neo4jh3.cellToLatLngString(hexAddress)")
+    @UserFunction(name = "neo4jh3.cellToLatLngString")
+    @Description("CALL neo4jh3.cellToLatLngString(hexAddress)")
     public String cellToLatLngString(@Name("hexAddress") String hexAddress) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -518,9 +501,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("unused")
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.distanceBetweenHexes")
-    @Description("CALL com.neo4jh3.distanceBetweenHexes(fromHexAddress, toHexAddress)")
+    @UserFunction(name = "neo4jh3.distanceBetweenHexes")
+    @Description("CALL neo4jh3.distanceBetweenHexes(fromHexAddress, toHexAddress)")
     public double distanceBetweenHexes(@Name("fromHexAddress") Long fromHexAddress, @Name("toHexAddress") Long toHexAddress) throws InterruptedException {
         double returnDistance = 0.0;
         if (h3 == null) {
@@ -539,9 +521,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("unused")
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.distanceBetweenHexesString")
-    @Description("CALL com.neo4jh3.distanceBetweenHexesString(fromHexAddress, toHexAddress)")
+    @UserFunction(name = "neo4jh3.distanceBetweenHexesString")
+    @Description("CALL neo4jh3.distanceBetweenHexesString(fromHexAddress, toHexAddress)")
     public double distanceBetweenHexesString(@Name("fromHexAddress") String fromHexAddress, @Name("toHexAddress") String toHexAddress) throws InterruptedException {
         double returnDistance = 0.0;
         if (h3 == null) {
@@ -559,9 +540,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.minChild")
-    @Description("CALL com.neo4jh3.minChild(hexAddress, h3Resolution)")
+    @UserFunction(name = "neo4jh3.minChild")
+    @Description("CALL neo4jh3.minChild(hexAddress, h3Resolution)")
     public Long minChild(@Name("fromHexAddress") Long fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -595,9 +575,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.minChildString")
-    @Description("CALL com.neo4jh3.minChildString(hexAddress, h3Resolution)")
+    @UserFunction(name = "neo4jh3.minChildString")
+    @Description("CALL neo4jh3.minChildString(hexAddress, h3Resolution)")
     public String minChildString(@Name("fromHexAddress") String fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -629,9 +608,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.maxChild")
-    @Description("CALL com.neo4jh3.maxChild(hexAddress, h3Resolution)")
+    @UserFunction(name = "neo4jh3.maxChild")
+    @Description("CALL neo4jh3.maxChild(hexAddress, h3Resolution)")
     public Long maxChild(@Name("fromHexAddress") Long fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -665,9 +643,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.maxChildString")
-    @Description("CALL com.neo4jh3.maxChildString(hexAddress, h3Resolution)")
+    @UserFunction(name = "neo4jh3.maxChildString")
+    @Description("CALL neo4jh3.maxChildString(hexAddress, h3Resolution)")
     public String maxChild(@Name("fromHexAddress") String fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -701,9 +678,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.angleBetweenPoints")
-    @Description("CALL com.neo4jh3.angleBetweenPoints(latitude1, longitude1, latitude2, longitude2)")
+    @UserFunction(name = "neo4jh3.angleBetweenPoints")
+    @Description("CALL neo4jh3.angleBetweenPoints(latitude1, longitude1, latitude2, longitude2)")
     public Double angleBetweenPoints(
         @Name("latitude1") Double lat1Value,
         @Name("longitude1") Double lon1Value,
@@ -732,9 +708,8 @@ public class Uberh3 {
     }
 
     // Geography Functions
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.pointash3")
-    @Description("com.neo4jh3.pointash3(wktString, resolution, latlon order) - Loads a WKT POINT and returns H3 LONG values.")
+    @UserFunction(name = "neo4jh3.pointash3")
+    @Description("neo4jh3.pointash3(wktString, resolution, latlon order) - Loads a WKT POINT and returns H3 LONG values.")
     public Long pointash3(
             @Name("wktString") String wktString, 
             @Name("h3Res") Long h3Res,
@@ -770,10 +745,8 @@ public class Uberh3 {
             }
         return h3Address;
     }
-    
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.pointash3String")
-    @Description("com.neo4jh3.pointash3String(wktString, resolution, latlon order) - Loads a WKT POINT and returns H3 String values.")
+    @UserFunction(name = "neo4jh3.pointash3String")
+    @Description("neo4jh3.pointash3String(wktString, resolution, latlon order) - Loads a WKT POINT and returns H3 String values.")
     public String pointash3String(
             @Name("wktString") String wktString, 
             @Name("h3Res") Long h3Res,
@@ -809,8 +782,8 @@ public class Uberh3 {
         return h3Address;
     }
 
-    @UserFunction(name = "com.neo4jh3.version")
-    @Description("com.neo4jh3.version() - Returns the version of the plugin.")
+    @UserFunction(name = "neo4jh3.version")
+    @Description("neo4jh3.version() - Returns the version of the plugin.")
     public String neo4jH3Version() throws InterruptedException 
             {
             String h3Version = NEO4J_H3_VERSION;
@@ -822,9 +795,8 @@ public class Uberh3 {
 
     // Procedures
 
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.lineash3", mode = Mode.READ)
-    @Description("com.neo4jh3.lineash3(wktString, resolution, latlonorder) - Loads a WKT LINESTRING and returns H3 Long values.")
+    @Procedure(name = "neo4jh3.lineash3", mode = Mode.READ)
+    @Description("neo4jh3.lineash3(wktString, resolution, latlonorder) - Loads a WKT LINESTRING and returns H3 Long values.")
     public Stream<H3LongAddress> lineash3(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res,
@@ -919,9 +891,8 @@ public class Uberh3 {
     }
    
     // New Geo Procedures
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.lineash3String", mode = Mode.READ)
-    @Description("com.neo4jh3.lineash3String(wktString, resolution, latlonorder) - Loads a WKT LINESTRING and returns H3 String values.")
+    @Procedure(name = "neo4jh3.lineash3String", mode = Mode.READ)
+    @Description("neo4jh3.lineash3String(wktString, resolution, latlonorder) - Loads a WKT LINESTRING and returns H3 String values.")
     public Stream<H3StringAddress> lineash3String(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res,
@@ -1016,9 +987,8 @@ public class Uberh3 {
         return listh3Address.stream().map(H3StringAddress::of);
     }
 
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.multilineash3", mode = Mode.READ)
-    @Description("com.neo4jh3.multilineash3(wktString, resolution, latlonorder) - Provides the distance in grid cells between the two indexes.")
+    @Procedure(name = "neo4jh3.multilineash3", mode = Mode.READ)
+    @Description("neo4jh3.multilineash3(wktString, resolution, latlonorder) - Provides the distance in grid cells between the two indexes.")
     public Stream<H3LongAddress> multilineash3(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res,
@@ -1113,9 +1083,8 @@ public class Uberh3 {
     }
 
     // New Geo Procedures
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.multilineash3String", mode = Mode.READ)
-    @Description("com.neo4jh3.multilineash3String(wktString, resolution, latlonorder) - Provides the distance in grid cells between the two indexes.")
+    @Procedure(name = "neo4jh3.multilineash3String", mode = Mode.READ)
+    @Description("neo4jh3.multilineash3String(wktString, resolution, latlonorder) - Provides the distance in grid cells between the two indexes.")
     public Stream<H3StringAddress> multilineash3String(
     @Name("wktString") String wktString, 
     @Name("h3Res") Long h3Res,
@@ -1213,9 +1182,8 @@ public class Uberh3 {
     // Add MultiPolygon Support for WKT file
     // Example: https://www.georgia811.com/wp-content/uploads/2022/06/Well_Known_Text.pdf
     // Added 4 June 2024
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.polygonash3", mode = Mode.READ)
-    @Description("com.neo4jh3.polygonash3(wktString, resolution) - Returns the hex addresses as a long from a WKT Polygon string.")
+    @Procedure(name = "neo4jh3.polygonash3", mode = Mode.READ)
+    @Description("neo4jh3.polygonash3(wktString, resolution) - Returns the hex addresses as a long from a WKT Polygon string.")
     public Stream<H3LongAddress> polygonash3(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res) throws InterruptedException 
@@ -1264,9 +1232,8 @@ public class Uberh3 {
         return listh3Address.stream().map(H3LongAddress::of);
     }
 
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.polygonash3String", mode = Mode.READ)
-    @Description("com.neo4jh3.polygonash3String(wktString, resolution) - Returns the hex addresses as a String from a WKT Polygon string")
+    @Procedure(name = "neo4jh3.polygonash3String", mode = Mode.READ)
+    @Description("neo4jh3.polygonash3String(wktString, resolution) - Returns the hex addresses as a String from a WKT Polygon string")
     public Stream<H3StringAddress> polygonash3String(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res) throws InterruptedException 
@@ -1317,9 +1284,8 @@ public class Uberh3 {
     }
      
     // Added June 2024
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.multipolygonash3", mode = Mode.READ)
-    @Description("com.neo4jh3.multipolygonash3(wktString, resolution) - Returns the hex addresses as a long from a WKT MultiPolygon string.")
+    @Procedure(name = "neo4jh3.multipolygonash3", mode = Mode.READ)
+    @Description("neo4jh3.multipolygonash3(wktString, resolution) - Returns the hex addresses as a long from a WKT MultiPolygon string.")
     public Stream<H3LongAddress> multipolygonash3(
         @Name("wktString") String wktString, 
         @Name("h3Res") Long h3Res) throws InterruptedException 
@@ -1373,9 +1339,8 @@ public class Uberh3 {
         return listh3Address.stream().map(H3LongAddress::of);
     }
    // Added June 2024
-   @Deprecated
-    @Procedure(name = "com.neo4jh3.multipolygonash3String", mode = Mode.READ)
-   @Description("com.neo4jh3.multipolygonash3String(wktString, resolution) - Returns the hex addresses as a String from a WKT MultiPolygon string.")
+   @Procedure(name = "neo4jh3.multipolygonash3String", mode = Mode.READ)
+   @Description("neo4jh3.multipolygonash3String(wktString, resolution) - Returns the hex addresses as a String from a WKT MultiPolygon string.")
    public Stream<H3StringAddress> multipolygonash3String(
        @Name("wktString") String wktString, 
        @Name("h3Res") Long h3Res) throws InterruptedException 
@@ -1431,9 +1396,8 @@ public class Uberh3 {
 
     // Geography Functions
     
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.centeraswkb")
-    @Description("com.neo4jh3.centeraswkb(hexAddress) - Returns the center of a hex address in WKB format.")
+    @UserFunction(name = "neo4jh3.centeraswkb")
+    @Description("neo4jh3.centeraswkb(hexAddress) - Returns the center of a hex address in WKB format.")
     public String centeraswkb(
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
@@ -1464,9 +1428,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.centeraswkbString")
-    @Description("com.neo4jh3.centeraswkbString(hexAddress) - Returns the center of a hex address in WKB format.")
+    @UserFunction(name = "neo4jh3.centeraswkbString")
+    @Description("neo4jh3.centeraswkbString(hexAddress) - Returns the center of a hex address in WKB format.")
     public String centeraswkbString(
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
@@ -1496,10 +1459,8 @@ public class Uberh3 {
             }
         return geoJsonString;
     }
-
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.centeraswkt")
-    @Description("com.neo4jh3.centeraswkt(hexAddress) - Returns the center of a hex address in WKT format.")
+    @UserFunction(name = "neo4jh3.centeraswkt")
+    @Description("neo4jh3.centeraswkt(hexAddress) - Returns the center of a hex address in WKT format.")
     public String centeraswkt(
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
@@ -1527,9 +1488,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.centeraswktString")
-    @Description("com.neo4jh3.centeraswktString(hexAddress) - Returns the center of a hex address in WKT format.")
+    @UserFunction(name = "neo4jh3.centeraswktString")
+    @Description("neo4jh3.centeraswktString(hexAddress) - Returns the center of a hex address in WKT format.")
     public String centeraswktString(
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
@@ -1557,9 +1517,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.boundaryaswkt")
-    @Description("com.neo4jh3.boundaryaswkt(hexAddress) - Returns the boundary of a hex address in WKT format.")
+    @UserFunction(name = "neo4jh3.boundaryaswkt")
+    @Description("neo4jh3.boundaryaswkt(hexAddress) - Returns the boundary of a hex address in WKT format.")
     public String boundaryaswkt(
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
@@ -1601,9 +1560,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.boundaryaswktString")
-    @Description("com.neo4jh3.boundaryaswktString(hexAddress) - Returns the boundary of a hex address in WKT format.")
+    @UserFunction(name = "neo4jh3.boundaryaswktString")
+    @Description("neo4jh3.boundaryaswktString(hexAddress) - Returns the boundary of a hex address in WKT format.")
     public String boundaryaswktString(
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
@@ -1645,9 +1603,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.boundaryaswkb")
-    @Description("com.neo4jh3.boundaryaswkb(hexAddress) - Returns the boundary of a hex address in WKB format.")
+    @UserFunction(name = "neo4jh3.boundaryaswkb")
+    @Description("neo4jh3.boundaryaswkb(hexAddress) - Returns the boundary of a hex address in WKB format.")
     public String boundaryaswkb(
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
@@ -1693,9 +1650,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.boundaryaswkbString")
-    @Description("com.neo4jh3.boundaryaswkbString(hexAddress) -- Returns the boundary of a hex address in WKB format.")
+    @UserFunction(name = "neo4jh3.boundaryaswkbString")
+    @Description("neo4jh3.boundaryaswkbString(hexAddress) -- Returns the boundary of a hex address in WKB format.")
     public String boundaryaswkbString(
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
@@ -1741,9 +1697,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.centerasgeojson")
-    @Description("com.neo4jh3.centerasgeojson(hexAddress) - Returns the center of a hex address as a GeoJson string.")
+    @UserFunction(name = "neo4jh3.centerasgeojson")
+    @Description("neo4jh3.centerasgeojson(hexAddress) - Returns the center of a hex address as a GeoJson string.")
     public String centerasgeojson(
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
@@ -1771,9 +1726,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.centerasgeojsonString")
-    @Description("com.neo4jh3.centerasgeojsonString(hexAddress) - Returns the center of a hex address as a GeoJson string.")
+    @UserFunction(name = "neo4jh3.centerasgeojsonString")
+    @Description("neo4jh3.centerasgeojsonString(hexAddress) - Returns the center of a hex address as a GeoJson string.")
     public String centerasgeojsonString(
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
@@ -1801,9 +1755,8 @@ public class Uberh3 {
     }
 
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.boundaryasgeojson")
-    @Description("com.neo4jh3.boundaryasgeojson(hexAddress) - Returns the boundary of a hex address as a GeoJson string.")
+    @UserFunction(name = "neo4jh3.boundaryasgeojson")
+    @Description("neo4jh3.boundaryasgeojson(hexAddress) - Returns the boundary of a hex address as a GeoJson string.")
     public String boundaryasgeojson(
             @Name("hexAddress") Long hexAddress) throws InterruptedException 
             {
@@ -1845,9 +1798,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.boundaryasgeojsonString")
-    @Description("com.neo4jh3.boundaryasgeojsonString(hexAddress) - Returns the boundary of a hex address as a GeoJson string.")
+    @UserFunction(name = "neo4jh3.boundaryasgeojsonString")
+    @Description("neo4jh3.boundaryasgeojsonString(hexAddress) - Returns the boundary of a hex address as a GeoJson string.")
     public String boundaryasgeojsonString(
             @Name("hexAddress") String hexAddress) throws InterruptedException 
             {
@@ -1889,9 +1841,8 @@ public class Uberh3 {
         return geoJsonString;
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.ispentagon")
-    @Description("com.neo4jh3.ispentagon(hexAddress) - is hexAddress a pentagon.")
+    @UserFunction(name = "neo4jh3.ispentagon")
+    @Description("neo4jh3.ispentagon(hexAddress) - is hexAddress a pentagon.")
     public Boolean ispentagon(
             @Name("hexAddress") Long hexAddress) {
         if (h3 == null) {
@@ -1911,9 +1862,8 @@ public class Uberh3 {
         }
     }
 
-    @Deprecated
-    @UserFunction(name = "com.neo4jh3.ispentagonString")
-    @Description("com.neo4jh3.ispentagonString(hexAddress) - is hexAddress a pentagon.")
+    @UserFunction(name = "neo4jh3.ispentagonString")
+    @Description("neo4jh3.ispentagonString(hexAddress) - is hexAddress a pentagon.")
     public Boolean ispentagonString(
             @Name("hexAddress") String hexAddress) {
         if (h3 == null) {
@@ -1936,9 +1886,8 @@ public class Uberh3 {
     /* Neo4j H3 Procedures */
 
     @SuppressWarnings("null")
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.gridDisk", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.gridDisk(hexAddress, ringSize) - Returns all H3 addresses around the hexAddress at the given ring size")
+    @Procedure(name = "neo4jh3.gridDisk", mode = Mode.READ)
+    @Description("CALL neo4jh3.gridDisk(hexAddress, ringSize) - Returns all H3 addresses around the hexAddress at the given ring size")
     public Stream<H3LongAddress> gridDisk(@Name("hexAddress") Long hexAddress, @Name("ringSize") Long ringSize)
             throws InterruptedException {
         if (h3 == null) {
@@ -1964,8 +1913,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Procedure(name = "com.neo4jh3.gridDiskString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.gridDiskString(hexAddress, ringSize) - Returns all H3 addresses around the hexAddress at the given ring size")
+    @Procedure(name = "neo4jh3.gridDiskString", mode = Mode.READ)
+    @Description("CALL neo4jh3.gridDiskString(hexAddress, ringSize) - Returns all H3 addresses around the hexAddress at the given ring size")
     public Stream<H3StringAddress> gridDiskString(@Name("hexAddress") String hexAddress, @Name("ringSize") Long ringSize)
             throws InterruptedException {
         if (h3 == null) {
@@ -1992,8 +1941,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Procedure(name = "com.neo4jh3.tochildren", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.tochildren(hexAddress, h3Resolution)")
+    @Procedure(name = "neo4jh3.tochildren", mode = Mode.READ)
+    @Description("CALL neo4jh3.tochildren(hexAddress, h3Resolution)")
     public Stream<H3LongAddress> tochildren(@Name("hexAddress") Long hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -2020,8 +1969,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Procedure(name = "com.neo4jh3.tochildrenString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.tochildrenString(hexAddress, h3Resolution)")
+    @Procedure(name = "neo4jh3.tochildrenString", mode = Mode.READ)
+    @Description("CALL neo4jh3.tochildrenString(hexAddress, h3Resolution)")
     public Stream<H3StringAddress> tochildrenString(@Name("hexAddress") String hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (h3 == null) {
             throw new InterruptedException("h3 failed to initialize");
@@ -2049,10 +1998,10 @@ public class Uberh3 {
 
 /*
      *
-     * call com.neo4jh3.polygonToCellsTest(["37.7866,-122.3805","37.7198,-122.3544","37.7076,-122.5123","37.7835,-122.5247","37.8151,-122.4798"],[],7) yield value return value;
+     * call neo4jh3.polygonToCellsTest(["37.7866,-122.3805","37.7198,-122.3544","37.7076,-122.5123","37.7835,-122.5247","37.8151,-122.4798"],[],7) yield value return value;
      */
-    @Procedure(name = "com.neo4jh3.polygonToCells", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.polygonToCells(polyEdges, polyEdgeHoles, resolution, latlon order)")
+    @Procedure(name = "neo4jh3.polygonToCells", mode = Mode.READ)
+    @Description("CALL neo4jh3.polygonToCells(polyEdges, polyEdgeHoles, resolution, latlon order)")
     public Stream<H3LongAddress> polygonToCells(@Name("polyEdges") List<String> polyEdges, @Name("polyEdgeHoles") List<String> polyEdgeHoles, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
         if (h3 == null) {
             return Stream.empty();
@@ -2106,10 +2055,10 @@ public class Uberh3 {
 
     /*
      *
-     * call com.neo4jh3.polygonToCellsTest(["37.7866,-122.3805","37.7198,-122.3544","37.7076,-122.5123","37.7835,-122.5247","37.8151,-122.4798"],[],7) yield value return value;
+     * call neo4jh3.polygonToCellsTest(["37.7866,-122.3805","37.7198,-122.3544","37.7076,-122.5123","37.7835,-122.5247","37.8151,-122.4798"],[],7) yield value return value;
      */
-    @Procedure(name = "com.neo4jh3.polygonToCellsString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.polygonToCellsString(polyEdges, polyEdgeHoles, resolution, latlon order)")
+    @Procedure(name = "neo4jh3.polygonToCellsString", mode = Mode.READ)
+    @Description("CALL neo4jh3.polygonToCellsString(polyEdges, polyEdgeHoles, resolution, latlon order)")
     public Stream<H3StringAddress> polygonToCellsString(@Name("polyEdges") List<String> polyEdges, @Name("polyEdgeHoles") List<String> polyEdgeHoles, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
         if (h3 == null) {
             return Stream.empty();
@@ -2162,8 +2111,8 @@ public class Uberh3 {
         }
     }
 
-    @Procedure(name = "com.neo4jh3.polygonIntersection", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.polygonIntersection(polyEdges, polyEdgeHoles, polyEdgesSecond, polyEdgeHolesSecond,resolution, latlon order)")
+    @Procedure(name = "neo4jh3.polygonIntersection", mode = Mode.READ)
+    @Description("CALL neo4jh3.polygonIntersection(polyEdges, polyEdgeHoles, polyEdgesSecond, polyEdgeHolesSecond,resolution, latlon order)")
     public Stream<H3LongAddress> polygonIntersection(@Name("polyEdges") List<String> polyEdges, @Name("polyEdgeHoles") List<String> polyEdgeHoles, @Name("polyEdgesSecond") List<String> polyEdgesSecond, @Name("polyEdgeHolesSecond") List<String> polyEdgeHolesSecond, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
         if (h3 == null) {
             return Stream.empty();
@@ -2258,8 +2207,8 @@ public class Uberh3 {
         }
     }
  
-    @Procedure(name = "com.neo4jh3.polygonIntersectionString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.polygonIntersectionString(polyEdges, polyEdgeHoles, polyEdgesSecond, polyEdgeHolesSecond,resolution, latlon order)")
+    @Procedure(name = "neo4jh3.polygonIntersectionString", mode = Mode.READ)
+    @Description("CALL neo4jh3.polygonIntersectionString(polyEdges, polyEdgeHoles, polyEdgesSecond, polyEdgeHolesSecond,resolution, latlon order)")
     public Stream<H3StringAddress> polygonIntersectionString(@Name("polyEdges") List<String> polyEdges, @Name("polyEdgeHoles") List<String> polyEdgeHoles, @Name("polyEdgesSecond") List<String> polyEdgesSecond, @Name("polyEdgeHolesSecond") List<String> polyEdgeHolesSecond, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
         if (h3 == null) {
             return Stream.empty();
@@ -2354,8 +2303,8 @@ public class Uberh3 {
         }
     }
 
-    @Procedure(name = "com.neo4jh3.coverage", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.coverage(polyEdges, h3Resolution, latlon order)")
+    @Procedure(name = "neo4jh3.coverage", mode = Mode.READ)
+    @Description("CALL neo4jh3.coverage(polyEdges, h3Resolution, latlon order)")
     public Stream<H3LongAddress> gridPathCellsLonLat(@Name("polyEdges") List<String> polyEdges, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
         
         if (h3 == null) {
@@ -2439,9 +2388,8 @@ public class Uberh3 {
         return hexList.stream().map(H3LongAddress::of);
     }
 
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.coverageString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.coverageString(polyEdges, h3Resolution, latlon order)")
+    @Procedure(name = "neo4jh3.coverageString", mode = Mode.READ)
+    @Description("CALL neo4jh3.coverageString(polyEdges, h3Resolution, latlon order)")
     public Stream<H3StringAddress> gridPathCellsLonLatString(@Name("polyEdges") List<String> polyEdges, @Name("h3Res") Long h3Res, @Name("latlonorder") String latlonorder) throws InterruptedException {
         
         if (h3 == null) {
@@ -2526,9 +2474,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.gridpathlatlon", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.gridpathlatlon(latitude, longitude, latitude, longitude, h3Resolution)")
+    @Procedure(name = "neo4jh3.gridpathlatlon", mode = Mode.READ)
+    @Description("CALL neo4jh3.gridpathlatlon(latitude, longitude, latitude, longitude, h3Resolution)")
     public Stream<H3LongAddress> gridpathlatlon(@Name("startLat") Double startLat, @Name("startLong") Double startLong, @Name("endLat") Double endLat, @Name("endLong") Double endLong, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (startLat == null || startLong == null || endLat  == null || endLong == null) {
             throw new InterruptedException("invalid arguments");
@@ -2567,9 +2514,8 @@ public class Uberh3 {
     }
 
     @SuppressWarnings("null")
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.gridpathlatlonString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.gridpathlatlonString(latitude, longitude, latitude, longitude, h3Resolution)")
+    @Procedure(name = "neo4jh3.gridpathlatlonString", mode = Mode.READ)
+    @Description("CALL neo4jh3.gridpathlatlonString(latitude, longitude, latitude, longitude, h3Resolution)")
     public Stream<H3StringAddress> gridpathlatlonString(@Name("startLat") Double startLat, @Name("startLong") Double startLong, @Name("endLat") Double endLat, @Name("endLong") Double endLong, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (startLat == null || startLong == null || endLat  == null || endLong == null) {
             throw new InterruptedException("invalid arguments");
@@ -2608,9 +2554,8 @@ public class Uberh3 {
         }
     }
 
-    @Procedure(name = "com.neo4jh3.gridpathcell", mode = Mode.READ)
-    @Deprecated
-    @Description("CALL com.neo4jh3.gridpathcell(fromAddress, toAddress)")
+    @Procedure(name = "neo4jh3.gridpathcell", mode = Mode.READ)
+    @Description("CALL neo4jh3.gridpathcell(fromAddress, toAddress)")
     public Stream<H3LongAddress> gridpathcell(@Name("fromAddress") Long fromAddress, @Name("toAddress") Long toAddress) throws InterruptedException {
         if (fromAddress == null || toAddress == null) {
             throw new InterruptedException("invalid arguments");
@@ -2631,9 +2576,8 @@ public class Uberh3 {
         }
     }
 
-    @Procedure(name = "com.neo4jh3.gridpathcellString", mode = Mode.READ)
-    @Deprecated
-    @Description("CALL com.neo4jh3.gridpathcellString(fromAddress, toAddress, h3Resolution)")
+    @Procedure(name = "neo4jh3.gridpathcellString", mode = Mode.READ)
+    @Description("CALL neo4jh3.gridpathcellString(fromAddress, toAddress, h3Resolution)")
     public Stream<H3StringAddress> gridpathcellString(@Name("fromAddress") String fromAddress, @Name("toAddress") String toAddress) throws InterruptedException {
         if (fromAddress == null || toAddress == null) {
             throw new InterruptedException("invalid arguments");
@@ -2657,8 +2601,8 @@ public class Uberh3 {
     /*
      * Return list of hex addresses for a line
      */
-    @Procedure(name = "com.neo4jh3.lineHexAddresses", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.lineHexAddresses(polyEdges, h3Resolution)")
+    @Procedure(name = "neo4jh3.lineHexAddresses", mode = Mode.READ)
+    @Description("CALL neo4jh3.lineHexAddresses(polyEdges, h3Resolution)")
     public Stream<H3StringAddress> lineHexAddresses(@Name("polyEdges") List<String> polyEdges, @Name("h3Res") Long h3Res) throws InterruptedException {
         if (polyEdges == null) {
             throw new InterruptedException("invalid polygon edges");
@@ -2721,357 +2665,349 @@ public class Uberh3 {
                 .map(H3StringAddress::of);
     }
 
-    // Compact
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.compactString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.compactString(listCells)")
-    public Stream<H3StringAddress> compactString(@Name("listCells") List<String> listCells) throws InterruptedException {
-        if (listCells == null) {
-            throw new InterruptedException("invalid list of hex addresses");
-        }
-        if (h3 == null) {
-            return Stream.empty();
-        }
-        return h3.compactCellAddresses(listCells)
-        .stream()
-        .map(H3StringAddress::of);
+// Compact
+@Procedure(name = "neo4jh3.compactString", mode = Mode.READ)
+@Description("CALL neo4jh3.compactString(listCells)")
+public Stream<H3StringAddress> compactString(@Name("listCells") List<String> listCells) throws InterruptedException {
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
+    }
+    if (h3 == null) {
+        return Stream.empty();
+    }
+    return h3.compactCellAddresses(listCells)
+    .stream()
+    .map(H3StringAddress::of);
+}
+
+// Compact
+@Procedure(name = "neo4jh3.compact", mode = Mode.READ)
+@Description("CALL neo4jh3.compact(listCells)")
+public Stream<H3LongAddress> compact(@Name("listCells") List<Long> listCells) throws InterruptedException {
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
+    }
+    if (h3 == null) {
+        return Stream.empty();
+    }
+    return h3.compactCells(listCells)
+    .stream()
+    .map(H3LongAddress::of);
+    
+}
+
+// Uncompact
+@Procedure(name = "neo4jh3.uncompact", mode = Mode.READ)
+@Description("CALL neo4jh3.uncompact(listCells, h3Resolution)")
+public Stream<H3LongAddress> unCompact(@Name("listCells") List<Long> listCells, @Name("h3Res") Long h3Res) throws InterruptedException {
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
+    }
+    if (h3 == null) {
+        return Stream.empty();
     }
 
-    // Compact
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.compact", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.compact(listCells)")
-    public Stream<H3LongAddress> compact(@Name("listCells") List<Long> listCells) throws InterruptedException {
-        if (listCells == null) {
-            throw new InterruptedException("invalid list of hex addresses");
-        }
-        if (h3 == null) {
-            return Stream.empty();
-        }
-        return h3.compactCells(listCells)
-        .stream()
-        .map(H3LongAddress::of);
-        
-    }
+    final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+    if (h3Resolution > 1 && h3Resolution < 15) {   
+        Integer maxRes = 0;
+        Integer curRes = 0;
 
-    // Uncompact
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.uncompact", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.uncompact(listCells, h3Resolution)")
-    public Stream<H3LongAddress> unCompact(@Name("listCells") List<Long> listCells, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (listCells == null) {
-            throw new InterruptedException("invalid list of hex addresses");
-        }
-        if (h3 == null) {
-            return Stream.empty();
-        }
-
-        final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
-        if (h3Resolution > 1 && h3Resolution < 15) {   
-            Integer maxRes = 0;
-            Integer curRes = 0;
-
-            ListIterator<Long> iterator = listCells.listIterator();
-            while (iterator.hasNext()) {
-                curRes = h3.getResolution(iterator.next());
-                if (curRes.compareTo(maxRes)>0){
-                    maxRes = curRes;
-                }
+        ListIterator<Long> iterator = listCells.listIterator();
+        while (iterator.hasNext()) {
+            curRes = h3.getResolution(iterator.next());
+            if (curRes.compareTo(maxRes)>0){
+                maxRes = curRes;
             }
-            if (h3Resolution >= maxRes){
-                return h3.uncompactCells(listCells,h3Resolution)
-                .stream()
-                .map(H3LongAddress::of);
-            } else {
-                List<Long> ringList = null;
-                ringList = Collections.singletonList(-2L);
-                return ringList.stream().map(H3LongAddress::of);
-            }
+        }
+        if (h3Resolution >= maxRes){
+            return h3.uncompactCells(listCells,h3Resolution)
+            .stream()
+            .map(H3LongAddress::of);
         } else {
             List<Long> ringList = null;
             ringList = Collections.singletonList(-2L);
             return ringList.stream().map(H3LongAddress::of);
         }
-        
+    } else {
+        List<Long> ringList = null;
+        ringList = Collections.singletonList(-2L);
+        return ringList.stream().map(H3LongAddress::of);
     }
+    
+}
 
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.linepolyIntersection", mode = Mode.READ)
-    @Description("com.neo4jh3.linepolyIntersection(polyEdges, polyEdgeHoles,wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
-        public Stream<H3LongAddress> lineash3(
-            @Name("polyEdges") List<String> polyEdges, 
-            @Name("polyEdgeHoles") List<String> polyEdgeHoles,
-            @Name("wktString") String wktString, 
-            @Name("h3Res") Long h3Res,
-            @Name("latlonorder") String latlonorder) throws InterruptedException 
-            {
+@Procedure(name = "neo4jh3.linepolyIntersection", mode = Mode.READ)
+@Description("neo4jh3.linepolyIntersection(polyEdges, polyEdgeHoles,wktString, resolution, latlon order) - Provides the distance in grid cells between the two indexes.")
+    public Stream<H3LongAddress> lineash3(
+        @Name("polyEdges") List<String> polyEdges, 
+        @Name("polyEdgeHoles") List<String> polyEdgeHoles,
+        @Name("wktString") String wktString, 
+        @Name("h3Res") Long h3Res,
+        @Name("latlonorder") String latlonorder) throws InterruptedException 
+        {
 
-            List<LatLng> hexPoints = new ArrayList<>();
-            List<LatLng> hexHoles = new ArrayList<>();
-            List<List<LatLng>> holesList = new ArrayList<>();
-            List<Long> hexList;
-            List<Long> hexListFinal = new ArrayList<Long>(); 
-            List<Long> listh3Address = new ArrayList<Long>();
-            List<Long> gpCells = new ArrayList<Long>();
-            Long h3StartAddress = 0L;
-            Long h3MidAddress = 0L;
-            Long h3EndAddress = 0L;
-            Double fromLat = 0.0;
-            Double fromLon = 0.0;
-            Double toLat = 0.0;
-            Double toLon = 0.0;
-            Double midLat = 0.0;
-            Double midLon = 0.0;
-            String mls = "";
+        List<LatLng> hexPoints = new ArrayList<>();
+        List<LatLng> hexHoles = new ArrayList<>();
+        List<List<LatLng>> holesList = new ArrayList<>();
+        List<Long> hexList;
+        List<Long> hexListFinal = new ArrayList<Long>(); 
+        List<Long> listh3Address = new ArrayList<Long>();
+        List<Long> gpCells = new ArrayList<Long>();
+        Long h3StartAddress = 0L;
+        Long h3MidAddress = 0L;
+        Long h3EndAddress = 0L;
+        Double fromLat = 0.0;
+        Double fromLon = 0.0;
+        Double toLat = 0.0;
+        Double toLon = 0.0;
+        Double midLat = 0.0;
+        Double midLon = 0.0;
+        String mls = "";
 
-            if (h3 == null) {
-                throw new InterruptedException("h3 failed to initialize");
-            }
-
-            if (polyEdges == null || polyEdgeHoles == null) {
-            throw new InterruptedException("invalid arguments");
-            }
-
-            final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
-
-            try {
-                if (h3Resolution > 0 && h3Resolution <= 15) {
-
-                for (String mapEdges : polyEdges) {
-                    final String[] latLonList = mapEdges.split(",");
-                    LatLng tmpGeoCoord = null;
-                    if (latlonorder.equalsIgnoreCase("latlon")){
-                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
-                    } else {
-                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
-                    }
-                    hexPoints.add(tmpGeoCoord);
-                }
-
-                for (String mapEdges : polyEdgeHoles) {
-                    final String[] latLonList = mapEdges.split(",");
-                    LatLng tmpGeoCoord = null;
-                    if (latlonorder.equalsIgnoreCase("latlon")){
-                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
-                    } else {
-                        tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
-                    }
-                    hexHoles.add(tmpGeoCoord);
-                }
-
-                if (!hexHoles.isEmpty()) {
-                    holesList.add(hexHoles);
-                    hexList = h3.polygonToCells(hexPoints, holesList, h3Resolution);
-                } else {
-                    hexList = h3.polygonToCells(hexPoints, null, h3Resolution);
-                }
-
-                    mls = wktString.replace("LINESTRING((", "");
-                    mls = mls.replace(" (","");
-                    mls = mls.replace(")","");
-                    mls = mls.replace("(","");
-                    String[] latlonPairs = mls.split(",");
-                    String lonlat = "";
-                    for (int i = 0; i < latlonPairs.length; i++) {
-                        if (i > 0){
-                            lonlat = latlonPairs[i-1].toString();
-                            lonlat = lonlat.trim();
-                            fromLat = Double.valueOf(lonlat.split("\\s+")[0]);
-                            fromLon = Double.valueOf(lonlat.split("\\s+")[1]);
-                            lonlat = latlonPairs[i].toString();
-                            lonlat = lonlat.trim();
-                            toLat = Double.valueOf(lonlat.split("\\s+")[0]);
-                            toLon =Double.valueOf(lonlat.split("\\s+")[1]);
-
-                            midLat = (fromLat + toLat) / 2;
-                            midLon = (fromLon + toLon) / 2;
-                            h3StartAddress = h3.latLngToCell(fromLat, fromLon, h3Resolution);
-                            h3MidAddress = h3.latLngToCell(midLat, midLon, h3Resolution);
-                            h3EndAddress = h3.latLngToCell(toLat, toLon, h3Resolution);
-                            try {
-                                gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
-                                for (int j = 0; j < gpCells.size(); j++) {
-                                    listh3Address.add(gpCells.get(j));
-                                }
-                                gpCells.clear();  
-                            } catch (Exception e1){                
-                            }
-                            try {
-                                gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
-                                for (int j = 0; j < gpCells.size(); j++) {
-                                    listh3Address.add(gpCells.get(j));
-                                }
-                                gpCells.clear();  
-                            } catch (Exception e1){
-
-                            }
-
-                            for (Long secondHexList : listh3Address){
-                            if (hexList.contains(secondHexList)){
-                                hexListFinal.add(secondHexList);
-                            }
-                            }
-
-                        }
-                    }
-                } else {
-                    hexListFinal = Collections.singletonList(-2L);
-                
-                }
-            } catch (Exception e) {
-                //System.out.println(e);
-                hexListFinal = Collections.singletonList(-1L);
-                //e.printStackTrace();
-            }
-            return hexListFinal.stream().map(H3LongAddress::of);
-    }
-
-
-    // Uncompact
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.uncompactString", mode = Mode.READ)
-    @Description("CALL com.neo4jh3.uncompactString(listCells, h3Resolution)")
-    public Stream<H3StringAddress> uncompactString(@Name("listCells") List<String> listCells, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (listCells == null) {
-            throw new InterruptedException("invalid list of hex addresses");
-        }
         if (h3 == null) {
-            return Stream.empty();
+            throw new InterruptedException("h3 failed to initialize");
         }
+
+        if (polyEdges == null || polyEdgeHoles == null) {
+         throw new InterruptedException("invalid arguments");
+         }
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
-        if (h3Resolution > 1 && h3Resolution < 15) {   
-            Integer maxRes = 0;
-            Integer curRes = 0;
 
-            ListIterator<String> iterator = listCells.listIterator();
-            while (iterator.hasNext()) {
-                curRes = h3.getResolution(iterator.next());
-                if (curRes.compareTo(maxRes)>0){
-                    maxRes = curRes;
+        try {
+            if (h3Resolution > 0 && h3Resolution <= 15) {
+
+            for (String mapEdges : polyEdges) {
+                final String[] latLonList = mapEdges.split(",");
+                LatLng tmpGeoCoord = null;
+                if (latlonorder.equalsIgnoreCase("latlon")){
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                } else {
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[0]));
                 }
+                hexPoints.add(tmpGeoCoord);
             }
-            if (h3Resolution >= maxRes){
-                return h3.uncompactCellAddresses(listCells,h3Resolution)
-                .stream()
-                .map(H3StringAddress::of);
+
+            for (String mapEdges : polyEdgeHoles) {
+                final String[] latLonList = mapEdges.split(",");
+                LatLng tmpGeoCoord = null;
+                if (latlonorder.equalsIgnoreCase("latlon")){
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[0]), Double.parseDouble(latLonList[1]));
+                } else {
+                    tmpGeoCoord = new LatLng(Double.parseDouble(latLonList[1]), Double.parseDouble(latLonList[2]));
+                }
+                hexHoles.add(tmpGeoCoord);
+            }
+
+            if (!hexHoles.isEmpty()) {
+                holesList.add(hexHoles);
+                hexList = h3.polygonToCells(hexPoints, holesList, h3Resolution);
             } else {
-                List<String> ringList = null;
-                ringList = Collections.singletonList("-2");
-                return ringList.stream().map(H3StringAddress::of);
+                hexList = h3.polygonToCells(hexPoints, null, h3Resolution);
             }
+
+                mls = wktString.replace("LINESTRING((", "");
+                mls = mls.replace(" (","");
+                mls = mls.replace(")","");
+                mls = mls.replace("(","");
+                String[] latlonPairs = mls.split(",");
+                String lonlat = "";
+                for (int i = 0; i < latlonPairs.length; i++) {
+                    if (i > 0){
+                        lonlat = latlonPairs[i-1].toString();
+                        lonlat = lonlat.trim();
+                        fromLat = Double.valueOf(lonlat.split("\\s+")[0]);
+                        fromLon = Double.valueOf(lonlat.split("\\s+")[1]);
+                        lonlat = latlonPairs[i].toString();
+                        lonlat = lonlat.trim();
+                        toLat = Double.valueOf(lonlat.split("\\s+")[0]);
+                        toLon =Double.valueOf(lonlat.split("\\s+")[1]);
+
+                        midLat = (fromLat + toLat) / 2;
+                        midLon = (fromLon + toLon) / 2;
+                        h3StartAddress = h3.latLngToCell(fromLat, fromLon, h3Resolution);
+                        h3MidAddress = h3.latLngToCell(midLat, midLon, h3Resolution);
+                        h3EndAddress = h3.latLngToCell(toLat, toLon, h3Resolution);
+                        try {
+                            gpCells = h3.gridPathCells(h3StartAddress, h3MidAddress);
+                            for (int j = 0; j < gpCells.size(); j++) {
+                                listh3Address.add(gpCells.get(j));
+                            }
+                            gpCells.clear();  
+                        } catch (Exception e1){                
+                        }
+                        try {
+                            gpCells = h3.gridPathCells((h3MidAddress), h3EndAddress);
+                            for (int j = 0; j < gpCells.size(); j++) {
+                                listh3Address.add(gpCells.get(j));
+                            }
+                            gpCells.clear();  
+                        } catch (Exception e1){
+
+                        }
+
+                        for (Long secondHexList : listh3Address){
+                         if (hexList.contains(secondHexList)){
+                             hexListFinal.add(secondHexList);
+                         }
+                         }
+
+                    }
+                }
+            } else {
+                hexListFinal = Collections.singletonList(-2L);
+            
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            hexListFinal = Collections.singletonList(-1L);
+            //e.printStackTrace();
+        }
+        return hexListFinal.stream().map(H3LongAddress::of);
+}
+
+
+// Uncompact
+@Procedure(name = "neo4jh3.uncompactString", mode = Mode.READ)
+@Description("CALL neo4jh3.uncompactString(listCells, h3Resolution)")
+public Stream<H3StringAddress> uncompactString(@Name("listCells") List<String> listCells, @Name("h3Res") Long h3Res) throws InterruptedException {
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
+    }
+    if (h3 == null) {
+        return Stream.empty();
+    }
+
+    final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+    if (h3Resolution > 1 && h3Resolution < 15) {   
+        Integer maxRes = 0;
+        Integer curRes = 0;
+
+        ListIterator<String> iterator = listCells.listIterator();
+        while (iterator.hasNext()) {
+            curRes = h3.getResolution(iterator.next());
+            if (curRes.compareTo(maxRes)>0){
+                maxRes = curRes;
+            }
+        }
+        if (h3Resolution >= maxRes){
+            return h3.uncompactCellAddresses(listCells,h3Resolution)
+            .stream()
+            .map(H3StringAddress::of);
         } else {
             List<String> ringList = null;
             ringList = Collections.singletonList("-2");
             return ringList.stream().map(H3StringAddress::of);
         }
+    } else {
+        List<String> ringList = null;
+        ringList = Collections.singletonList("-2");
+        return ringList.stream().map(H3StringAddress::of);
     }
+}
 
-        // Experimental write to db procedure
-    @SuppressWarnings("unused")
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.writeH3ToDB", mode = Mode.WRITE)
-    @Description("CALL com.neo4jh3.writeH3ToDB(listCells, strLabel, strProperty, txSize)")
-    public Stream<StringResult> writeH3ToDB(@Name("listCells") List<Long> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("txSize") Long txSize) throws InterruptedException {
-        String returnMessage = "";
-        if (listCells == null) {
-            throw new InterruptedException("invalid list of hex addresses");
-        }
-        if (strLabel.isBlank() || strProperty.isBlank()){
-            returnMessage = "-5";
-            //throw new InterruptedException("Empty Label and/or Property");
-        } else {
-            if (txSize < 1) {
-                txSize = 10000L;
-            }
-            Integer count = 0;
-            Long curRes = 0L;
-            Throwable txEx = null;
-            ListIterator<Long> iterator = listCells.listIterator();
-            Transaction tx = db.beginTx();
-            try {
-                while (iterator.hasNext()) {
-                    curRes = iterator.next();
-                    Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
-                    if (h3Node == null) {
-                        h3Node = tx.createNode(Label.label(strLabel));
-                        h3Node.setProperty(strProperty,curRes);
-                    }
-                        
-                    if (count % txSize == 0) {
-                        tx.commit();
-                        tx = db.beginTx();
-                    }
-                    count++;
-                }
-                tx.commit();
-            } catch (Throwable ex) {
-                txEx = ex;
-                System.out.println(ex);
-            }
-        } 
-        if (returnMessage.isBlank()){
-            return Stream.of(new StringResult("Finished"));
-        } else {
-            return Stream.of(new StringResult(returnMessage));
-        }
+    // Experimental write to db procedure
+@SuppressWarnings("unused")
+@Procedure(name = "neo4jh3.writeH3ToDB", mode = Mode.WRITE)
+@Description("CALL neo4jh3.writeH3ToDB(listCells, strLabel, strProperty, txSize)")
+public Stream<StringResult> writeH3ToDB(@Name("listCells") List<Long> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("txSize") Long txSize) throws InterruptedException {
+    String returnMessage = "";
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
     }
+    if (strLabel.isBlank() || strProperty.isBlank()){
+        returnMessage = "-5";
+        //throw new InterruptedException("Empty Label and/or Property");
+    } else {
+        if (txSize < 1) {
+            txSize = 10000L;
+        }
+        Integer count = 0;
+        Long curRes = 0L;
+        Throwable txEx = null;
+        ListIterator<Long> iterator = listCells.listIterator();
+        Transaction tx = db.beginTx();
+        try {
+            while (iterator.hasNext()) {
+                curRes = iterator.next();
+                Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
+                if (h3Node == null) {
+                    h3Node = tx.createNode(Label.label(strLabel));
+                    h3Node.setProperty(strProperty,curRes);
+                }
+                    
+                if (count % txSize == 0) {
+                    tx.commit();
+                    tx = db.beginTx();
+                }
+                count++;
+            }
+            tx.commit();
+        } catch (Throwable ex) {
+            txEx = ex;
+            System.out.println(ex);
+        }
+    } 
+    if (returnMessage.isBlank()){
+        return Stream.of(new StringResult("Finished"));
+    } else {
+        return Stream.of(new StringResult(returnMessage));
+    }
+}
 
-        // Experimental write to db procedure
-    @SuppressWarnings("unused")
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.writeH3StringToDB", mode = Mode.WRITE)
-    @Description("CALL com.neo4jh3.writeH3StringToDB(listCells, strLabel, strProperty, txSize)")
-    public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("txSize") Long txSize) throws InterruptedException {
-        String returnMessage = "";
-        if (listCells == null) {
-            throw new InterruptedException("invalid list of hex addresses");
-        }
-        if (strLabel.isBlank() || strProperty.isBlank()){
-            returnMessage = "Empty Label and/or Property";
-            //throw new InterruptedException("Empty Label and/or Property");
-        } else {
-            if (txSize < 1) {
-                txSize = 10000L;
-            }
-            Integer count = 0;
-            String curRes = "";
-            Throwable txEx = null;
-            ListIterator<String> iterator = listCells.listIterator();
-            Transaction tx = db.beginTx();
-            try {
-                while (iterator.hasNext()) {
-                    curRes = iterator.next();
-                    Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
-                    if (h3Node == null) {
-                        h3Node = tx.createNode(Label.label(strLabel));
-                        h3Node.setProperty(strProperty,curRes);
-                    }
-                        
-                    if (count % txSize == 0) {
-                        tx.commit();
-                        tx = db.beginTx();
-                    }
-                    count++;
-                }
-                tx.commit();
-            } catch (Throwable ex) {
-                txEx = ex;
-                System.out.println(ex);
-            }
-        } 
-        if (returnMessage.isBlank()){
-            return Stream.of(new StringResult("Finished"));
-        } else {
-            return Stream.of(new StringResult(returnMessage));
-        }
+    // Experimental write to db procedure
+@SuppressWarnings("unused")
+@Procedure(name = "neo4jh3.writeH3StringToDB", mode = Mode.WRITE)
+@Description("CALL neo4jh3.writeH3StringToDB(listCells, strLabel, strProperty, txSize)")
+public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("txSize") Long txSize) throws InterruptedException {
+    String returnMessage = "";
+    if (listCells == null) {
+        throw new InterruptedException("invalid list of hex addresses");
     }
+    if (strLabel.isBlank() || strProperty.isBlank()){
+        returnMessage = "Empty Label and/or Property";
+        //throw new InterruptedException("Empty Label and/or Property");
+    } else {
+        if (txSize < 1) {
+            txSize = 10000L;
+        }
+        Integer count = 0;
+        String curRes = "";
+        Throwable txEx = null;
+        ListIterator<String> iterator = listCells.listIterator();
+        Transaction tx = db.beginTx();
+        try {
+            while (iterator.hasNext()) {
+                curRes = iterator.next();
+                Node h3Node = tx.findNode(Label.label(strLabel), strProperty, curRes);
+                if (h3Node == null) {
+                    h3Node = tx.createNode(Label.label(strLabel));
+                    h3Node.setProperty(strProperty,curRes);
+                }
+                    
+                if (count % txSize == 0) {
+                    tx.commit();
+                    tx = db.beginTx();
+                }
+                count++;
+            }
+            tx.commit();
+        } catch (Throwable ex) {
+            txEx = ex;
+            System.out.println(ex);
+        }
+    } 
+    if (returnMessage.isBlank()){
+        return Stream.of(new StringResult("Finished"));
+    } else {
+        return Stream.of(new StringResult(returnMessage));
+    }
+}
 
     // Experimental write to db procedure
     @SuppressWarnings("unused")
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.writeH3NodesRelsToDB", mode = Mode.WRITE)
-    @Description("CALL com.neo4jh3.writeH3NodesRelsToDB(From Node, List of H3 Cells, To Node Label, To Node Property Name, RelationshipType, Transaction Size)")
+    @Procedure(name = "neo4jh3.writeH3NodesRelsToDB", mode = Mode.WRITE)
+    @Description("CALL neo4jh3.writeH3NodesRelsToDB(From Node, List of H3 Cells, To Node Label, To Node Property Name, RelationshipType, Transaction Size)")
     public Stream<StringResult> writeH3NodesRelsToDB(@Name("fromNode") Node fromNode, @Name("listCells") List<Long> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("strRelationshipType") String strRelationshipType, @Name("txSize") Long txSize) throws InterruptedException {
         String returnMessage = "";
         String fromNodeElmementID = "";
@@ -3154,9 +3090,8 @@ public class Uberh3 {
     }
 
     // Experimental write to db procedure
-    @Deprecated
-    @Procedure(name = "com.neo4jh3.writeH3StringNodesRelsToDB", mode = Mode.WRITE)
-    @Description("CALL com.neo4jh3.writeH3StringNodesRelsToDB(From Node, List of H3 Cells, To Node Label, To Node Property Name, RelationshipType, Transaction Size)")
+    @Procedure(name = "neo4jh3.writeH3StringNodesRelsToDB", mode = Mode.WRITE)
+    @Description("CALL neo4jh3.writeH3StringNodesRelsToDB(From Node, List of H3 Cells, To Node Label, To Node Property Name, RelationshipType, Transaction Size)")
     public Stream<StringResult> writeH3StringNodesRelsToDB(@Name("fromNode") Node fromNode, @Name("listCells") List<String> listCells, @Name("strLabel") String strLabel, @Name("strProperty") String strProperty, @Name("strRelationshipType") String strRelationshipType, @Name("txSize") Long txSize) throws InterruptedException {
         String returnMessage = "";
         String fromNodeElmementID = "";

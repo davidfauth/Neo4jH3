@@ -1,3 +1,9 @@
+# CHANGELOG - 5.25.1 - 2024-11-25
+* [Added] - Deprecating the old naming convention with com.neo4jh3 and migrating to neo4jh3
+* [Added] - Added new documentation document for the new naming convention. 
+* [Added] - Added com.neo4jh3.coverage and com.neo4jh3.coverageString procedures which return a list of hex addresses that fully cover a polygon.
+* [Updated] - Tested through Neo4j 5.25.1
+
 # CHANGELOG - 5.19.1 - 2024-06-05
 * [Added] - Added two new procedures to read a WKT polygon file and return the Hex Addresss. These are com.neo4jh3.polygonash3 and com.neo4jh3.polygonash3String. These procedures expect the POLYGON in Longitude, Latitude order.
 * [Updated] - Updated Documentation with bug fixes.
