@@ -1,3 +1,6 @@
+# CHANGELOG - 5.26.0 - 2024-12-18
+* [Updated] - Tested through Neo4j 5.26.0. Neo4j 5.26.0 is the Neo4j 5 Long Term Support version.
+
 # CHANGELOG - 5.25.1 - 2024-11-25
 * [Added] - Deprecating the old naming convention with com.neo4jh3 and migrating to neo4jh3
 * [Added] - Added new documentation document for the new naming convention. 
