@@ -111,7 +111,7 @@ public class Neo4jH3Test {
                 }
 
         result = session.run("RETURN neo4jh3.version() AS value");
-        assertEquals("\"5.23.0\"", result.single().get("value").toString());
+        assertEquals("\"2025.01.0\"", result.single().get("value").toString());
 
         result = session.run("RETURN neo4jh3.cellToLatLngString('892830926cfffff') AS value");
         assertEquals("\"37.564248,-122.325306\"", result.single().get("value").toString());

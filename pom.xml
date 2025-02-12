@@ -6,15 +6,15 @@
 
     <groupId>com.neo4jh3</groupId>
     <artifactId>neo4jh3</artifactId>
-    <version>5.26.2</version>
+    <version>2025.01</version>
 
     <properties>
-        <neo4j.version>5.26.0</neo4j.version>
+        <neo4j.version>2025.01.0</neo4j.version>
         <lang3.version>3.13.0</lang3.version>
 		<uber.version>4.1.1</uber.version>
 		<commons.version>4.1</commons.version>
         <commons.math.version>3.6.1</commons.math.version>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
         <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>

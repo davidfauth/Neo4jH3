@@ -1,3 +1,8 @@
+# CHANGELOG - 2025.01.0 - 2025-02-12
+* [Updated] - Bumped Neo4j version to 2025.01.0 to match Neo4j versioning.
+* [Updated] - Built against Java 21 as Neo4j 2025.01.0 requires Java 21
+
+
 # CHANGELOG - 5.26.2 - 2025-02-12
 * [Updated] - Bumped Neo4j version to 5.26.2.
 
