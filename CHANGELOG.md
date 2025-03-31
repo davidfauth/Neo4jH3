@@ -1,3 +1,8 @@
+# CHANGELOG - 2025.02.0 - 2025-03-28
+* [Updated] - Bumped Neo4j version to 2025.02.0 to match Neo4j versioning.
+* [Added] - Added neo4jh3.geojsonmultipolygonash3 and neo4jh3.geojsonmultipolygonash3String to read in a geoJson multipolygon list. This allows the plugin to read a geoJson object and transform the polygons into H3 objects. Examples in the Documentation_525.md file.
+
+
 # CHANGELOG - 2025.01.0 - 2025-02-12
 * [Updated] - Bumped Neo4j version to 2025.01.0 to match Neo4j versioning.
 * [Updated] - Built against Java 21 as Neo4j 2025.01.0 requires Java 21

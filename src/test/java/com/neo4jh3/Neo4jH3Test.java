@@ -111,7 +111,13 @@ public class Neo4jH3Test {
                 }
 
         result = session.run("RETURN neo4jh3.version() AS value");
-        assertEquals("\"2025.01.0\"", result.single().get("value").toString());
+        assertEquals("\"2025.02.0\"", result.single().get("value").toString());
+
+        result = session.run("RETURN neo4jh3.vertexLatLngString('85283473fffffff') AS value");
+        assertEquals("\"37.271356 -121.91508\"", result.single().get("value").toString());
+
+        result = session.run("RETURN neo4jh3.vertexLatLng(611163894932570111) AS value");
+        assertEquals("\"-26.440265 -151.876706\"", result.single().get("value").toString());
 
         result = session.run("RETURN neo4jh3.cellToLatLngString('892830926cfffff') AS value");
         assertEquals("\"37.564248,-122.325306\"", result.single().get("value").toString());
@@ -505,11 +511,35 @@ public class Neo4jH3Test {
         result = session.run("call neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-77.436031 38.471420, -77.395123 38.536569, -77.294124 38.511703, -77.310611 38.395709, -77.436031 38.471420)))',19) yield value return value limit 1");
         assertEquals("\"-2\"", result.single().get("value").toString());
 
-        result = session.run("call neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value limit 1");
-        assertEquals("\"882a100f35fffff\"", result.single().get("value").toString());
+        result = session.run("call neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value order by value asc limit 1");
+        assertEquals("\"882a1008d3fffff\"", result.single().get("value").toString());
 
         result = session.run("call neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return count(value)");
         assertEquals(5L,result.single().get(0).asLong());
+
+        result = session.run("call neo4jh3.geojsonmultipolygonash3([[123456, 111]],7) yield value return value limit 1");
+        assertEquals(-1L,result.single().get(0).asLong());
+        
+        result = session.run("call neo4jh3.geojsonmultipolygonash3([[-168.15069735070196, -14.535796522691271],[-168.151075958988, -14.535536646499068],[-168.15221655385056, -14.535756349975458],[-168.1522996422145, -14.536124944310771],[-168.15152633227405, -14.537364125553907],[-168.150950074586, -14.537461876464377],[-168.15050804610905, -14.537076234580525],[-168.15069735070196, -14.535796522691271]],19) yield value return value limit 1");
+        assertEquals(-2L,result.single().get(0).asLong());
+
+        result = session.run("call neo4jh3.geojsonmultipolygonash3([[-73.927881, 40.769855], [-73.915189, 40.763915], [-73.923600, 40.753839], [-73.944151, 40.759309], [-73.927881, 40.769855]],8) yield value return value limit 1");
+        assertEquals(613229524731035647L,result.single().get(0).asLong());
+        
+        result = session.run("call neo4jh3.geojsonmultipolygonash3([[-170.62226343111212, -14.247428536297889], [-170.62511050664435, -14.250297069653982], [-170.6243282556442, -14.251777530008923], [-170.62331557315485, -14.251811742917596], [-170.6216744183397, -14.250248670839426], [-170.62226343111212, -14.247428536297889]],13) yield value return value limit 1");
+        assertEquals(637718121358368127L,result.single().get(0).asLong());
+
+        result = session.run("call neo4jh3.geojsonmultipolygonash3([[-73.927881, 40.769855], [-73.915189, 40.763915], [-73.923600, 40.753839], [-73.944151, 40.759309], [-73.927881, 40.769855]],10) yield value return count(value)");
+        assertEquals(149L,result.single().get(0).asLong());
+
+        result = session.run("call neo4jh3.geojsonmultipolygonash3String('MULTIPOLYGON[[[[-73.927881, 40.769855], [-73.915189, 40.763915], [-73.923600, 40.753839], [-73.944151, 40.759309], [-73.927881, 40.769855]], [[-77.436031, 38.471420], [-77.395123, 38.536569], [-77.294124, 38.511703], [-77.310611, 38.395709], [-77.436031, 38.471420]]]]',19) yield value return value limit 1");
+        assertEquals("\"-2\"", result.single().get("value").toString());
+
+        result = session.run("call neo4jh3.geojsonmultipolygonash3String('MULTIPOLYGON[[[[-73.927881, 40.769855], [-73.915189, 40.763915], [-73.923600, 40.753839], [-73.944151, 40.759309], [-73.927881, 40.769855]], [[-77.436031, 38.471420], [-77.395123, 38.536569], [-77.294124, 38.511703], [-77.310611, 38.395709], [-77.436031, 38.471420]]]]',8) yield value return value  order by value asc limit 1");
+        assertEquals("\"882a100d4bfffff\"", result.single().get("value").toString());
+
+        result = session.run("call neo4jh3.geojsonmultipolygonash3String('MULTIPOLYGON[[[[-73.927881, 40.769855], [-73.915189, 40.763915], [-73.923600, 40.753839], [-73.944151, 40.759309], [-73.927881, 40.769855]], [[-77.436031, 38.471420], [-77.395123, 38.536569], [-77.294124, 38.511703], [-77.310611, 38.395709], [-77.436031, 38.471420]]]]',8) yield value return count(value)");
+        assertEquals(162L,result.single().get(0).asLong());
 
      }
      driver.close();

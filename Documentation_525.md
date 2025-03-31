@@ -1,4 +1,5 @@
 # Documentation
+# Procedures
 ## neo4jh3.angleBetweenPoints( Latitude1, Longitude1, Latitude2, Longitude2 )
 Returns the angle in degrees between two points.
 
@@ -1013,7 +1014,6 @@ An LIST of H3 cell IDs of the same type as the values in the input LIST expressi
 
 ### Error conditions
 
-
 ### Example
     CALL neo4jh3.compactString(['85283473fffffff', '85283447fffffff', '8528347bfffffff', '85283463fffffff', '85283477fffffff', '8528340ffffffff', '8528340bfffffff', '85283457fffffff', '85283443fffffff', '8528344ffffffff', '852836b7fffffff', '8528346bfffffff', '8528346ffffffff', '85283467fffffff', '8528342bfffffff', '8528343bfffffff', '85283407fffffff', '85283403fffffff', '8528341bfffffff']) yield value return value;
     
@@ -1077,6 +1077,60 @@ If h3_resolution is invalid, the function returns -2
     call neo4jh3.coverageString(['-122.481889,37.826683','122.479487,37.808548','-122.481889,37.826683','-122.479487,37.808548','-122.474150,37.808904','-122.476510,37.826935','-122.481889,37.826683'],17,'lonlat') yield value return value;
     "-2"
 
+## neo4jh3.geojsonmultipolygonash3( geographyExpr, kExpr ) yield value return value;
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided MultiPOLYGON at the specified resolution.
+
+### Syntax
+CALL neo4jh3.geojsonmultipolygonash3( geographyExpr, kExpr ) yield value return value;
+
+### Arguments
+* geographyExpr: A List representing a POLYGON geography where the Latitude and Longitude are Double values. The points must be in Longitude and then Latitude.
+* kExpr: An INTEGER expression representing the grid distance. kExpr must be non-negative and between 1 and 15
+
+### Returns
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided POLYGON at the specified resolution.
+
+### Error conditions
+If h3CellIdExpr is invalid, the function returns -1
+If kExpr < 1 or kExpr > 15, the function returns -2
+
+### Example
+    call neo4jh3.geojsonmultipolygonash3([[-73.927881, 40.769855], [-73.915189, 40.763915], [-73.923600, 40.753839], [-73.944151, 40.759309], [-73.927881, 40.769855]],8) yield value return value limit 1;
+    613229524731035647
+         
+    CALL neo4jh3.geojsonmultipolygonash3(1234,1) yield value return value;
+    -1
+    
+    call neo4jh3.geojsonmultipolygonash3([[-168.15069735070196, -14.535796522691271],[-168.151075958988, -14.535536646499068],[-168.15221655385056, -14.535756349975458],[-168.1522996422145, -14.536124944310771],[-168.15152633227405, -14.537364125553907],[-168.150950074586, -14.537461876464377],[-168.15050804610905, -14.537076234580525],[-168.15069735070196, -14.535796522691271]],19) yield value return value limit 1;
+    -2
+    
+## neo4jh3.geojsonmultipolygonash3String( geographyExpr, kExpr )
+Returns a list of H3 cell IDs (as a STRING) corresponding to the provided MultiPOLYGON at the specified resolution.
+
+### Syntax
+CALL neo4jh3.geojsonmultipolygonash3String( geographyExpr, kExpr ) yield value return value;
+
+### Arguments
+* geographyExpr: A List representing a POLYGON geography where the Latitude and Longitude are Double values. The points must be in Longitude and then Latitude.
+* kExpr: An INTEGER expression representing the grid distance. kExpr must be non-negative.
+
+### Returns
+A list of STRING values corresponding to the H3 cell IDs that have the same resolution as the input H3 cell and are within grid distance k of the input H3 cell, where k is the value of the kExpr.
+
+### Error conditions
+If h3CellIdExpr is invalid, the function returns -1
+If kExpr < 1 or kExpr > 15, the function returns -2
+
+### Example
+    call neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return value order by value asc limit 1;
+    882a1008d3fffff
+         
+    CALL neo4jh3.geojsonmultipolygonash3String('1234',1) yield value return value;
+    -1
+    
+    call neo4jh3.geojsonmultipolygonash3String([[-168.15069735070196, -14.535796522691271],[-168.151075958988, -14.535536646499068],[-168.15221655385056, -14.535756349975458],[-168.1522996422145, -14.536124944310771],[-168.15152633227405, -14.537364125553907],[-168.150950074586, -14.537461876464377],[-168.15050804610905, -14.537076234580525],[-168.15069735070196, -14.535796522691271]],19) yield value return value limit 1;
+    -2
+
 ### Syntax
 CALL neo4jh3.gridDisk( h3CellIdExpr, kExpr ) yield value return value;
 
@@ -1089,7 +1143,7 @@ A list of LONG values corresponding to the H3 cell IDs that have the same resolu
 
 ### Error conditions
 If h3CellIdExpr is invalid, the function returns -1
-If kExpr < 0, the function returns -2
+If kExpr < 1 or kExpr > 15, the function returns -2
 
 ### Example
     CALL neo4jh3.gridDisk(599686042433355775,1) yield value return value;
@@ -1116,7 +1170,7 @@ A list of STRING values corresponding to the H3 cell IDs that have the same reso
 
 ### Error conditions
 If h3CellIdExpr is invalid, the function returns -1
-If kExpr < 0, the function returns -2
+If kExpr < 1 or kExpr > 15, the function returns -2
 
 
 ### Example

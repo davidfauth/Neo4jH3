@@ -33,7 +33,7 @@ public class Neo4jH3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "2025.01.0";
+    private final static String NEO4J_H3_VERSION = "2025.02.0";
 
     private static H3Core h3 = null;
                     
@@ -793,6 +793,63 @@ public class Neo4jH3 {
         return h3Version;
     }
 
+    @UserFunction(name = "neo4jh3.vertexLatLng")
+    @Description("neo4jh3.vertexLatLng(vertex) - Returns the latitude and longitude coordinates of the given vertex.")
+    public String vertexLatLng(
+                @Name("vertex") Long vertex
+            ) throws InterruptedException 
+            
+            {
+                String returnValue = "";
+                if (h3 == null) {
+                    throw new InterruptedException("h3 failed to initialize");
+                }
+                LatLng tmpGeoCoord = null;
+                try {
+                    if (h3.isValidCell(vertex)){
+                        tmpGeoCoord = h3.vertexToLatLng(vertex);
+                        returnValue = Precision.round(tmpGeoCoord.lat,6) + " " + Precision.round(tmpGeoCoord.lng,6);
+                    } else {
+                        returnValue = "-2";
+                    }
+                } catch (Exception e) {
+                    //System.out.println(e);
+                    returnValue = "-1";
+                    //e.printStackTrace();
+                }
+
+        return returnValue;
+    }
+
+    @UserFunction(name = "neo4jh3.vertexLatLngString")
+    @Description("neo4jh3.vertexLatLngString(vertex) - Returns the latitude and longitude coordinates of the given vertex.")
+    public String vertexLatLngString(
+                @Name("vertex") String vertex
+            ) throws InterruptedException 
+            
+            {
+                String returnValue = "";
+                if (h3 == null) {
+                    throw new InterruptedException("h3 failed to initialize");
+                }
+                LatLng tmpGeoCoord = null;
+                try {
+                    if (h3.isValidCell(vertex)){
+                        tmpGeoCoord = h3.vertexToLatLng(vertex);
+                        returnValue = Precision.round(tmpGeoCoord.lat,6) + " " + Precision.round(tmpGeoCoord.lng,6);
+                    } else {
+                        returnValue = "-2";
+                    }
+                } catch (Exception e) {
+                    //System.out.println(e);
+                    returnValue = "-1";
+                    //e.printStackTrace();
+                }
+
+        return returnValue;
+    }
+
+
     // Procedures
 
     @Procedure(name = "neo4jh3.lineash3", mode = Mode.READ)
@@ -1367,6 +1424,7 @@ public class Neo4jH3 {
                    mps = polygonStrings[i];
                    mps = mps.replace("(","");
                    mps = mps.replace(")","");
+                   //System.out.println(mps);
                    String[] lonlatPairs = mps.split(",");
                    for (int ii = 0; ii < lonlatPairs.length; ii++) {
                        LatLng tmpGeoCoord = null;
@@ -1393,6 +1451,119 @@ public class Neo4jH3 {
 
        return listh3Address.stream().map(H3StringAddress::of);
    }
+
+    // Added March 2025
+    @Procedure(name = "neo4jh3.geojsonmultipolygonash3", mode = Mode.READ)
+    @Description("neo4jh3.geoojsonmultipolygonash3(geoJsonString, resolution) - Returns the hex addresses as a long from a geoJson MultiPolygon string.")
+    public Stream<H3LongAddress> geojsonmultipolygonash3(
+        @Name("geoJsonString") List<List<Double>>  geoJsonString, 
+        @Name("h3Res") Long h3Res) throws InterruptedException 
+        {
+        List<Long> listh3Address = new ArrayList<Long>();
+        List<LatLng> hexPoints = new ArrayList<>();
+        List<LatLng> hexHoles = new ArrayList<>();
+        List<List<LatLng>> holesList = new ArrayList<>();
+        String mls = "";
+        String mps = "";
+        String tmls = "";
+
+        if (h3 == null) {
+            throw new InterruptedException("h3 failed to initialize");
+        }
+
+        final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+
+        try {
+            if (h3Resolution > 0 && h3Resolution <= 15) { 
+                for (List<Double> row : geoJsonString){
+                    //for (Double element : row) {
+                        LatLng tmpGeoCoord = null;
+                        tmpGeoCoord = new LatLng(row.get(1),row.get(0));
+                        hexPoints.add(tmpGeoCoord);
+                }
+                //System.out.println(hexPoints.size());
+                if (!hexHoles.isEmpty()) {
+                    holesList.add(hexHoles);
+                    listh3Address = h3.polygonToCells(hexPoints, holesList, h3Resolution);
+                } else {
+                    listh3Address = h3.polygonToCells(hexPoints, null, h3Resolution);
+                }   
+                    //}
+
+            } else {
+                listh3Address = Collections.singletonList(-2L);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            listh3Address = Collections.singletonList(-1L);
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3LongAddress::of);
+    }
+
+    // Added March 2025
+    @Procedure(name = "neo4jh3.geojsonmultipolygonash3String", mode = Mode.READ)
+    @Description("neo4jh3.geoojsonmultipolygonash3String(geoJsonString, resolution) - Returns the hex addresses as a long from a geoJson MultiPolygon string.")
+    public Stream<H3StringAddress> geojsonmultipolygonash3String(
+        @Name("geoJsonString") String geoJsonString, 
+        @Name("h3Res") Long h3Res) throws InterruptedException 
+        {
+        List<String> listh3Address = new ArrayList<String>();
+        List<LatLng> hexPoints = new ArrayList<>();
+        List<LatLng> hexHoles = new ArrayList<>();
+        List<List<LatLng>> holesList = new ArrayList<>();
+        String mls = "";
+        String mps = "";
+        String tmls = "";
+
+        if (h3 == null) {
+            throw new InterruptedException("h3 failed to initialize");
+        }
+
+        final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
+
+        try {
+            if (h3Resolution > 0 && h3Resolution <= 15) { 
+                mls = geoJsonString.replace("MULTIPOLYGON", "");
+                tmls = mls.replace("[[[[","(((");
+                tmls = tmls.replace("]]]]",")))");
+                tmls = tmls.replace("]], [[",")); ((");
+                tmls = tmls.replace("], [","); (");
+                tmls = tmls.replace("," ,"");
+                mls = tmls.replace(";", ",");
+                //System.out.println(mls);
+                String[] polygonStrings = mls.split("\\)\\),\\(\\(");
+                // Loop through each polygon and create Hex Addresses
+                for (int i=0; i<polygonStrings.length; i++){
+                    mps = polygonStrings[i];
+                    mps = mps.replace("(","");
+                    mps = mps.replace(")","");
+                    String[] lonlatPairs = mps.split(",");
+                    for (int ii = 0; ii < lonlatPairs.length; ii++) {
+                        LatLng tmpGeoCoord = null;
+                        tmpGeoCoord = returnLngLat(lonlatPairs[ii]);
+                        hexPoints.add(tmpGeoCoord);
+                    }
+                
+                    if (!hexHoles.isEmpty()) {
+                        holesList.add(hexHoles);
+                        listh3Address = h3.polygonToCellAddresses(hexPoints, holesList, h3Resolution);
+                    } else {
+                        listh3Address = h3.polygonToCellAddresses(hexPoints, null, h3Resolution);
+                    }       
+                }
+            } else {
+                listh3Address = Collections.singletonList("-2");
+            
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+            listh3Address = Collections.singletonList("-1");
+            //e.printStackTrace();
+        }
+
+        return listh3Address.stream().map(H3StringAddress::of);
+    }
 
     // Geography Functions
     

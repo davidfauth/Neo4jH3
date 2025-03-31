@@ -1,4 +1,5 @@
 # Documentation
+# Functions
 ## com.neo4jh3.angleBetweenPoints( Latitude1, Longitude1, Latitude2, Longitude2 )
 Returns the angle in degrees between two points.
 
