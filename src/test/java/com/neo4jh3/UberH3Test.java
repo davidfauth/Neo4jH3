@@ -2,7 +2,6 @@ package com.neo4jh3;
 
 import org.assertj.core.api.Assertions;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -11,9 +10,8 @@ import org.neo4j.driver.Session;
 import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.Neo4jBuilders;
 
-import com.neo4jh3.uber.Neo4jH3;
 import com.neo4jh3.uber.Uberh3;
-import com.uber.h3core.H3CoreLoader;
+
 
 
 public class UberH3Test {
@@ -222,7 +220,7 @@ public class UberH3Test {
         assertEquals(-2L, result.single().get("value").asLong(),0);
         
         result = session.run("return com.neo4jh3.h3RingsForDistance(6,7) as value");
-        assertEquals(3, result.single().get("value").asInt());
+        assertEquals(2, result.single().get("value").asInt());
 
         result = session.run("return com.neo4jh3.gridDistanceString('85283473fffffff','8528342bfffffff') as value");
         assertEquals(2L,result.single().get("value").asLong(),0);

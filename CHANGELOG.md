@@ -1,4 +1,9 @@
-# CHANGELOG - 2025.02.0 - 2025-05-01
+# CHANGELOG - 2025.10.1 - 2025-12-02
+* [Updated] - Bumped Neo4j version to 2025.10.1 to match Neo4j versioning.
+* [Updated] - Bumped uber.version to 4.3.1
+* [Updated] - Fixed the neo4jh3.geojsonmultipolygonash3 to return the proper error code if the list of hex points is empty.
+
+# CHANGELOG - 2025.04.0 - 2025-05-01
 * [Updated] - Bumped Neo4j version to 2025.04.0 to match Neo4j versioning.
 
 # CHANGELOG - 2025.02.0 - 2025-03-28

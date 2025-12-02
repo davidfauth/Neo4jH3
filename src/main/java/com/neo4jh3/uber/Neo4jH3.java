@@ -33,7 +33,7 @@ public class Neo4jH3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "2025.02.0";
+    private final static String NEO4J_H3_VERSION = "2025.09.0";
 
     private static H3Core h3 = null;
                     
@@ -1478,15 +1478,21 @@ public class Neo4jH3 {
                 for (List<Double> row : geoJsonString){
                     //for (Double element : row) {
                         LatLng tmpGeoCoord = null;
-                        tmpGeoCoord = new LatLng(row.get(1),row.get(0));
-                        hexPoints.add(tmpGeoCoord);
+                        if (row.get(1) > -90  && row.get(1) <=90){
+                            tmpGeoCoord = new LatLng(row.get(1),row.get(0));
+                            hexPoints.add(tmpGeoCoord);
+                        }
                 }
                 //System.out.println(hexPoints.size());
-                if (!hexHoles.isEmpty()) {
+                if (!hexHoles.isEmpty() && !hexPoints.isEmpty()) {
                     holesList.add(hexHoles);
                     listh3Address = h3.polygonToCells(hexPoints, holesList, h3Resolution);
                 } else {
-                    listh3Address = h3.polygonToCells(hexPoints, null, h3Resolution);
+                    if (!hexPoints.isEmpty()){
+                        listh3Address = h3.polygonToCells(hexPoints, null, h3Resolution);
+                    } else {
+                        listh3Address = Collections.singletonList(-1L);
+                    }
                 }   
                     //}
 
@@ -1541,15 +1547,27 @@ public class Neo4jH3 {
                     String[] lonlatPairs = mps.split(",");
                     for (int ii = 0; ii < lonlatPairs.length; ii++) {
                         LatLng tmpGeoCoord = null;
-                        tmpGeoCoord = returnLngLat(lonlatPairs[ii]);
-                        hexPoints.add(tmpGeoCoord);
+                        try {
+                            tmpGeoCoord = returnLngLat(lonlatPairs[ii]);
+                            hexPoints.add(tmpGeoCoord);
+                        } catch (Exception e) {
+
+                        }
                     }
                 
                     if (!hexHoles.isEmpty()) {
                         holesList.add(hexHoles);
-                        listh3Address = h3.polygonToCellAddresses(hexPoints, holesList, h3Resolution);
+                        if (!hexPoints.isEmpty()){
+                            listh3Address = h3.polygonToCellAddresses(hexPoints, holesList, h3Resolution);
+                        } else {
+                            listh3Address = Collections.singletonList("-1");
+                        }
                     } else {
-                        listh3Address = h3.polygonToCellAddresses(hexPoints, null, h3Resolution);
+                        if (!hexPoints.isEmpty()){
+                            listh3Address = h3.polygonToCellAddresses(hexPoints, null, h3Resolution);
+                        } else {
+                            listh3Address = Collections.singletonList("-1");
+                        }
                     }       
                 }
             } else {

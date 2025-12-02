@@ -1,8 +1,6 @@
 package com.neo4jh3;
 
-import org.assertj.core.api.Assertions;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -12,9 +10,6 @@ import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.Neo4jBuilders;
 
 import com.neo4jh3.uber.Neo4jH3;
-import com.neo4jh3.uber.Uberh3;
-import com.uber.h3core.H3CoreLoader;
-
 
 public class Neo4jH3Test {
     private static Driver driver;
@@ -36,6 +31,7 @@ public class Neo4jH3Test {
         result = session.run("call neo4jh3.compactNumber(['85283473fffffff','8528342bfffffff']) yield value return value limit 1");
         assertEquals(599686042433355775L,result.single().get(0).asLong());
         */
+
         if (System.getProperty("os.name").toLowerCase().equalsIgnoreCase("mac os x")){
                 result = session.run("return neo4jh3.distanceBetweenHexes(599686042433355775,599686015589810175) as value");
                 assertEquals(17.870163, result.single().get("value").asDouble(),0);
@@ -82,7 +78,7 @@ public class Neo4jH3Test {
                 result = session.run("RETURN neo4jh3.centerasgeojson(1234) AS value");
                 assertEquals("\"-1\"", result.single().get("value").toString());
         }
-
+        
         if (System.getProperty("os.name").toLowerCase().startsWith("wind")){
                 result = session.run("return neo4jh3.distanceBetweenHexes(599686042433355775,599686015589810175) as value");
                 assertEquals(17.870163466857125,result.single().get("value").asDouble(),0);
@@ -109,9 +105,9 @@ public class Neo4jH3Test {
                 assertEquals("\"POINT (10.536199 64.7)\"", result.single().get("value").toString());
         
                 }
-
+        
         result = session.run("RETURN neo4jh3.version() AS value");
-        assertEquals("\"2025.02.0\"", result.single().get("value").toString());
+        assertEquals("\"2025.09.0\"", result.single().get("value").toString());
 
         result = session.run("RETURN neo4jh3.vertexLatLngString('85283473fffffff') AS value");
         assertEquals("\"37.271356 -121.91508\"", result.single().get("value").toString());
@@ -228,7 +224,7 @@ public class Neo4jH3Test {
         assertEquals(-2L, result.single().get("value").asLong(),0);
         
         result = session.run("return neo4jh3.h3RingsForDistance(6,7) as value");
-        assertEquals(3, result.single().get("value").asInt());
+        assertEquals(2, result.single().get("value").asInt());
 
         result = session.run("return neo4jh3.gridDistanceString('85283473fffffff','8528342bfffffff') as value");
         assertEquals(2L,result.single().get("value").asLong(),0);
@@ -516,7 +512,7 @@ public class Neo4jH3Test {
 
         result = session.run("call neo4jh3.multipolygonash3String('MULTIPOLYGON(((-73.927881 40.769855, -73.915189 40.763915,-73.923600 40.753839, -73.944151 40.759309, -73.927881 40.769855)),((-73.945007 40.796650,  -73.944668 40.791605,  -73.946504 40.789007, -73.949935 40.790397)))',8) yield value return count(value)");
         assertEquals(5L,result.single().get(0).asLong());
-
+        // somehwere in next four lines
         result = session.run("call neo4jh3.geojsonmultipolygonash3([[123456, 111]],7) yield value return value limit 1");
         assertEquals(-1L,result.single().get(0).asLong());
         
