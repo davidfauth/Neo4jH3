@@ -1,3 +1,7 @@
+# CHANGELOG - 2025.12.1 - 2026-01-26
+* [Updated] - Bumped Neo4j version to 2025.12.1 to match Neo4j versioning.
+* [Updated] - Bumped uber.version to 4.4.0
+
 # CHANGELOG - 2025.10.1 - 2025-12-02
 * [Updated] - Bumped Neo4j version to 2025.10.1 to match Neo4j versioning.
 * [Updated] - Bumped uber.version to 4.3.1
