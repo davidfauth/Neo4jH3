@@ -13,3 +13,8 @@ src/.DS_Store
 src/.DS_Store
 *.class
 .vscode/settings.json
+src/.DS_Store
+*.DS_Store
+._Documentation.md
+._MIT-LICENSE.txt
+._pom.xml
