@@ -1,3 +1,9 @@
+# CHANGELOG - 2026.04.0 - 2026-05-10
+* [Updated] - Bumped Neo4j version to 2026.04.0 to match Neo4j versioning.
+* [Added]   - Added functions and procedures for [Directed Edge Functions](https://h3geo.org/docs/api/uniedge).
+* [Updated] - Fixed test coverage errors.
+* [Updated] - Fixed documentation errors.
+
 # CHANGELOG - 2025.12.1 - 2026-01-26
 * [Updated] - Bumped Neo4j version to 2025.12.1 to match Neo4j versioning.
 * [Updated] - Bumped uber.version to 4.4.0

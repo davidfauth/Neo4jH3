@@ -1,7 +1,10 @@
 package com.neo4jh3;
 
 import java.io.IOException;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import com.uber.h3core.H3Core;
 
@@ -11,7 +14,7 @@ public abstract class BaseTestH3Core {
 
   protected static H3Core h3;
 
-  @BeforeClass
+  @BeforeAll
   public static void setup() throws IOException {
     h3 = H3Core.newInstance();
   }

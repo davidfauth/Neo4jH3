@@ -33,7 +33,7 @@ public class Neo4jH3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "2025.09.0";
+    private final static String NEO4J_H3_VERSION = "2026.04.0";
 
     private static H3Core h3 = null;
                     
@@ -47,13 +47,179 @@ public class Neo4jH3 {
         }
     }
 
+    @UserFunction(name = "neo4jh3.areNeighborCells")
+    @Description("neo4jh3.areNeighborCells(originHexAddress,destinationHexAddress) - Determines whether or not the provided H3 cells are neighbors.")
+    public Long areNeighborCells(
+            @Name("originCell") Long originCell,
+            @Name("destinationCell") Long destinationCell) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidCell(originCell) && h3.isValidCell(destinationCell)) {
+                boolean neighbors = h3.areNeighborCells(originCell, destinationCell);
+                return neighbors ? 1L : 0L;
+            } else {
+                return -1L;
+            }
+        } catch (Exception e) {
+            return -1L;
+        } 
+    }    
+    
+    @UserFunction(name = "neo4jh3.areNeighborCellsString")
+    @Description("neo4jh3.areNeighborCells(originHexAddress,destinationHexAddress) - Determines whether or not the provided H3 cells are neighbors.")
+    public String areNeighborCellsString(
+            @Name("originCell") String originCell,
+            @Name("destinationCell") String destinationCell) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidCell(originCell) && h3.isValidCell(destinationCell)) {
+                boolean neighbors = h3.areNeighborCells(originCell, destinationCell);
+                return neighbors ? "1" : "0";
+            } else {
+                return "-1";
+            }
+        } catch (Exception e) {
+            return "-1";
+        } 
+    }
+
+    @UserFunction(name = "neo4jh3.isValidDirectedEdge")
+    @Description("neo4jh3.isValidDirectedEdge(directedEdgeHexAddress) - Determines if the provided H3Index is a valid unidirectional edge index.")
+    public Long isValidDirectedEdge(
+            @Name("directedEdge") Long directedEdge) {
+        checkH3Initialized();
+        try {
+            boolean validEdge = h3.isValidDirectedEdge(directedEdge);
+            return validEdge ? 1L : 0L;
+        } catch (Exception e) {
+            return -1L;
+        } 
+    }  
+
+    @UserFunction(name = "neo4jh3.isValidDirectedEdgeString")
+    @Description("neo4jh3.isValidDirectedEdgeString(originHexAddress,destinationHexAddress) - Determines if the provided H3Index string is a valid unidirectional edge index.")
+    public String isValidDirectedEdgeString(
+            @Name("directedEdge") String directedEdge) {
+        checkH3Initialized();
+        try {
+            boolean validEdge = h3.isValidDirectedEdge(directedEdge);
+            return validEdge ? "1" : "0";
+        } catch (Exception e) {
+            return "-1";
+        } 
+    } 
+
+    @UserFunction(name = "neo4jh3.getDirectedEdgeOrigin")
+    @Description("neo4jh3.getDirectedEdgeOrigin(directedEdgeHexAddress) - Provides the origin hexagon from the directed edge H3Index.")
+    public Long getDirectedEdgeOrigin(
+            @Name("directedEdge") Long directedEdge) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidDirectedEdge(directedEdge)){
+                Long originCell = h3.getDirectedEdgeOrigin(directedEdge);
+                return originCell;
+            } else {
+                return -1L;
+            }
+        } catch (Exception e) {
+            return -1L;
+        } 
+    }  
+
+    @UserFunction(name = "neo4jh3.getDirectedEdgeOriginString")
+    @Description("neo4jh3.getDirectedEdgeOriginString(directedEdgeHexAddress) - Provides the origin hexagon from the directed edge H3Index.")
+    public String getDirectedEdgeOriginString(
+            @Name("directedEdge") String directedEdge) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidDirectedEdge(directedEdge)){
+                String originCell = h3.getDirectedEdgeOrigin(directedEdge);
+                return originCell;
+            } else {
+                return "-1";
+            }
+        } catch (Exception e) {
+            return "-1";
+        } 
+    }  
+
+   @UserFunction(name = "neo4jh3.getDirectedEdgeDestination")
+    @Description("neo4jh3.getDirectedEdgeDestination(directedEdgeHexAddress) - Provides the destination hexagon from the directed edge H3Index.")
+    public Long getDirectedEdgeDestination(
+            @Name("directedEdge") Long directedEdge) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidDirectedEdge(directedEdge)){
+                Long destinationCell = h3.getDirectedEdgeDestination(directedEdge);
+                return destinationCell;
+            } else {
+                return -1L;
+            }
+        } catch (Exception e) {
+            return -1L;
+        } 
+    }  
+
+    @UserFunction(name = "neo4jh3.getDirectedEdgeDestinationString")
+    @Description("neo4jh3.getDirectedEdgeDestinationString(directedEdgeHexAddress) - Provides the destination hexagon from the directed edge H3Index.")
+    public String getDirectedEdgeDestinationString(
+            @Name("directedEdge") String directedEdge) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidDirectedEdge(directedEdge)){
+                String originCell = h3.getDirectedEdgeDestination(directedEdge);
+                return originCell;
+            } else {
+                return "-1";
+            }
+        } catch (Exception e) {
+            return "-1";
+        } 
+    }  
+
+    @UserFunction(name = "neo4jh3.reverseDirectedEdge")
+    @Description("neo4jh3.reverseDirectedEdge(edgeAddress) - Returns the directed edge index that represents the same edge in the opposite direction (i.e., with origin and destination cells swapped).")
+    public Long reverseDirectedEdge(
+            @Name("directedEdge") Long directedEdge) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidDirectedEdge(directedEdge)){
+                return h3.cellsToDirectedEdge(
+                    h3.getDirectedEdgeDestination(directedEdge),
+                    h3.getDirectedEdgeOrigin(directedEdge)
+                );
+            } else {
+                return -1L;
+            }
+        } catch (Exception e) {
+            return -1L;
+        } 
+    }  
+
+    @UserFunction(name = "neo4jh3.reverseDirectedEdgeString")
+    @Description("neo4jh3.reverseDirectedEdgeString(edgeAddress) - Returns the directed edge index that represents the same edge in the opposite direction (i.e., with origin and destination cells swapped).")
+    public String reverseDirectedEdgeString(
+            @Name("directedEdge") String directedEdge) {
+        checkH3Initialized();
+        try {
+            if (h3.isValidDirectedEdge(directedEdge)){
+                return h3.cellsToDirectedEdge(
+                    h3.getDirectedEdgeDestination(directedEdge),
+                    h3.getDirectedEdgeOrigin(directedEdge)
+                );
+            } else {
+                return "-1";
+            }
+        } catch (Exception e) {
+            return "-1";
+        } 
+    }  
+
     @UserFunction(name = "neo4jh3.h3Validate")
     @Description("neo4jh3.h3Validate(hexAddress) - validate a long hex Address.")
     public Long h3Validate(
             @Name("hexAddress") Long hexAddress) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         
         try {
             if (h3.isValidCell(hexAddress)){
@@ -73,9 +239,7 @@ public class Neo4jH3 {
     @Description("neo4jh3.h3ValidateString(hexAddress) - validate a string hex Address.")
     public String h3ValidateString(
             @Name("hexAddress") String hexAddress) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         try {
             if (h3.isValidCell(hexAddress)){
                 return hexAddress;
@@ -96,9 +260,7 @@ public class Neo4jH3 {
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
             @Name("resolution") Long h3Res) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         Long returnValue = 0L;
         int validLatLon = 1;
         if (latValue == null || longValue == null) {
@@ -118,7 +280,7 @@ public class Neo4jH3 {
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
         if (validLatLon > 0){
-            if (h3Resolution > 0 && h3Resolution <= 15) {
+            if (h3Resolution >= 0 && h3Resolution <= 15) {
                 returnValue = h3.latLngToCell(latValue, longValue, h3Resolution);
             } else {
                 returnValue = -2L;
@@ -136,9 +298,7 @@ public class Neo4jH3 {
             @Name("resolution") Long h3Res) {
         String returnString = "";
         int validLatLon = 1;
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (latValue == null || longValue == null) {
             returnString = "NULL";
         }
@@ -155,7 +315,7 @@ public class Neo4jH3 {
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
         if (validLatLon > 0){
-            if (h3Resolution > 0 && h3Resolution <= 15) {
+            if (h3Resolution >= 0 && h3Resolution <= 15) {
                 returnString = h3.latLngToCellAddress(latValue, longValue, h3Resolution);
             } else {
                 returnString = "-2";
@@ -175,9 +335,7 @@ public class Neo4jH3 {
     public String h3tostringFunction(
             @Name("longHex") Long longHex) {
         String returnString = "";
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         
         try {
             if (h3.isValidCell(longHex)){
@@ -196,21 +354,19 @@ public class Neo4jH3 {
     @Description("neo4jh3.stringToH3(longHex) - return the string value of a long hex address.")
     public Long stringToH3Function(
             @Name("strHexAddress") String strHexAddress) {
-        Long returnString = 0L;
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        Long returnValue = 0L;
+        checkH3Initialized();
         
         try {
             if (h3.isValidCell(strHexAddress)){
-                returnString = h3.stringToH3(strHexAddress);
+                returnValue = h3.stringToH3(strHexAddress);
             } else {
-                returnString = -1L;
+                returnValue = -1L;
             }
-            return returnString;
+            return returnValue;
         } catch (Exception e) {
-            returnString = -1L;
-            return returnString;
+            returnValue = -1L;
+            return returnValue;
         }
     }
 
@@ -218,43 +374,39 @@ public class Neo4jH3 {
     @Description("neo4jh3.h3ResolutionString(longHex) - return the resolution of a string hex address.")
     public Long h3ResolutionString(
             @Name("strHexAddress") String strHexAddress) {
-        Long returnString = 0L;
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        Long returnValue = 0L;
+        checkH3Initialized();
         
         try {
             if (h3.isValidCell(strHexAddress)){
-                returnString = Long.valueOf(h3.getResolution(strHexAddress));
+                returnValue = Long.valueOf(h3.getResolution(strHexAddress));
             } else {
-                returnString = -1L;
+                returnValue = -1L;
             }
-            return returnString;
+            return returnValue;
         } catch (Exception e) {
-            returnString = -1L;
-            return returnString;
+            returnValue = -1L;
+            return returnValue;
         }
     }
 
     @UserFunction(name = "neo4jh3.h3Resolution")
-    @Description("neo4jh3.h3Resolution(longHex) - return the string value of a long hex address.")
+    @Description("neo4jh3.h3Resolution(hexAddress) - return the resolution of a long hex address.")
     public Long h3Resolution(
             @Name("hexAddress") Long hexAddress) {
-                Long returnString = 0L;
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        Long returnValue = 0L;
+        checkH3Initialized();
 
         try {
             if (h3.isValidCell(hexAddress)){
-                returnString = Long.valueOf(h3.getResolution(hexAddress));
+                returnValue = Long.valueOf(h3.getResolution(hexAddress));
             } else {
-                returnString = -1L;
+                returnValue = -1L;
             }
-            return returnString;
+            return returnValue;
         } catch (Exception e) {
-            returnString = -1L;
-            return returnString;
+            returnValue = -1L;
+            return returnValue;
         }
     }
 
@@ -265,21 +417,13 @@ public class Neo4jH3 {
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
             @Name("resolution") Long h3Res) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (latValue == null || longValue == null) {
             throw new RuntimeException("invalid lat or long values");
         }
 
         String returnString = "";
         int validLatLon = 1;
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
-        if (latValue == null || longValue == null) {
-            returnString = "-5";
-        }
 
         if ( latValue>90 || latValue<-90 ){
             validLatLon = 0;
@@ -293,7 +437,7 @@ public class Neo4jH3 {
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
         if (validLatLon > 0){
-            if (h3Resolution > 0 && h3Resolution <= 15) {
+            if (h3Resolution >= 0 && h3Resolution <= 15) {
                 returnString = h3.latLngToCellAddress(latValue, longValue, h3Resolution);
             } else {
                 returnString = "-2";
@@ -309,9 +453,7 @@ public class Neo4jH3 {
             @Name("latitude") Double latValue,
             @Name("longitude") Double longValue,
             @Name("resolution") Long h3Res) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         
         Long returnValue = 0L;
         int validLatLon = 1;
@@ -346,9 +488,7 @@ public class Neo4jH3 {
     public Long h3RingsForDistance(
             @Name("h3Res") Long h3Res,
             @Name("distanceValue") Long distanceValue) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (distanceValue == null) {
             throw new RuntimeException("invalid distance value");
         }
@@ -368,9 +508,7 @@ public class Neo4jH3 {
             @Name("fromHexAddress") Long fromHexAddress,
             @Name("toHexAddress") Long toHexAddress) {
 
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         Long returnValue = 0L;
         if (fromHexAddress == null || toHexAddress == null) {
             throw new RuntimeException("invalid from HexAddress or to HexAddress");
@@ -378,9 +516,7 @@ public class Neo4jH3 {
         if (h3.isValidCell(fromHexAddress) && h3.isValidCell(toHexAddress)){
             returnValue = h3.gridDistance(fromHexAddress, toHexAddress);
         } else {
-            if (!h3.isValidCell(fromHexAddress) || !h3.isValidCell(toHexAddress)){
-                returnValue = -1L;
-            }
+            returnValue = -1L;
         }
 
         return returnValue;     
@@ -391,23 +527,16 @@ public class Neo4jH3 {
     public double gridDistanceString(
             @Name("fromHexAddress") String fromHexAddress,
             @Name("toHexAddress") String toHexAddress) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null || toHexAddress == null) {
             throw new RuntimeException("invalid from HexAddress or to HexAddress");
         }
 
         Long returnValue = 0L;
-        if (fromHexAddress == null || toHexAddress == null) {
-            throw new RuntimeException("invalid from HexAddress or to HexAddress");
-        }
         if (h3.isValidCell(fromHexAddress) && h3.isValidCell(toHexAddress)){
             returnValue = h3.gridDistance(fromHexAddress, toHexAddress);
         } else {
-            if (!h3.isValidCell(fromHexAddress) || !h3.isValidCell(toHexAddress)){
-                returnValue = -1L;
-            }
+            returnValue = -1L;
         }
         return returnValue;  
     }
@@ -416,9 +545,7 @@ public class Neo4jH3 {
     @Description("CALL neo4jh3.toparent(hexAddress, h3Resolution)")
     public Long toparent(@Name("hexAddress") Long hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         Long returnValue = 0L;
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -443,9 +570,7 @@ public class Neo4jH3 {
     @Description("CALL neo4jh3.toparentString(hexAddress, h3Resolution)")
     public String toparentString(@Name("hexAddress") String hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
         String returnValue = "";
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -468,9 +593,7 @@ public class Neo4jH3 {
     @UserFunction(name = "neo4jh3.cellToLatLng")
     @Description("CALL neo4jh3.cellToLatLng(hexAddress)")
     public String cellToLatLng(@Name("hexAddress") Long hexAddress) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -485,9 +608,7 @@ public class Neo4jH3 {
     @UserFunction(name = "neo4jh3.cellToLatLngString")
     @Description("CALL neo4jh3.cellToLatLngString(hexAddress)")
     public String cellToLatLngString(@Name("hexAddress") String hexAddress) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -505,9 +626,7 @@ public class Neo4jH3 {
     @Description("CALL neo4jh3.distanceBetweenHexes(fromHexAddress, toHexAddress)")
     public double distanceBetweenHexes(@Name("fromHexAddress") Long fromHexAddress, @Name("toHexAddress") Long toHexAddress) throws InterruptedException {
         double returnDistance = 0.0;
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null || toHexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -525,13 +644,11 @@ public class Neo4jH3 {
     @Description("CALL neo4jh3.distanceBetweenHexesString(fromHexAddress, toHexAddress)")
     public double distanceBetweenHexesString(@Name("fromHexAddress") String fromHexAddress, @Name("toHexAddress") String toHexAddress) throws InterruptedException {
         double returnDistance = 0.0;
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null || toHexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
-        if (h3.isValidCell(fromHexAddress) && h3.isValidCell(fromHexAddress)){
+        if (h3.isValidCell(fromHexAddress) && h3.isValidCell(toHexAddress)){
             LatLng fromGeoCoord = h3.cellToLatLng(fromHexAddress);
             LatLng toGeoCoord = h3.cellToLatLng(toHexAddress);
             return returnDistance =  Precision.round(h3.greatCircleDistance(fromGeoCoord, toGeoCoord, LengthUnit.km),6);
@@ -543,9 +660,7 @@ public class Neo4jH3 {
     @UserFunction(name = "neo4jh3.minChild")
     @Description("CALL neo4jh3.minChild(hexAddress, h3Resolution)")
     public Long minChild(@Name("fromHexAddress") Long fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -578,9 +693,7 @@ public class Neo4jH3 {
     @UserFunction(name = "neo4jh3.minChildString")
     @Description("CALL neo4jh3.minChildString(hexAddress, h3Resolution)")
     public String minChildString(@Name("fromHexAddress") String fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -611,9 +724,7 @@ public class Neo4jH3 {
     @UserFunction(name = "neo4jh3.maxChild")
     @Description("CALL neo4jh3.maxChild(hexAddress, h3Resolution)")
     public Long maxChild(@Name("fromHexAddress") Long fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -646,9 +757,7 @@ public class Neo4jH3 {
     @UserFunction(name = "neo4jh3.maxChildString")
     @Description("CALL neo4jh3.maxChildString(hexAddress, h3Resolution)")
     public String maxChild(@Name("fromHexAddress") String fromHexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (fromHexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -688,10 +797,8 @@ public class Neo4jH3 {
         ) throws InterruptedException {
         Double returnValue = 0.0;
         int hasError=0;
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
-        if ( lat1Value>90 || lat2Value<-90  || lat1Value>90 || lat2Value<-90 ){
+        checkH3Initialized();
+        if ( lat1Value>90 || lat1Value<-90  || lat2Value>90 || lat2Value<-90 ){
             returnValue = -1.0;
             hasError = 1;
         }
@@ -852,6 +959,191 @@ public class Neo4jH3 {
 
     // Procedures
 
+
+    @Procedure(name = "neo4jh3.directedEdgeToBoundary", mode = Mode.READ)
+    @Description("neo4jh3.directedEdgeToBoundary(edgeAddress) - Provides the geographic lat/lng coordinates defining the directed edge. Note that this may be more than two points for complex edges.")
+    public Stream<H3StringAddress> directedEdgeToBoundary(
+        @Name("edgeAddress") Long edgeAddress) {
+        List<LatLng> hexPoints = new ArrayList<>();
+        List<String> boundaryLatLng = new ArrayList<String>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidDirectedEdge(edgeAddress)) {
+                hexPoints = h3.directedEdgeToBoundary(edgeAddress);
+            } 
+            for (int i = 0; i < hexPoints.size(); i++) {
+                boundaryLatLng.add(String.valueOf(Precision.round(hexPoints.get(0).lat,6)) + "," + String.valueOf(Precision.round(hexPoints.get(0).lng,6)));
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            boundaryLatLng = Collections.singletonList("-1");
+            //e.printStackTrace();
+        }
+        return boundaryLatLng.stream().map(H3StringAddress::of);
+    } 
+    
+   @Procedure(name = "neo4jh3.directedEdgeToBoundaryString", mode = Mode.READ)
+    @Description("neo4jh3.directedEdgeToBoundaryString(edgeAddress) - Provides the geographic lat/lng coordinates defining the directed edge. Note that this may be more than two points for complex edges.")
+    public Stream<H3StringAddress> directedEdgeToBoundaryString(
+        @Name("edgeAddress") String edgeAddress) {
+        List<LatLng> hexPoints = new ArrayList<>();
+        List<String> boundaryLatLng = new ArrayList<String>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidDirectedEdge(edgeAddress)) {
+                hexPoints = h3.directedEdgeToBoundary(edgeAddress);
+            } 
+            for (int i = 0; i < hexPoints.size(); i++) {
+                boundaryLatLng.add(String.valueOf(Precision.round(hexPoints.get(0).lat,6)) + "," + String.valueOf(Precision.round(hexPoints.get(0).lng,6)));
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            boundaryLatLng = Collections.singletonList("-1");
+            //e.printStackTrace();
+        }
+        return boundaryLatLng.stream().map(H3StringAddress::of);
+    }
+
+
+    @Procedure(name = "neo4jh3.cellsToDirectedEdgeString", mode = Mode.READ)
+    @Description("neo4jh3.cellsToDirectedEdgeString(originHexAddress,destinationHexAddress) - Determines whether or not the provided H3 cells are neighbors.")
+    public Stream<H3StringAddress> cellsToDirectedEdge(
+        @Name("originCell") String originCell,
+        @Name("destinationCell") String destinationCell) {
+        List<String> listh3Address = new ArrayList<String>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidCell(originCell) && h3.isValidCell(destinationCell)) {
+                listh3Address.add(h3.cellsToDirectedEdge(originCell,destinationCell));
+            } else {
+                listh3Address.add("-1");
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            listh3Address = Collections.singletonList("-1");
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3StringAddress::of);
+    }   
+
+    @Procedure(name = "neo4jh3.cellsToDirectedEdge", mode = Mode.READ)
+    @Description("neo4jh3.cellsToDirectedEdge(originHexAddress,destinationHexAddress) - Determines whether or not the provided H3 cells are neighbors.")
+    public Stream<H3LongAddress> cellsToDirectedEdge(
+        @Name("originCell") Long originCell,
+        @Name("destinationCell") Long destinationCell) {
+        List<Long> listh3Address = new ArrayList<Long>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidCell(originCell) && h3.isValidCell(destinationCell)) {
+                listh3Address.add(h3.cellsToDirectedEdge(originCell,destinationCell));
+            } else {
+                listh3Address.add(-1L);
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            listh3Address = Collections.singletonList(-1L);
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3LongAddress::of);
+    } 
+
+
+    @Procedure(name = "neo4jh3.directedEdgeToCells", mode = Mode.READ)
+    @Description("neo4jh3.directedEdgeToCells(directedEdge) - Provides the origin-destination pair of cells for the given directed edge")
+    public Stream<H3LongAddress> directedEdgeToCells(
+        @Name("directedEdge") Long directedEdge) {
+        List<Long> listh3Address = new ArrayList<Long>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidDirectedEdge(directedEdge)) {
+                listh3Address = (h3.directedEdgeToCells(directedEdge));
+            } else {
+                listh3Address.add(-1L);
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            listh3Address = Collections.singletonList(-1L);
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3LongAddress::of);
+    } 
+
+    @Procedure(name = "neo4jh3.directedEdgeToCellsString", mode = Mode.READ)
+    @Description("neo4jh3.directedEdgeToCellsString(directedEdge) - Provides the origin-destination pair of cells for the given directed edge")
+    public Stream<H3StringAddress> directedEdgeToCellsString(
+        @Name("directedEdge") String directedEdge) {
+        List<String> listh3Address = new ArrayList<String>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidDirectedEdge(directedEdge)) {
+                listh3Address = (h3.directedEdgeToCells(directedEdge));
+            } else {
+                listh3Address.add("-1");
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            listh3Address = Collections.singletonList("-1");
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3StringAddress::of);
+    } 
+
+    @Procedure(name = "neo4jh3.originToDirectedEdges", mode = Mode.READ)
+    @Description("neo4jh3.directedEdgeToCells(directedEdge) - Determines whether or not the provided H3 cells are neighbors.")
+    public Stream<H3LongAddress> originToDirectedEdges(
+        @Name("originCell") Long originCell) {
+        List<Long> listh3Address = new ArrayList<Long>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidCell(originCell)) {
+                listh3Address = (h3.originToDirectedEdges(originCell));
+            } else {
+                listh3Address.add(-1L);
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            listh3Address = Collections.singletonList(-1L);
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3LongAddress::of);
+    } 
+
+    @Procedure(name = "neo4jh3.originToDirectedEdgesString", mode = Mode.READ)
+    @Description("neo4jh3.directedEdgeToCellsString(directedEdge) - Determines whether or not the provided H3 cells are neighbors.")
+    public Stream<H3StringAddress> originToDirectedEdgesString(
+        @Name("originCell") String originCell) {
+        List<String> listh3Address = new ArrayList<String>();
+        
+        checkH3Initialized();
+        try {
+
+            if (h3.isValidCell(originCell)) {
+                listh3Address = (h3.originToDirectedEdges(originCell));
+            } else {
+                listh3Address.add("-1");
+            }
+        } catch (Exception e) {
+            //System.out.println(e);
+            listh3Address = Collections.singletonList("-1");
+            //e.printStackTrace();
+        }
+        return listh3Address.stream().map(H3StringAddress::of);
+    } 
+
     @Procedure(name = "neo4jh3.lineash3", mode = Mode.READ)
     @Description("neo4jh3.lineash3(wktString, resolution, latlonorder) - Loads a WKT LINESTRING and returns H3 Long values.")
     public Stream<H3LongAddress> lineash3(
@@ -872,9 +1164,7 @@ public class Neo4jH3 {
         Double midLon = 0.0;
         String mls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         if (latlonorder.isBlank()){
         latlonorder = "latlon";
@@ -969,9 +1259,7 @@ public class Neo4jH3 {
         Double midLon = 0.0;
         String mls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         if (latlonorder.isBlank()){
         latlonorder = "latlon";
@@ -1064,9 +1352,7 @@ public class Neo4jH3 {
         Double midLon = 0.0;
         String mls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         
         if (latlonorder.isBlank()){
             latlonorder = "latlon";
@@ -1251,9 +1537,7 @@ public class Neo4jH3 {
         List<List<LatLng>> holesList = new ArrayList<>();
         String mls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
@@ -1301,9 +1585,7 @@ public class Neo4jH3 {
         List<List<LatLng>> holesList = new ArrayList<>();
         String mls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
@@ -1354,9 +1636,7 @@ public class Neo4jH3 {
         String mls = "";
         String mps = "";
     
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
@@ -1467,9 +1747,7 @@ public class Neo4jH3 {
         String mps = "";
         String tmls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
@@ -1522,9 +1800,7 @@ public class Neo4jH3 {
         String mps = "";
         String tmls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         final int h3Resolution = h3Res == null ? DEFAULT_H3_RESOLUTION : h3Res.intValue();
 
@@ -2034,9 +2310,7 @@ public class Neo4jH3 {
     @Description("neo4jh3.ispentagon(hexAddress) - is hexAddress a pentagon.")
     public Boolean ispentagon(
             @Name("hexAddress") Long hexAddress) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         
         try {
             if (h3.isPentagon(hexAddress)){
@@ -2055,9 +2329,7 @@ public class Neo4jH3 {
     @Description("neo4jh3.ispentagonString(hexAddress) - is hexAddress a pentagon.")
     public Boolean ispentagonString(
             @Name("hexAddress") String hexAddress) {
-        if (h3 == null) {
-            throw new RuntimeException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         
         try {
             if (h3.isPentagon(hexAddress)){
@@ -2079,9 +2351,7 @@ public class Neo4jH3 {
     @Description("CALL neo4jh3.gridDisk(hexAddress, ringSize) - Returns all H3 addresses around the hexAddress at the given ring size")
     public Stream<H3LongAddress> gridDisk(@Name("hexAddress") Long hexAddress, @Name("ringSize") Long ringSize)
             throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null || ringSize == null) {
             throw new InterruptedException("invalid arguments");
         }
@@ -2106,9 +2376,7 @@ public class Neo4jH3 {
     @Description("CALL neo4jh3.gridDiskString(hexAddress, ringSize) - Returns all H3 addresses around the hexAddress at the given ring size")
     public Stream<H3StringAddress> gridDiskString(@Name("hexAddress") String hexAddress, @Name("ringSize") Long ringSize)
             throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null || ringSize == null) {
             throw new InterruptedException("invalid arguments");
         }
@@ -2133,9 +2401,7 @@ public class Neo4jH3 {
     @Procedure(name = "neo4jh3.tochildren", mode = Mode.READ)
     @Description("CALL neo4jh3.tochildren(hexAddress, h3Resolution)")
     public Stream<H3LongAddress> tochildren(@Name("hexAddress") Long hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -2161,9 +2427,7 @@ public class Neo4jH3 {
     @Procedure(name = "neo4jh3.tochildrenString", mode = Mode.READ)
     @Description("CALL neo4jh3.tochildrenString(hexAddress, h3Resolution)")
     public Stream<H3StringAddress> tochildrenString(@Name("hexAddress") String hexAddress, @Name("h3Res") Long h3Res) throws InterruptedException {
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
         if (hexAddress == null) {
             throw new InterruptedException("invalid hex address");
         }
@@ -2953,9 +3217,7 @@ public Stream<H3LongAddress> unCompact(@Name("listCells") List<Long> listCells, 
         Double midLon = 0.0;
         String mls = "";
 
-        if (h3 == null) {
-            throw new InterruptedException("h3 failed to initialize");
-        }
+        checkH3Initialized();
 
         if (polyEdges == null || polyEdgeHoles == null) {
          throw new InterruptedException("invalid arguments");
@@ -3113,7 +3375,6 @@ public Stream<StringResult> writeH3ToDB(@Name("listCells") List<Long> listCells,
         }
         Integer count = 0;
         Long curRes = 0L;
-        Throwable txEx = null;
         ListIterator<Long> iterator = listCells.listIterator();
         Transaction tx = db.beginTx();
         try {
@@ -3133,8 +3394,8 @@ public Stream<StringResult> writeH3ToDB(@Name("listCells") List<Long> listCells,
             }
             tx.commit();
         } catch (Throwable ex) {
-            txEx = ex;
-            System.out.println(ex);
+            System.err.println("Transaction error: " + ex.getMessage());
+            throw new RuntimeException("Transaction failed", ex);
         }
     } 
     if (returnMessage.isBlank()){
@@ -3162,7 +3423,6 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
         }
         Integer count = 0;
         String curRes = "";
-        Throwable txEx = null;
         ListIterator<String> iterator = listCells.listIterator();
         Transaction tx = db.beginTx();
         try {
@@ -3182,8 +3442,8 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
             }
             tx.commit();
         } catch (Throwable ex) {
-            txEx = ex;
-            System.out.println(ex);
+            System.err.println("Transaction error: " + ex.getMessage());
+            throw new RuntimeException("Transaction failed", ex);
         }
     } 
     if (returnMessage.isBlank()){
@@ -3212,7 +3472,6 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
             }
             Integer count = 1;
             Long curRes =0L;
-            Throwable txEx = null;
             ListIterator<Long> iterator = listCells.listIterator();
             HashMap<String, String> relNodeList = new HashMap<String, String>();
             String endNodeID = "";
@@ -3250,9 +3509,6 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
                         tx.execute( qry, params);
                         hexList.clear();
                         params.clear();
-                    }
-
-                    if (count % txSize == 0) {
                         tx.commit();
                         tx = db.beginTx();
                     }
@@ -3267,8 +3523,8 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
                 hexList.clear();
                 params.clear();
             } catch (Throwable ex) {
-                txEx = ex;
-                System.out.println(ex);
+                System.err.println("Transaction error: " + ex.getMessage());
+                throw new RuntimeException("Transaction failed", ex);
             }
         } 
         if (returnMessage.isBlank()){
@@ -3296,7 +3552,6 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
             }
             Integer count = 1;
             String curRes = "";
-            Throwable txEx = null;
             ListIterator<String> iterator = listCells.listIterator();
             HashMap<String, String> relNodeList = new HashMap<String, String>();
             String endNodeID = "";
@@ -3334,9 +3589,6 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
                         tx.execute( qry, params);
                         hexList.clear();
                         params.clear();
-                    }
-
-                    if (count % txSize == 0) {
                         tx.commit();
                         tx = db.beginTx();
                     }
@@ -3351,8 +3603,8 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
                 hexList.clear();
                 params.clear();
             } catch (Throwable ex) {
-                txEx = ex;
-                System.out.println(ex);
+                System.err.println("Transaction error: " + ex.getMessage());
+                throw new RuntimeException("Transaction failed", ex);
             }
         } 
         if (returnMessage.isBlank()){
@@ -3362,6 +3614,12 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
         }
     }
 
+    private static void checkH3Initialized() {
+        if (h3 == null) {
+            throw new RuntimeException("h3 failed to initialize");
+        }
+    }
+    
     private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
 		if ((lat1 == lat2) && (lon1 == lon2)) {
 			return 0;
@@ -3403,7 +3661,7 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
         Double polyLat = 0.0;
         Double polyLon = 0.0;
         if (!lonlatPairs.isBlank()){
-            String lonlat = lonlatPairs.toString();
+            String lonlat = lonlatPairs;
             lonlat = lonlat.trim();
             polyLat = Double.valueOf(lonlat.split("\\s+")[0]);
             polyLon = Double.valueOf(lonlat.split("\\s+")[1]);
@@ -3417,7 +3675,7 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
         Double polyLat = 0.0;
         Double polyLon = 0.0;
         if (!lonlatPairs.isBlank()){
-            String lonlat = lonlatPairs.toString();
+            String lonlat = lonlatPairs;
             lonlat = lonlat.trim();
             polyLat = Double.valueOf(lonlat.split("\\s+")[1]);
             polyLon = Double.valueOf(lonlat.split("\\s+")[0]);
@@ -3425,5 +3683,4 @@ public Stream<StringResult> writeH3StringToDB(@Name("listCells") List<String> li
         }
         return tmpGeoCoord;
     }
-
 }

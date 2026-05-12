@@ -6,20 +6,31 @@
 
     <groupId>com.neo4jh3</groupId>
     <artifactId>neo4jh3</artifactId>
-    <version>2025.12.1</version>
+    <version>2026.04.0</version>
 
     <properties>
-        <neo4j.version>2025.12.1</neo4j.version>
-		<uber.version>4.4.0</uber.version>
-		<commons.version>4.5.0</commons.version>
+        <neo4j.version>2026.04.0</neo4j.version>
+        <uber.version>4.4.0</uber.version>
+        <commons.version>4.5.0</commons.version>
         <commons.math.version>3.6.1</commons.math.version>
+        
         <java.version>21</java.version>
         <maven.compiler.release>${java.version}</maven.compiler.release>
-        <maven-shade-plugin.version>3.4.1</maven-shade-plugin.version>
-        <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
-        <assertj.version>3.22.0</assertj.version>
-        <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version> 
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        
+        
+        <neo4j-java-driver.version>6.0.5</neo4j-java-driver.version>
+        <junit-jupiter.version>6.0.3</junit-jupiter.version>
+        <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <assertj.version>3.27.3</assertj.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version> 
         <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>  
+        <maven.version>3.9.4</maven.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+        
     </properties>
 
     <dependencies>
@@ -70,22 +81,8 @@
 		    <artifactId>commons-collections4</artifactId>
 		    <version>${commons.version}</version>
 		</dependency>
-
+        
         <!-- Test Dependencies -->
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-io</artifactId>
-            <version>${neo4j.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>neo4j-kernel</artifactId>
-            <version>${neo4j.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <!-- This is used for a utility that lets us start Neo4j with
                  a specific Procedure, which is nice for writing tests. -->
@@ -93,30 +90,35 @@
             <artifactId>neo4j-harness</artifactId>
             <version>${neo4j.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-nop</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
-
+        
         <dependency>
             <!-- Used to send cypher statements to our procedure. -->
             <groupId>org.neo4j.driver</groupId>
             <artifactId>neo4j-java-driver</artifactId>
-            <version>5.28.9</version>
+            <version>${neo4j-java-driver.version}</version>
             <scope>test</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
+        
         <dependency>
-            <groupId>org.neo4j</groupId>
-            <artifactId>procedure-compiler</artifactId>
-            <version>${neo4j.version}</version>
-            <optional>true</optional>
-            <scope>compile</scope>
-        </dependency> 
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
         
     </dependencies>
 
