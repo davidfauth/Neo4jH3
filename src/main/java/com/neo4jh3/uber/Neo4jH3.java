@@ -33,7 +33,7 @@ public class Neo4jH3 {
     public Transaction tx;
 
     private final static int DEFAULT_H3_RESOLUTION = 9;
-    private final static String NEO4J_H3_VERSION = "2026.04.0";
+    private final static String NEO4J_H3_VERSION = "2026.06.0";
 
     private static H3Core h3 = null;
                     

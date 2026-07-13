@@ -6,10 +6,10 @@
 
     <groupId>com.neo4jh3</groupId>
     <artifactId>neo4jh3</artifactId>
-    <version>2026.04.0</version>
+    <version>2026.06.0</version>
 
     <properties>
-        <neo4j.version>2026.04.0</neo4j.version>
+        <neo4j.version>2026.06.0</neo4j.version>
         <uber.version>4.4.0</uber.version>
         <commons.version>4.5.0</commons.version>
         <commons.math.version>3.6.1</commons.math.version>
@@ -21,7 +21,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         
         
-        <neo4j-java-driver.version>6.0.5</neo4j-java-driver.version>
+        <neo4j-java-driver.version>6.1.0</neo4j-java-driver.version>
         <junit-jupiter.version>6.0.3</junit-jupiter.version>
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>

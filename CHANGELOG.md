@@ -1,3 +1,8 @@
+# CHANGELOG - 2026.06.0 - 2026-07-13
+* [Updated] - Bumped Neo4j version to 2026.06.0 to match Neo4j versioning.
+* [Updated] - Bumped Neo4j Driver version to 6.1.0
+* [Updated] - Updated neo4jh3.geojsonmultipolygonash3 test case
+
 # CHANGELOG - 2026.04.0 - 2026-05-10
 * [Updated] - Bumped Neo4j version to 2026.04.0 to match Neo4j versioning.
 * [Added]   - Added functions and procedures for [Directed Edge Functions](https://h3geo.org/docs/api/uniedge).

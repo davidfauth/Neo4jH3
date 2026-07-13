@@ -75,7 +75,7 @@ public class Neo4jH3Test {
         void version() {
             try (Session session = driver.session()) {
                 assertThat(session.run("RETURN neo4jh3.version() AS v").single().get("v").asString())
-                        .isEqualTo("2026.04.0");
+                        .isEqualTo("2026.06.0");
             }
         }
     }
@@ -1113,7 +1113,7 @@ public class Neo4jH3Test {
         @Test
         void geojsonmultipolygonash3_invalidInput() {
             try (Session session = driver.session()) {
-                assertThat(session.run("call neo4jh3.geojsonmultipolygonash3([[123456, 111]],7) yield value return value limit 1")
+                assertThat(session.run("call neo4jh3.geojsonmultipolygonash3([[123456.0, 111]],7) yield value return value limit 1")
                         .single().get(0).asLong()).isEqualTo(-1L);
             }
         }
